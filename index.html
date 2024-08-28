@@ -5,10 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amith Zafal - Personal Webpage</title>
     <style>
+        h2, h3 {
+            display: block;
+        }
+        ul {
+            padding-left: 15px;
+        }
         .justified-list {
-            width: 600px; /* Adjust the width as needed */
+            width: 100%;
+            max-width: 600px; /* Adjust the max-width as needed */
             text-align: justify;
             word-wrap: break-word;
+            margin: 0 auto; /* Center the list */
+        }
+        @media (max-width: 600px) {
+            .justified-list {
+                max-width: 100%;
+            }
         }
         body {
             font-family: Arial, sans-serif;
