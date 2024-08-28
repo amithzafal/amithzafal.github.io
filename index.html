@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Personal Website</title>
+    <title>Amith Zafal Abdulla - Personal Website</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
+            line-height: 1.4;
             margin: 0;
             padding: 0;
             background-color: #ffffff;
@@ -20,13 +20,13 @@
             padding: 20px;
         }
         header {
-            padding-top: 30px;
+            padding-top: 100px; /* Increased top padding for more blank space */
             min-height: 70px;
             text-align: left;
         }
         header h1 {
             margin: 0;
-            padding-bottom: 10px;
+            padding-bottom: 5px;
             display: inline-block;
             transition: transform 0.3s ease;
             transform-origin: left center;
@@ -35,17 +35,25 @@
             transform: scale(1.05);
         }
         .main-content {
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 10px;
+            padding: 10px 20px;
         }
         h2, h3 {
             transition: transform 0.3s ease;
             transform-origin: left center;
             display: inline-block;
-            padding: 5px 0;
+            padding: 3px 0;
+            margin: 10px 0 5px 0;
         }
         h2:hover, h3:hover {
             transform: scale(1.05);
+        }
+        p {
+            margin: 0 0 10px 0;
+        }
+        ul {
+            margin: 5px 0 10px 0;
+            padding-left: 20px;
         }
     </style>
 </head>
@@ -53,28 +61,27 @@
     <header>
         <div class="container">
             <h1>Amith Zafal Abdulla</h1>
-            <p>Postdoctoral reasearcher</p>
+            <p><i>Postdoctoral researcher</i></p>
         </div>
     </header>
 
     <div class="container">
         <div class="main-content">
             <h2>Welcome to my page</h2>
-            <p>Hello! I'm Amith, a reasearcher in Brandeis university, Boston.</p>
+            <p>Hello! I'm Amith, a researcher at Brandeis University, Boston. I am currently working on understanding the dynamics of epigenetic states at a single cell level. 
+                Modelling 3D chromatin organization, active processes like loop extrusion, strand crossing and their effects on chromosome organization are of great interest to me. 
+                While I am open to different research domains, I am interested in modelling cellular processes, collective behaviour, in a broad sense to decipher the physics of biological systems.
+                Some of the published works:</p>
             
-            <!-- <h3>About Me</h3>
-            <p>I have a passion for creating elegant, efficient solutions to complex problems. With expertise in [Your Skills], I strive to make the web a more beautiful and functional place.</p> -->
-            
-            <h3>Research</h3>
+            <!-- <h3>Research</h3> -->
             <ul>
-                <li>Project 1: Brief description</li>
+                <li>A. Z. Abdulla, M. M. C. Tortora, C. Vaillant and D. Jost,<a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</a>, <i>Macromolecules<i> 2023 ( <a href="https://example.com/project2" target="_blank">arXiv</a> )</li>
                 <li>Project 2: Brief description</li>
                 <li>Project 3: Brief description</li>
             </ul>
             
             <h3>Contact</h3>
-            <!-- <p>Feel free to reach out to me at: <a href="mailto:your.email@example.com">your.email@example.com</a></p> -->
-            <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</a></p>
+            <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
         </div>
     </div>
 </body>
