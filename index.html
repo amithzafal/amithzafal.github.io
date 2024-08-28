@@ -50,6 +50,7 @@
         }
         p {
             margin: 0 0 10px 0;
+            text-align: justify;
         }
         ul {
             margin: 5px 0 10px 0;
@@ -63,7 +64,27 @@
             display: inline-block;
         }
         a:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+        }
+        
+        /* Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            header {
+                padding-top: 50px;
+            }
+            .main-content {
+                padding: 5px 10px;
+            }
+            h2, h3 {
+                display: block;
+            }
+            ul {
+                padding-left: 15px;
+            }
         }
     </style>
 </head>
@@ -79,14 +100,23 @@
         <div class="main-content">
             <h2>Welcome to my page</h2>
             <p>Greetings! I'm Amith, a postdoctoral researcher at Brandeis University, Boston. My current research focuses on understanding the dynamics of epigenetic states at the single-cell level, a pursuit that combines molecular biology experiments with computational modeling. 
-                Modeling 3D chromatin organization to have a better mechanistic know-how of the fundamental processes driving chromatin folding and gene regulation is of great interest to me. My research interests span a wide spectrum, from cellular processes to collective behavior in active matter, 
-                in a broad sense deciphering the physics of biological systems fascinate me. Some of my works are listed below:</p>
+                Developing computational models to have a better mechanistic know-how of the fundamental processes driving chromatin folding and gene regulation is of great interest to me. My research interests span a wide spectrum, from cellular processes to collective behavior in active matter, 
+                in a broad sense deciphering the physics of biological systems fascinate me. Some of my works:</p>
 
             <!-- <h3>Selected Publications</h3> -->
             <ul>
                 <li>A. Z. Abdulla, M. M. C. Tortora, C. Vaillant and D. Jost, <a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</a>, <i>Macromolecules</i> 2023 (<a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2" target="_blank">arXiv</a>)</li>
-                <li>Project 2: Brief description</li>
-                <li>Project 3: Brief description</li>
+                <li>A. Z. Abdulla, H. Salari, M. M. C. Tortora, C. Vaillant and D. Jost, <a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</a>, <i>Curr Opin Genet Dev in </i> 2023</li>
+                <li>A. Z. Abdulla, C. Vaillant and D. Jost, <a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank">Painters in chromatin: a unified quantitative framework to systematically characterize epigenome regulation and memory</a>, <i>Nulceic Acids Research</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2022.03.30.486379v2" target="_blank">arXiv</a>)</li>
+                <li>K. Newar, A. Z. Abdulla, H. Salari, C. Vaillant and D. Jost, <a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells</a>, <i>PLoS CB</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2021.09.30.462529v3.full" target="_blank">arXiv</a>)</li>
+                <li>P. Praksh, A. Z. Abdulla and M. Varma, <a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers</a>, <i>Langmuir</i> 2021</li>
+                <li>P. Praksh, A. Z. Abdulla, V. Singh and M. Varma, <a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank">Swimming statistics of cargo-loaded single bacteria</a>, <i>Soft Matter</i> 2020</li>
+                <li>H. S. Kotian, A. Z. Abdulla, K. N. Hithysini, S. Harkar, S. Joge, A. Mishra, V. Singh and M. Varma, <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank">Active modulation of surfactant-driven flow instabilities by swarming bacteria</a>, <i>Physical Review E</i> 2020</li>
+                <li>P. Praksh, A. Z. Abdulla, V. Singh and M. Varma, <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed</a>, <i>Physical Review E</i> 2019</li>
+            </ul>
+
+            <ul> 
+                If you'd like to delve into <i><a href="https://ens-lyon.hal.science/tel-03968006/" target="_blank">Painters in chromatin</a><i> 
             </ul>
             
             <h3>Contact</h3>
