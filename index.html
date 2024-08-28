@@ -27,7 +27,9 @@
         header h1 {
             margin: 0;
             padding-bottom: 10px;
+            display: inline-block;
             transition: transform 0.3s ease;
+            transform-origin: left center;
         }
         header h1:hover {
             transform: scale(1.05);
@@ -38,6 +40,9 @@
         }
         h2, h3 {
             transition: transform 0.3s ease;
+            transform-origin: left center;
+            display: inline-block;
+            padding: 5px 0;
         }
         h2:hover, h3:hover {
             transform: scale(1.05);
@@ -48,19 +53,19 @@
     <header>
         <div class="container">
             <h1>Amith Zafal Abdulla</h1>
-            <p>Postdoctoral Researcher</p>
+            <p>Postdoctoral reasearcher</p>
         </div>
     </header>
 
     <div class="container">
         <div class="main-content">
             <h2>Welcome to my page</h2>
-            <p>Hello! I'm Amith, a Postdoctoral researcher at Brandeis University, Boston.</p>
+            <p>Hello! I'm Amith, a reasearcher in Brandeis university, Boston.</p>
             
             <!-- <h3>About Me</h3>
-            <p>I have a passion for creating elegant, efficient solutions to complex problems. With expertise in [Your Skills], I strive to make the web a more beautiful and functional place.</p>
-             -->
-            <h3>My Research</h3>
+            <p>I have a passion for creating elegant, efficient solutions to complex problems. With expertise in [Your Skills], I strive to make the web a more beautiful and functional place.</p> -->
+            
+            <h3>Research</h3>
             <ul>
                 <li>Project 1: Brief description</li>
                 <li>Project 2: Brief description</li>
@@ -68,8 +73,8 @@
             </ul>
             
             <h3>Contact</h3>
+            <!-- <p>Feel free to reach out to me at: <a href="mailto:your.email@example.com">your.email@example.com</a></p> -->
             <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</a></p>
-            <!-- <p>Feel free to reach out to me at: <a href="mailto:your.email@example.com">amithzafalatbrandeisdotedu</a></p> -->
         </div>
     </div>
 </body>
