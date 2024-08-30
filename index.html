@@ -15,6 +15,10 @@
             padding: 0;
             background-color: #ffffff;
             color: #333;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 60px; /* Adjusted for footer */
+            box-sizing: border-box;
         }
         .container {
             width: 80%;
@@ -53,11 +57,10 @@
         a:hover {
             font-weight: bold;
         }
-
         footer {
             background-color: #333;
             color: white;
-            padding: 20px 0;
+            padding: 8px 0;
             text-align: center;
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
@@ -67,11 +70,11 @@
             width: 100%;
         }
         .social-links {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         .social-links a {
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             margin: 0 10px;
             text-decoration: none;
         }
@@ -81,24 +84,33 @@
         footer p {
             margin: 0;
             font-size: 0.8em;
-        }
-
-        /* Ensure the footer doesn't overlap content */
-        body {
-            position: relative;
-            min-height: 100vh;
-            padding-bottom: 100px; /* Adjust based on footer height */
-            box-sizing: border-box;
+            text-align: center;
         }
 
         /* Mobile Responsiveness */
         @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            header {
+                padding-top: 50px;
+            }
+            .main-content {
+                padding: 5px 10px;
+            }
+            h2, h3 {
+                display: block;
+            }
+            ul {
+                padding-left: 15px;
+            }
             footer {
                 font-size: 0.8em;
-                padding: 15px 0;
+                padding: 6px 0;
             }
             .social-links a {
-                font-size: 18px;
+                font-size: 16px;
                 margin: 0 8px;
             }
         }
@@ -117,7 +129,7 @@
             <h2>Welcome to my page</h2>
             <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. 
                 My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
-            <p>My research interests are diverse, ranging from cellular processes to the collective behavior in active matter. I'm fascinated by the physics of biological systems.<p>
+            <p>My research interests are diverse, ranging from cellular processes to the collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
             <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/" target="_blank">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank">video.</a></p> 
 
             <p>Some of my works:</p>
@@ -135,11 +147,11 @@
             <h3>Contact</h3>
             <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
         </div>
-    </div> 
+    </div>
     <footer>
         <div class="social-links">
             <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                <i class="fab fa-x-twitter"></i>
+                <i class="fab fa-twitter"></i>
             </a>
             <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar">
                 <i class="fas fa-book-open"></i>
