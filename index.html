@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amith Zafal - Personal Webpage</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -52,33 +53,53 @@
         a:hover {
             font-weight: bold;
         }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 300;
+            font-size: 0.9em;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        .social-links {
+            margin-bottom: 10px;
+        }
         .social-links a {
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             margin: 0 10px;
             text-decoration: none;
         }
         .social-links a:hover {
             color: #ddd;
         }
+        footer p {
+            margin: 0;
+            font-size: 0.8em;
+        }
+
+        /* Ensure the footer doesn't overlap content */
+        body {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 100px; /* Adjust based on footer height */
+            box-sizing: border-box;
+        }
 
         /* Mobile Responsiveness */
         @media screen and (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 10px;
+            footer {
+                font-size: 0.8em;
+                padding: 15px 0;
             }
-            header {
-                padding-top: 50px;
-            }
-            .main-content {
-                padding: 5px 10px;
-            }
-            h2, h3 {
-                display: block;
-            }
-            ul {
-                padding-left: 15px;
+            .social-links a {
+                font-size: 18px;
+                margin: 0 8px;
             }
         }
     </style>
@@ -114,7 +135,7 @@
             <h3>Contact</h3>
             <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
         </div>
-    </div>
+    </div> 
     <footer>
         <div class="social-links">
             <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
