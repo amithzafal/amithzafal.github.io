@@ -3,100 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amith Zafal - Webpage</title>
+    <title>Amith Zafal - Personal page</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>   
 
     <link rel="preload" href="https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-01.png?raw=true" as="image">
     <style>
-       
         body {
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
             line-height: 1.6;
             margin: 0;
-            padding: 20px 0; /* Add padding at the top and bottom */
+            padding: 0;
             color: #333;
             position: relative;
             min-height: 100vh;
+            padding-bottom: 140px;
             box-sizing: border-box;
-            background-color: #ffffff;
-        }
-
-        .bg-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background-image: url('https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-01.png?raw=true');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            filter: grayscale(0%);
-            opacity: 0.5;
-            z-index: -1;
+            /* opacity: 0.3; */
         }
-
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.65);
+            min-height: 100vh;
+            padding-bottom: 140px;
+            box-sizing: border-box;
+        }
         .container {
             width: 80%;
             margin: auto;
             overflow: hidden;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.9);
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         header {
-            padding-top: 100px;
+            padding-top: 140px;
             min-height: 70px;
             text-align: left;
         }
-
-        h1, h2, h3 {
+        h1 {
             font-family: 'Oswald', sans-serif;
             display: inline-block;
             padding: 3px 0;
             margin: 10px 0 5px 0;
             font-weight: normal;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-
+        h2, h3 {
+            font-family: 'Oswald', sans-serif;
+            display: inline-block;
+            padding: 3px 0;
+            margin: 10px 0 5px 0;
+            font-weight: normal;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
         h1:hover, h2:hover, h3:hover {
             font-weight: bold;
         }
-
         p {
             margin: 0 0 10px 0;
             text-align: justify;
         }
-
         ul {
             margin: 5px 0 10px 0;
             padding-left: 20px;
         }
-
         a {
-            color: #007BFF;
+            color: #00008B;
+            font-weight: normal;
             text-decoration: none;
         }
-
         a:hover {
-            text-decoration: underline;
+            font-weight: bold;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2px 0;
+            text-align: center;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 300;
+            font-size: 0.9em;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        .social-links {
+            margin-bottom: 5px;
+        }
+        .social-links a {
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            color: #ddd;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.8em;
+            text-align: center;
         }
 
-        footer {
-            padding: 20px 0; /* Add padding to the footer */
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+        /* Mobile Responsiveness */
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            header {
+                padding-top: 50px;
+            }
+            .main-content {
+                padding: 5px 10px;
+            }
+            h2, h3 {
+                display: block;
+            }
+            ul {
+                padding-left: 15px;
+            }
+            footer {
+                font-size: 0.8em;
+                padding: 6px 0;
+            }
+            .social-links a {
+                font-size: 16px;
+                margin: 0 8px;
+            }
         }
-</style>
+    </style>
 </head>
 <body>
-    <div class="bg-container"></div>
     <div class="content-wrapper">
         <header>
             <div class="container">
@@ -107,7 +150,7 @@
 
         <div class="container">
             <div class="main-content">
-                <h2>Welcome to my page :)</h2>
+                <h2>Welcome to my page</h2>
                 <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. 
                     My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
@@ -126,7 +169,7 @@
                 </ul>
 
                 <h3>Contact</h3>
-                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>  
+                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
             </div>
         </div>
     </div>
@@ -142,4 +185,5 @@
         <p> 415 South Street, Waltham MA USA 02453.</p>
     </footer>
 </body>
+/* Mobile Responsiveness */
 </html>
