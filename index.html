@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amith Zafal - Personal page</title>
+    <title>Amith Zafal - Webpage</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>   
 
     <link rel="preload" href="https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-01.png?raw=true" as="image">
     <style>
@@ -18,20 +18,18 @@
             color: #333;
             position: relative;
             min-height: 100vh;
-            padding-bottom: 5px;
             box-sizing: border-box;
             background-image: url('https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-01.png?raw=true');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            /* opacity: 0.3; */
         }
         .content-wrapper {
             background-color: rgba(255, 255, 255, 0.6);
-            min-height: 100vh;
-            padding-bottom: 50px;
-            box-sizing: border-box;
+            height: 90vh; /* 90% of viewport height */
+            margin-top: 5vh; /* 5% of viewport height */
+            overflow-y: auto; /* Allow scrolling if content exceeds height */
         }
         .container {
             width: 80%;
@@ -41,7 +39,7 @@
             position: relative;
         }
         header {
-            padding-top: 50px;
+            padding-top: 20px;
             min-height: 70px;
             text-align: left;
         }
@@ -83,7 +81,6 @@
         footer {
             background-color: #333;
             color: white;
-            padding-top: 50px;
             padding: 2px 0;
             text-align: center;
             font-family: 'Nunito', sans-serif;
@@ -151,7 +148,7 @@
 
         <div class="container">
             <div class="main-content">
-                <h2>Welcome to my page</h2>
+                <h2>Welcome to my page :)</h2>
                 <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. 
                     My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
@@ -170,7 +167,7 @@
                 </ul>
 
                 <h3>Contact</h3>
-                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
+                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>  
             </div>
         </div>
     </div>
