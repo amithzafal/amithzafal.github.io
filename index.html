@@ -20,9 +20,13 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         html, body {
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
         }
         
         body {
@@ -39,19 +43,20 @@
         
         .content-wrapper {
             background-color: var(--background-color);
-            height: 100%;
-            overflow-y: auto;
-            padding: 20px;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
             width: 80%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
         
         header {
-            padding-top: 30px;
+            padding-top: 50px;
             text-align: left;
         }
         
@@ -100,6 +105,10 @@
             font-weight: bold;
         }
         
+        .main-content {
+            flex: 1 0 auto;
+        }
+        
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -108,9 +117,7 @@
             font-size: 0.9em;
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+            flex-shrink: 0;
         }
         
         .social-links {
@@ -134,8 +141,17 @@
         }
         
         @media screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+            }
+            
             .container {
                 width: 95%;
+                padding: 10px;
+            }
+            
+            header {
+                padding-top: 30px;
             }
             
             h1 { font-size: 2em; }
@@ -157,13 +173,15 @@
 </head>
 <body>
     <div class="content-wrapper">
-        <div class="container">
-            <header>
+        <header>
+            <div class="container">
                 <h1>Amith Zafal Abdulla</h1>
                 <p>HFSP Postdoctoral fellow</p>
-            </header>
+            </div>
+        </header>
 
-            <main>
+        <main class="main-content">
+            <div class="container">
                 <h2>Welcome to my page</h2>
                 <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
@@ -183,8 +201,8 @@
 
                 <h3>Contact</h3>
                 <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
-            </main>
-        </div>
+            </div>
+        </main>
 
         <footer>
             <div class="social-links">
@@ -200,5 +218,21 @@
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const links = document.querySelectorAll('a[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
