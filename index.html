@@ -20,13 +20,9 @@
             box-sizing: border-box;
         }
         
-        html {
-            scroll-behavior: smooth;
-        }
-        
         html, body {
             height: 100%;
-            overflow-x: hidden;
+            overflow: hidden;
         }
         
         body {
@@ -39,269 +35,23 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
         }
         
         .content-wrapper {
             background-color: var(--background-color);
-            flex: 1 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            padding-top: 50px;
-            text-align: left;
-        }
-        
-        h1, h2, h3 {
-            font-family: 'Oswald', sans-serif;
-            display: inline-block;
-            padding: 3px 0;
-            margin: 10px 0 5px 0;
-            font-weight: normal;
-            transition: font-weight 0.3s ease;
-        }
-        
-        h1 { 
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        h2 { 
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        h3 { 
-            font-size: 1.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        h1:hover, h2:hover, h3:hover {
-            font-weight: bold;
-        }
-        
-        p {
-            margin-bottom: 10px;
-            text-align: justify;
-        }
-        
-        ul {
-            margin: 5px 0 10px 20px;
-        }
-        
-        a {
-            color: var(--secondary-color);
-            text-decoration: none;
-            transition: font-weight 0.3s ease;
-        }
-        
-        a:hover {
-            font-weight: bold;
-        }
-        
-        .main-content {
-            flex: 1 0 auto;
-        }
-        
-        footer {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            font-size: 0.9em;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 300;
-            flex-shrink: 0;
-        }
-        
-        .social-links {
-            margin-bottom: 5px;
-        }
-        
-        .social-links a {
-            color: white;
-            font-size: 18px;
-            margin: 0 10px;
-        }
-        
-        .social-links a:hover {
-            color: #ddd;
-        }
-        
-        footer p {
-            margin: 0;
-            font-size: 0.8em;
-            text-align: center;
-        }
-        
-        @media screen and (max-width: 768px) {
-            body {
-                background-attachment: scroll;
-            }
-            
-            .container {
-                width: 95%;
-                padding: 10px;
-            }
-            
-            header {
-                padding-top: 30px;
-            }
-            
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.7em; }
-            h3 { font-size: 1.4em; }
-            
-            ul {
-                padding-left: 15px;
-            }
-            
-            .social-links a {
-                font-size: 16px;
-                margin: 0 8px;
-            }
-        }
-    </style>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-</head>
-<body>
-    <div class="content-wrapper">
-        <header>
-            <div class="container">
-                <h1>Amith Zafal Abdulla</h1>
-                <p>HFSP Postdoctoral fellow</p>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div class="container">
-                <h2>Welcome to my page</h2>
-                <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
-                <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
-                <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/" target="_blank" rel="noopener noreferrer">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
-
-                <h3>Some of my works:</h3>
-                <ul>
-                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</a>, <i>Macromolecules</i> 2023 (<a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</a>, <i>Curr Opin Genet Dev</i> 2023</li>
-                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory</a>, <i>Nulceic Acids Research</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2022.03.30.486379v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells</a>, <i>PLoS CB</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2021.09.30.462529v3.full" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers</a>, <i>Langmuir</i> 2021</li>
-                    <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria</a>, <i>Soft Matter</i> 2020</li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria</a>, <i>Physical Review E</i> 2020</li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed</a>, <i>Physical Review E</i> 2019</li>
-                </ul>
-
-                <h3>Contact</h3>
-                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
-            </div>
-        </main>
-
-        <footer>
-            <div class="social-links">
-                <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                    <span class="sr-only">X (Twitter)</span>
-                </a>
-                <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar">
-                    <i class="fas fa-book-open" aria-hidden="true"></i>
-                    <span class="sr-only">Google Scholar</span>
-                </a>
-            </div>
-            <p>415 South Street, Waltham MA USA 02453</p>
-        </footer>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const links = document.querySelectorAll('a[href^="#"]');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AZA">
-    <title>Amith Zafal - Webpage</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #333;
-            --secondary-color: #00008B;
-            --background-color: rgba(255, 255, 255, 0.75);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
             height: 100%;
-        }
-        
-        body {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 300;
-            line-height: 1.6;
-            color: var(--primary-color);
-            background-image: url('https://github.com/amithzafal/amithzafal.github.io/blob/main/bg4-01.webp?raw=true');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            min-height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
-        
-        .content-wrapper {
-            background-color: var(--background-color);
-            flex: 1 0 auto;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
         }
         
         .container {
             width: 80%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
         }
         
         header {
-            padding-top: 50px;
+            padding-top: 30px;
             text-align: left;
         }
         
@@ -350,10 +100,6 @@
             font-weight: bold;
         }
         
-        .main-content {
-            flex: 1 0 auto;
-        }
-        
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -362,7 +108,9 @@
             font-size: 0.9em;
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
-            flex-shrink: 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
         
         .social-links {
@@ -386,17 +134,8 @@
         }
         
         @media screen and (max-width: 768px) {
-            body {
-                background-attachment: scroll;
-            }
-            
             .container {
                 width: 95%;
-                padding: 10px;
-            }
-            
-            header {
-                padding-top: 30px;
             }
             
             h1 { font-size: 2em; }
@@ -418,15 +157,13 @@
 </head>
 <body>
     <div class="content-wrapper">
-        <header>
-            <div class="container">
+        <div class="container">
+            <header>
                 <h1>Amith Zafal Abdulla</h1>
                 <p>HFSP Postdoctoral fellow</p>
-            </div>
-        </header>
+            </header>
 
-        <main class="main-content">
-            <div class="container">
+            <main>
                 <h2>Welcome to my page</h2>
                 <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
@@ -446,8 +183,8 @@
 
                 <h3>Contact</h3>
                 <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
-            </div>
-        </main>
+            </main>
+        </div>
 
         <footer>
             <div class="social-links">
@@ -463,21 +200,5 @@
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const links = document.querySelectorAll('a[href^="#"]');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
