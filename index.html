@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AZA">
-    <title>Amith Zafal - Webpage</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
+    <title>Amith Zafal Abdulla - Researcher</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #333;
             --secondary-color: #00008B;
-            --background-color: rgba(255, 255, 255, 0.75);
+            --background-color: rgba(255, 255, 255, 0.9);
         }
         
         * {
@@ -24,11 +24,6 @@
             scroll-behavior: smooth;
         }
         
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-        }
-        
         body {
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
@@ -38,18 +33,17 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
         }
         
         .content-wrapper {
             background-color: var(--background-color);
-            min-height: 100%;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         .container {
-            width: 80%;
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -64,8 +58,8 @@
             font-family: 'Oswald', sans-serif;
             display: inline-block;
             padding: 3px 0;
-            margin: 10px 0 5px 0;
-            font-weight: normal;
+            margin: 20px 0 10px;
+            font-weight: 400;
             transition: font-weight 0.3s ease;
         }
         
@@ -87,12 +81,11 @@
         }
         
         p {
-            margin-bottom: 10px;
-            text-align: justify;
+            margin-bottom: 15px;
         }
         
         ul {
-            margin: 5px 0 10px 20px;
+            margin: 0 0 15px 20px;
         }
         
         a {
@@ -112,42 +105,29 @@
         footer {
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 0;
+            padding: 20px 0;
             text-align: center;
             font-size: 0.9em;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 300;
-            flex-shrink: 0;
         }
         
         .social-links {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         
         .social-links a {
             color: white;
-            font-size: 18px;
-            margin: 0 10px;
+            font-size: 24px;
+            margin: 0 15px;
+            transition: color 0.3s ease;
         }
         
         .social-links a:hover {
             color: #ddd;
         }
         
-        footer p {
-            margin: 0;
-            font-size: 0.8em;
-            text-align: center;
-        }
-        
         @media screen and (max-width: 768px) {
-            body {
-                background-attachment: scroll;
-            }
-            
             .container {
                 width: 95%;
-                padding: 10px;
             }
             
             header {
@@ -157,15 +137,6 @@
             h1 { font-size: 2em; }
             h2 { font-size: 1.7em; }
             h3 { font-size: 1.4em; }
-            
-            ul {
-                padding-left: 15px;
-            }
-            
-            .social-links a {
-                font-size: 16px;
-                margin: 0 8px;
-            }
         }
     </style>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -183,7 +154,7 @@
         <main class="main-content">
             <div class="container">
                 <h2>Welcome to my page</h2>
-                <p>Hello! I'm Amith, a researcher at Brandeis University, located in Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
+                <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
                 <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/" target="_blank" rel="noopener noreferrer">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
 
@@ -206,33 +177,15 @@
 
         <footer>
             <div class="social-links">
-                <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+                <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
-                    <span class="sr-only">X (Twitter)</span>
                 </a>
-                <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" title="Google Scholar">
+                <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
                     <i class="fas fa-book-open" aria-hidden="true"></i>
-                    <span class="sr-only">Google Scholar</span>
                 </a>
             </div>
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const links = document.querySelectorAll('a[href^="#"]');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
