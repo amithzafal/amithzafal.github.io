@@ -199,6 +199,9 @@
             border-radius: 5px;
             overflow: hidden;
             transition: box-shadow 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .publication-item:hover {
@@ -209,12 +212,21 @@
         .publication-image {
             width: 100%;
             height: 200px;
-            background-size: cover;
-            background-position: center;
+            overflow: hidden;
+        }
+        
+        .publication-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
         
         .publication-content {
             padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
         
         .publication-title {
@@ -227,6 +239,7 @@
             font-size: 0.9em;
             color: #666;
             margin-bottom: 10px;
+            flex-grow: 1;
         }
         
         .publication-meta {
@@ -237,28 +250,18 @@
             color: #999;
         }
         
-        .load-more {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            text-align: center;
-            background-color: #f0f0f0;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        @media screen and (max-width: 900px) {
+            .publication-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         
-        .load-more:hover {
-            background-color: #e0e0e0;
-        }
-        
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 600px) {
             .publication-grid {
                 grid-template-columns: 1fr;
             }
         }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
@@ -296,10 +299,9 @@
                 <div class="publication-grid">
                     <h3>Some of my works:</h3>
                     <div class="publication-item">
-                        <picture class="publication-image">
-                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints.jpeg?raw=true" media="(min-width: 600px)">
-                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints-small.jpeg?raw=true" alt="Publication image">
-                        </picture>
+                        <div class="publication-image">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints.jpeg?raw=true" alt="Publication image">
+                        </div>
                         <div class="publication-content">
                             <div class="publication-title">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</div>
                             <div class="publication-excerpt">How chromosomes being a long polymer affects the structure and dynamics of its sub-segments.</div>
@@ -310,13 +312,12 @@
                         </div>
                     </div>
                     <div class="publication-item">
-                        <picture class="publication-image">
-                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints.jpeg?raw=true" media="(min-width: 600px)">
-                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints-small.jpeg?raw=true" alt="Publication image">
-                        </picture>
+                        <div class="publication-image">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/COGD2023.jpeg?raw=true" alt="Publication image">
+                        </div>
                         <div class="publication-content">
                             <div class="publication-title">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</div>
-                            <div class="publication-excerpt">We discuss how this mutual feedback loop between chromatin organization and epigenome regulation, via the formation of physicochemical nanoreactors, may represent a key functional role of 3D compartmentalization in the assembly and maintenance of stable — but yet plastic — epigenomic landscapes.</div>
+                            <div class="publication-excerpt">We discuss how the mutual feedback loop between chromatin organization and epigenome regulation, via the formation of physicochemical nanoreactors, may represent a key functional role of 3D compartmentalization in the assembly and maintenance of stable — but yet plastic — epigenomic landscapes.</div>
                             <div class="publication-meta">
                                 <span>Curr Opin Genet Dev, 2023</span>
                                 <a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">Read More</a>
@@ -324,10 +325,9 @@
                         </div>
                     </div>
                     <div class="publication-item">
-                        <picture class="publication-image">
-                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/Painters.jpeg?raw=true" media="(min-width: 600px)">
-                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/Painters-small.jpeg?raw=true" alt="Publication image">
-                        </picture>
+                        <div class="publication-image">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/Painters.jpeg?raw=true" alt="Publication image">
+                        </div>
                         <div class="publication-content">
                             <div class="publication-title">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory</div>
                             <div class="publication-excerpt">A systematic analysis of the model building blocks highlights the crucial impact of tridimensional chromatin organization and state-specific recruitment of enzymes on the stability of epigenomic domains and on gene expression. In particular, we show that enhanced 3D compaction of the genome and enzyme limitation facilitate the formation of ultra-stable, confined chromatin domains.</div>
@@ -337,6 +337,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                     <!-- Add more publication items here -->
                 </div>
                 <!-- <button class="load-more">Load More Publications</button> -->
