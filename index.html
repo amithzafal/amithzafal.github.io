@@ -1,9 +1,56 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AZA">
+    <title>Amith Zafal Abdulla - Researcher</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+
+    </style>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+
+            </div>
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://x.com/AmithZafal?t=MfMy_WDUF3335OC4Yigbuw&s=31" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+                <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
+                    <i class="fas fa-book-open" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p>415 South Street, Waltham MA USA 02453</p>
+        </footer>
+    </div>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
+    <meta name="description" content="Amith Zafal Abdulla, HFSP postdoctoral fellow at Brandeis University">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="preload" as="image" href="https://github.com/amithzafal/amithzafal.github.io/blob/main/bg4-01.webp?raw=true">
+    <meta name="author" content="Amith Zafal Abdulla">
+    <meta name="keywords" content="researcher, epigenetics, chromatin, topological constraints, 3D polymer modeling of chromosomes, computational modeling, Brandeis University">
+    <link rel="canonical" href="https://yourdomain.com/index.html">
     <title>Amith Zafal Abdulla - Researcher</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
@@ -138,18 +185,94 @@
             h2 { font-size: 1.7em; }
             h3 { font-size: 1.4em; }
         }
+        
+        .publication-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .publication-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        
+        .publication-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+        
+        .publication-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .publication-content {
+            padding: 15px;
+        }
+        
+        .publication-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .publication-excerpt {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .publication-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8em;
+            color: #999;
+        }
+        
+        .load-more {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .load-more:hover {
+            background-color: #e0e0e0;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .publication-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark-mode');
+      }
+    </script>
 </head>
 <body>
     <div class="content-wrapper">
-        <header>
-            <div class="container">
-                <h1>Amith Zafal Abdulla</h1>
-                <p>HFSP Postdoctoral fellow</p>
-            </div>
-        </header>
+        <div class="container">
+            <h1>Amith Zafal Abdulla</h1>
+            <p>HFSP Postdoctoral fellow</p>
+        </div>
 
         <main class="main-content">
             <div class="container">
@@ -158,8 +281,8 @@
                 <p>My research interests are diverse, ranging from modeling cellular processes to collective behavior in active matter. I'm fascinated by the physics of biological systems.</p>
                 <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/" target="_blank" rel="noopener noreferrer">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
 
-                <h3>Some of my works:</h3>
-                <ul>
+                
+                <!-- <ul>
                     <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</a>, <i>Macromolecules</i> 2023 (<a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
                     <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</a>, <i>Curr Opin Genet Dev</i> 2023</li>
                     <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory</a>, <i>Nulceic Acids Research</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2022.03.30.486379v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
@@ -168,8 +291,62 @@
                     <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria</a>, <i>Soft Matter</i> 2020</li>
                     <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria</a>, <i>Physical Review E</i> 2020</li>
                     <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed</a>, <i>Physical Review E</i> 2019</li>
+                </ul> -->
+ 
+                <div class="publication-grid">
+                    <h3>Some of my works:</h3>
+                    <div class="publication-item">
+                        <picture class="publication-image">
+                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints.jpeg?raw=true" media="(min-width: 600px)">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints-small.jpeg?raw=true" alt="Publication image">
+                        </picture>
+                        <div class="publication-content">
+                            <div class="publication-title">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</div>
+                            <div class="publication-excerpt">How chromosomes being a long polymer affects the structure and dynamics of its sub-segments.</div>
+                            <div class="publication-meta">
+                                <span>Macromolecules, 2023</span>
+                                <a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="publication-item">
+                        <picture class="publication-image">
+                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints.jpeg?raw=true" media="(min-width: 600px)">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/TopologicalConstraints-small.jpeg?raw=true" alt="Publication image">
+                        </picture>
+                        <div class="publication-content">
+                            <div class="publication-title">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</div>
+                            <div class="publication-excerpt">We discuss how this mutual feedback loop between chromatin organization and epigenome regulation, via the formation of physicochemical nanoreactors, may represent a key functional role of 3D compartmentalization in the assembly and maintenance of stable — but yet plastic — epigenomic landscapes.</div>
+                            <div class="publication-meta">
+                                <span>Curr Opin Genet Dev, 2023</span>
+                                <a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="publication-item">
+                        <picture class="publication-image">
+                            <source srcset="https://github.com/amithzafal/amithzafal.github.io/blob/main/Painters.jpeg?raw=true" media="(min-width: 600px)">
+                            <img src="https://github.com/amithzafal/amithzafal.github.io/blob/main/Painters-small.jpeg?raw=true" alt="Publication image">
+                        </picture>
+                        <div class="publication-content">
+                            <div class="publication-title">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory</div>
+                            <div class="publication-excerpt">A systematic analysis of the model building blocks highlights the crucial impact of tridimensional chromatin organization and state-specific recruitment of enzymes on the stability of epigenomic domains and on gene expression. In particular, we show that enhanced 3D compaction of the genome and enzyme limitation facilitate the formation of ultra-stable, confined chromatin domains.</div>
+                            <div class="publication-meta">
+                                <span>Nulceic Acids Research, 2022</span>
+                                <a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add more publication items here -->
+                </div>
+                <!-- <button class="load-more">Load More Publications</button> -->
+                <ul>
+                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells</a>, <i>PLoS CB</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2021.09.30.462529v3.full" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
+                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers</a>, <i>Langmuir</i> 2021</li>
+                    <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria</a>, <i>Soft Matter</i> 2020</li>
+                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria</a>, <i>Physical Review E</i> 2020</li>
+                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed</a>, <i>Physical Review E</i> 2019</li>
                 </ul>
-
                 <h3>Contact</h3>
                 <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
             </div>
@@ -187,5 +364,30 @@
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', (event) => {
+        const publicationItems = document.querySelectorAll('.publication-item');
+        const loadMoreBtn = document.querySelector('.load-more');
+        let currentlyShown = 3;
+
+        function showMorePublications() {
+          for (let i = currentlyShown; i < currentlyShown + 3 && i < publicationItems.length; i++) {
+            publicationItems[i].style.display = 'block';
+          }
+          currentlyShown += 3;
+          if (currentlyShown >= publicationItems.length) {
+            loadMoreBtn.style.display = 'none';
+          }
+        }
+
+        // Initially hide publications beyond the first 3
+        for (let i = 3; i < publicationItems.length; i++) {
+          publicationItems[i].style.display = 'none';
+        }
+
+        loadMoreBtn.addEventListener('click', showMorePublications);
+      });
+    </script>
 </body>
 </html>
