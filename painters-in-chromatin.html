@@ -89,7 +89,7 @@
         }
         
         .tile {
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.5);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -240,12 +240,11 @@
 
             function animatePageExit() {
                 contentWrapper.style.transform = 'translateY(-100%)';
+                contentWrapper.style.opacity = '0';
             }
 
-            // Check if this page was loaded directly or transitioned to
-            if (performance.navigation.type === performance.navigation.TYPE_NAVIGATE) {
-                animatePageEntrance();
-            }
+            // Animate entrance on initial load
+            animatePageEntrance();
 
             // Handle home button click
             homeButton.addEventListener('click', (e) => {
@@ -256,16 +255,12 @@
                 }, 1000); // Matches the transition duration
             });
 
-            // Listen for popstate event (browser back/forward buttons)
-            window.addEventListener('popstate', (event) => {
-                if (event.state && event.state.direction === 'forward') {
-                    animatePageEntrance();
-                } else {
-                    animatePageExit();
-                    setTimeout(() => {
-                        window.history.back();
-                    }, 1000);
-                }
+            // Handle browser back button
+            window.addEventListener('popstate', () => {
+                animatePageExit();
+                setTimeout(() => {
+                    window.history.back();
+                }, 1000);
             });
         });
     </script>
