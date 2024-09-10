@@ -197,15 +197,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const paintersLink = document.querySelector('.painters-link');
     
     function animatePageEntrance() {
-        setTimeout(() => {
-            contentWrapper.classList.add('active');
-        }, 100);
-    }
+    contentWrapper.classList.add('active');
+}
 
-    function animatePageExit() {
-        contentWrapper.style.transform = 'translateY(-100%)';
-        contentWrapper.style.opacity = '0';
-    }
+function animatePageExit() {
+    contentWrapper.style.transform = 'translateY(-100%)';
+}
 
     // Check if this page was loaded directly or transitioned to
     if (performance.navigation.type === performance.navigation.TYPE_NAVIGATE) {
