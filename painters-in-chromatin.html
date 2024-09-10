@@ -37,7 +37,6 @@
         }
         
         .content-wrapper {
-            background-color: var(--background-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -54,7 +53,7 @@
         
         header {
             padding-top: 50px;
-            text-align: center;
+            text-align: left;
         }
         
         h1, h2, h3 {
@@ -83,24 +82,25 @@
         }
         
         .tile {
-            background-color: rgba(255, 255, 255, 0.9);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 90%;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            transition: transform 0.3s ease, font-weight 0.3s ease, text-shadow 0.3s ease;
             position: relative;
+            cursor: pointer;
+            color: var(--primary-color);
+            text-decoration: none;
         }
         
         .tile:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         
         .tile p {
-            font-style: italic;
             margin-bottom: 20px;
         }
         
@@ -149,22 +149,20 @@
         }
 
         .home-button {
-            position: fixed;
-            bottom: 20px;
+            position: absolute;
+            bottom: 100px;
             right: 20px;
-            background-color: var(--primary-color);
-            color: white;
+            color: var(--primary-color);
             padding: 10px 20px;
-            border-radius: 5px;
             text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5em;
+            transition: font-weight 0.3s ease;
             z-index: 1000;
         }
         
         .home-button:hover {
-            background-color: var(--secondary-color);
-            transform: scale(1.05);
+            font-weight: bold;
         }
         
         @media screen and (max-width: 768px) {
@@ -173,7 +171,7 @@
             }
             .home-button {
                 padding: 8px 16px;
-                font-size: 0.9em;
+                font-size: 1.2em;
             }
             
             header {
@@ -192,17 +190,17 @@
         <header>
             <div class="container">
                 <h1>Painters in chromatin</h1>
-                <h2>Theoretical models for 3D propagation of epigenetic marks</h2>
+                <p>Theoretical models for 3D propagation of epigenetic marks</p>
             </div>
         </header>
 
         <main class="main-content">
             <div class="container">
-                <div class="tile">
-                    <p>It was a dreary December morning in Lyon, and it started to drizzle as if nature couldn’t express enough. I was walking up Avenue Debourg, and followed the the scent of roasted coffee beans to reach the ‘La Cantina’ café. “Bonjourno! my friend. Shall I make you the best coffee in the world?” shouted Francesco, the friendly barista with a wide smile. The smile felt contagious and they made me widen my dry lips; and return the gesture. As Francesco started making ’café au lait’, I sat down looking at the orange and yellow hues, of a Claude Monet painting, attached to the wall behind him. Francesco started scooping crema into my coffee cup, detailing his patterns of love and laughter. The patterns gently drifted to swaying trees, to boats that have survived many storms, and to eager faces - all of which he craftfully painted on top of my coffee. They were all different patterns, but the same coffee, subtly changing its expression.</p>
+                <a href="https://ens-lyon.hal.science/tel-03968006/" class="tile">
+                    <p>It was a dreary December morning in Lyon, and it started to drizzle as if nature couldn't express enough. I was walking up Avenue Debourg, and followed the the scent of roasted coffee beans to reach the 'La Cantina' café. "Bonjourno! my friend. Shall I make you the best coffee in the world?" shouted Francesco, the friendly barista with a wide smile. The smile felt contagious and they made me widen my dry lips; and return the gesture. As Francesco started making 'café au lait', I sat down looking at the orange and yellow hues, of a Claude Monet painting, attached to the wall behind him. Francesco started scooping crema into my coffee cup, detailing his patterns of love and laughter. The patterns gently drifted to swaying trees, to boats that have survived many storms, and to eager faces - all of which he craftfully painted on top of my coffee. They were all different patterns, but the same coffee, subtly changing its expression.</p>
                     <p>Different epigenetic patterns, but the very same DNA, artfully changing gene expression. With art, a nice coffee and a friend, I left with a smile to write this thesis; modelling propagation of epigenetic marks . . .</p>
-                    <a href="https://ens-lyon.hal.science/tel-03968006/" class="read-more">Read more</a>
-                </div>
+                    <span class="read-more">Read more</span>
+                </a>
             </div>
         </main>
 
