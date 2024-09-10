@@ -160,7 +160,7 @@
                 <h2>Welcome to my page</h2>
                 <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                 <p>From modeling cellular processes to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="painters-in-chromatin.html" target="_blank" rel="noopener noreferrer">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
+                <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="painters-in-chromatin.html" class="painters-link">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
 
                 <h3>Some of my works:</h3>
                 <ul>
@@ -192,9 +192,9 @@
         </footer>
     </div>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', (event) => {
     const contentWrapper = document.querySelector('.content-wrapper');
-    const painterLink = document.querySelector('a[href="painters-in-chromatin.html"]');
+    const paintersLink = document.querySelector('.painters-link');
     
     function animatePageEntrance() {
         setTimeout(() => {
@@ -203,7 +203,8 @@
     }
 
     function animatePageExit() {
-        contentWrapper.classList.remove('active');
+        contentWrapper.style.transform = 'translateY(-100%)';
+        contentWrapper.style.opacity = '0';
     }
 
     // Check if this page was loaded directly or transitioned to
@@ -211,8 +212,8 @@
         animatePageEntrance();
     }
 
-    // Handle painter page link click
-    painterLink.addEventListener('click', (e) => {
+    // Handle painters link click
+    paintersLink.addEventListener('click', (e) => {
         e.preventDefault();
         animatePageExit();
         setTimeout(() => {
