@@ -191,5 +191,48 @@
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+    const contentWrapper = document.querySelector('.content-wrapper');
+    const painterLink = document.querySelector('a[href="painters-in-chromatin.html"]');
+    
+    function animatePageEntrance() {
+        setTimeout(() => {
+            contentWrapper.classList.add('active');
+        }, 100);
+    }
+
+    function animatePageExit() {
+        contentWrapper.classList.remove('active');
+    }
+
+    // Check if this page was loaded directly or transitioned to
+    if (performance.navigation.type === performance.navigation.TYPE_NAVIGATE) {
+        animatePageEntrance();
+    }
+
+    // Handle painter page link click
+    painterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        animatePageExit();
+        setTimeout(() => {
+            window.location.href = e.target.href;
+        }, 1000); // Matches the transition duration
+    });
+
+    // Listen for popstate event (browser back/forward buttons)
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.direction === 'back') {
+            animatePageEntrance();
+        } else {
+            animatePageExit();
+            setTimeout(() => {
+                window.history.forward();
+            }, 1000);
+        }
+    });
+});
+</script>
+
 </body>
 </html>
