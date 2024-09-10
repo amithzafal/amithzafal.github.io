@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
-    <title>Amith Zafal Abdulla - Researcher</title>
+    <meta name="description" content="Painters in Chromatin - Theoretical models for 3D propagation of epigenetic marks">
+    <title>Painters in Chromatin - Amith Zafal Abdulla</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400&display=swap" rel="stylesheet">
     <style>
@@ -33,6 +33,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         
         .content-wrapper {
@@ -40,6 +41,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
         
         .container {
@@ -51,7 +54,7 @@
         
         header {
             padding-top: 50px;
-            text-align: left;
+            text-align: center;
         }
         
         h1, h2, h3 {
@@ -71,21 +74,41 @@
             font-size: 2em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        h3 { 
-            font-size: 1.5em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        
+        .main-content {
+            flex: 1 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        h1:hover, h2:hover, h3:hover {
-            font-weight: bold;
+        .tile {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
         
-        p {
-            margin-bottom: 15px;
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
         }
         
-        ul {
-            margin: 0 0 15px 20px;
+        .tile p {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.9em;
         }
         
         a {
@@ -96,10 +119,6 @@
         
         a:hover {
             font-weight: bold;
-        }
-        
-        .main-content {
-            flex: 1 0 auto;
         }
         
         footer {
@@ -128,10 +147,33 @@
         .social-links a:hover {
             color: #ddd;
         }
+
+        .home-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .home-button:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
         
         @media screen and (max-width: 768px) {
             .container {
                 width: 95%;
+            }
+            .home-button {
+                padding: 8px 16px;
+                font-size: 0.9em;
             }
             
             header {
@@ -139,8 +181,7 @@
             }
             
             h1 { font-size: 2em; }
-            h2 { font-size: 1.7em; }
-            h3 { font-size: 1.4em; }
+            h2 { font-size: 1.5em; }
         }
     </style>
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -150,32 +191,18 @@
     <div class="content-wrapper">
         <header>
             <div class="container">
-                <h1>Amith Zafal Abdulla</h1>
-                <p>HFSP Postdoctoral fellow</p>
+                <h1>Painters in chromatin</h1>
+                <h2>Theoretical models for 3D propagation of epigenetic marks</h2>
             </div>
         </header>
 
         <main class="main-content">
             <div class="container">
-                <h2>Welcome to my page</h2>
-                <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
-                <p>From modeling cellular processes to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in how epigenetic patterns allow DNA to artfully change its expression, check out <a href="painters-in-chromatin.html" target="_blank" rel="noopener noreferrer">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p> 
-
-                <h3>Some of my works:</h3>
-                <ul>
-                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization</a>, <i>Macromolecules</i> 2023 (<a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling</a>, <i>Curr Opin Genet Dev</i> 2023</li>
-                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory</a>, <i>Nulceic Acids Research</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2022.03.30.486379v2" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells</a>, <i>PLoS CB</i> 2022 (<a href="https://www.biorxiv.org/content/10.1101/2021.09.30.462529v3.full" target="_blank" rel="noopener noreferrer">arXiv</a>)</li>
-                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers</a>, <i>Langmuir</i> 2021</li>
-                    <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria</a>, <i>Soft Matter</i> 2020</li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria</a>, <i>Physical Review E</i> 2020</li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed</a>, <i>Physical Review E</i> 2019</li>
-                </ul>
-
-                <h3>Contact</h3>
-                <p>Feel free to reach out to me at: amithzafal at brandeis dot edu</p>
+                <div class="tile">
+                    <p>It was a dreary December morning in Lyon, and it started to drizzle as if nature couldn’t express enough. I was walking up Avenue Debourg, and followed the the scent of roasted coffee beans to reach the ‘La Cantina’ café. “Bonjourno! my friend. Shall I make you the best coffee in the world?” shouted Francesco, the friendly barista with a wide smile. The smile felt contagious and they made me widen my dry lips; and return the gesture. As Francesco started making ’café au lait’, I sat down looking at the orange and yellow hues, of a Claude Monet painting, attached to the wall behind him. Francesco started scooping crema into my coffee cup, detailing his patterns of love and laughter. The patterns gently drifted to swaying trees, to boats that have survived many storms, and to eager faces - all of which he craftfully painted on top of my coffee. They were all different patterns, but the same coffee, subtly changing its expression.</p>
+                    <p>Different epigenetic patterns, but the very same DNA, artfully changing gene expression. With art, a nice coffee and a friend, I left with a smile to write this thesis; modelling propagation of epigenetic marks . . .</p>
+                    <a href="https://ens-lyon.hal.science/tel-03968006/" class="read-more">Read more</a>
+                </div>
             </div>
         </main>
 
@@ -191,5 +218,18 @@
             <p>415 South Street, Waltham MA USA 02453</p>
         </footer>
     </div>
+
+    <a href="index.html" class="home-button">Home</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const contentWrapper = document.querySelector('.content-wrapper');
+            
+            // Fade in the content
+            setTimeout(() => {
+                contentWrapper.style.opacity = '1';
+            }, 100);
+        });
+    </script>
 </body>
 </html>
