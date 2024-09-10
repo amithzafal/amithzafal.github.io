@@ -11,7 +11,7 @@
         :root {
             --primary-color: #333;
             --secondary-color: #00008B;
-            --background-color: rgba(255, 255, 255, 0.8);
+            --background-color: rgba(255, 255, 255, 0.5);
         }
         
         * {
@@ -36,16 +36,17 @@
             background-attachment: fixed;
             overflow-x: hidden;
         }
-        
         .content-wrapper {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: transform 1s ease-in-out;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
             transform: translateY(100%);
         }
         
         .content-wrapper.active {
+            opacity: 1;
             transform: translateY(0);
         }
         
@@ -54,6 +55,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            align-items: center;
         }
         
         header {
@@ -87,47 +89,24 @@
         }
         
         .tile {
-            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             max-width: 600px;
             width: 90%;
-            text-align: left;
-            transition: transform 0.3s ease, font-weight 0.3s ease, text-shadow 0.3s ease, background-color 0.3s ease;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            cursor: pointer;
-            color: var(--primary-color);
-            text-decoration: none;
-            background-color: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .tile::before,
-        .tile::after {
-            content: '"';
-            font-size: 4em;
-            position: absolute;
-            color: var(--secondary-color);
-            opacity: 0.5;
-        }
-        
-        .tile::before {
-            top: 0;
-            left: 10px;
-        }
-        
-        .tile::after {
-            bottom: -20px;
-            right: 10px;
         }
         
         .tile:hover {
             transform: scale(1.05);
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
         }
         
         .tile p {
+            font-style: italic;
             margin-bottom: 20px;
         }
         
@@ -192,13 +171,17 @@
             font-weight: bold;
         }
         
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+        
         @media screen and (max-width: 768px) {
             .container {
                 width: 95%;
             }
             .home-button {
                 padding: 8px 16px;
-                font-size: 1.2em;
+                font-size: 0.9em;
             }
             
             header {
@@ -223,11 +206,11 @@
 
         <main class="main-content">
             <div class="container">
-                <a href="https://ens-lyon.hal.science/tel-03968006/" class="tile" target="_blank" rel="noopener noreferrer">
-                    <p>It was a dreary December morning in Lyon, and it started to drizzle as if nature couldn't express enough. I was walking up Avenue Debourg, and followed the the scent of roasted coffee beans to reach the 'La Cantina' café. "Bonjourno! my friend. Shall I make you the best coffee in the world?" shouted Francesco, the friendly barista with a wide smile. The smile felt contagious and they made me widen my dry lips; and return the gesture. As Francesco started making 'café au lait', I sat down looking at the orange and yellow hues, of a Claude Monet painting, attached to the wall behind him. Francesco started scooping crema into my coffee cup, detailing his patterns of love and laughter. The patterns gently drifted to swaying trees, to boats that have survived many storms, and to eager faces - all of which he craftfully painted on top of my coffee. They were all different patterns, but the same coffee, subtly changing its expression.</p>
+                <div class="tile">
+                    <p>It was a dreary December morning in Lyon, and it started to drizzle as if nature couldn’t express enough. I was walking up Avenue Debourg, and followed the the scent of roasted coffee beans to reach the ‘La Cantina’ café. “Bonjourno! my friend. Shall I make you the best coffee in the world?” shouted Francesco, the friendly barista with a wide smile. The smile felt contagious and they made me widen my dry lips; and return the gesture. As Francesco started making ’café au lait’, I sat down looking at the orange and yellow hues, of a Claude Monet painting, attached to the wall behind him. Francesco started scooping crema into my coffee cup, detailing his patterns of love and laughter. The patterns gently drifted to swaying trees, to boats that have survived many storms, and to eager faces - all of which he craftfully painted on top of my coffee. They were all different patterns, but the same coffee, subtly changing its expression.</p>
                     <p>Different epigenetic patterns, but the very same DNA, artfully changing gene expression. With art, a nice coffee and a friend, I left with a smile to write this thesis; modelling propagation of epigenetic marks . . .</p>
-                    <span class="read-more">Read more</span>
-                </a>
+                    <a href="https://ens-lyon.hal.science/tel-03968006/" class="read-more">Read more</a>
+                </div>
             </div>
         </main>
 
@@ -244,7 +227,7 @@
         </footer>
     </div>
 
-    <a href="index.html" class="home-button" id="home-button">Home</a>
+    <a href="index.html" class="home-button">Home</a>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
