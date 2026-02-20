@@ -11,9 +11,10 @@
         :root {
             --primary-color: #333;
             --secondary-color: #00008B;
-            --secondary-hover: #0000CD; /* Lighter blue for interactions */
-            --background-color: rgba(255, 255, 255, 0.65); /* Slightly more transparent for the blur */
-            --card-bg: rgba(255, 255, 255, 0.85);
+            --secondary-hover: #0000CD;
+            --background-color: rgba(255, 255, 255, 0.65);
+            /* 1. Made the card background more transparent (changed 0.85 to 0.6) */
+            --card-bg: rgba(255, 255, 255, 0.6); 
         }
         
         * {
@@ -35,24 +36,23 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Keeps background still while scrolling */
+            background-attachment: fixed;
         }
         
         .content-wrapper {
             background-color: var(--background-color);
-            /* Glassmorphism effects */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            /* 3. Reduced the blurring a bit (changed 8px to 4px) */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            /* Start hidden for the JS fade-in */
             opacity: 0; 
         }
         
         .container {
             width: 90%;
-            max-width: 1000px; /* Slightly narrower for better reading length */
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -68,7 +68,6 @@
             padding: 3px 0;
             margin: 20px 0 10px;
             font-weight: 400;
-            /* Replaced font-weight transition with transform */
             transition: transform 0.3s ease, color 0.3s ease;
         }
         
@@ -107,9 +106,8 @@
             text-decoration: underline;
         }
 
-        /* --- Modern Publication Cards --- */
         .publication-list {
-            list-style: none; /* Removes default bullets */
+            list-style: none;
             margin: 0 0 30px 0;
             display: grid;
             gap: 15px;
@@ -123,6 +121,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 4px solid var(--secondary-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* 2. Made text black */
+            color: #000; 
         }
 
         .publication-list li:hover {
@@ -131,13 +131,16 @@
         }
 
         .publication-list li a {
-            font-weight: 700; /* Makes paper titles pop */
+            /* 2. Removed bold font (changed to 400) and made links black by default */
+            font-weight: 400; 
+            color: #000;
             text-decoration: none;
         }
+        
         .publication-list li a:hover {
+            color: var(--secondary-hover);
             text-decoration: underline;
         }
-        /* -------------------------------- */
         
         .main-content {
             flex: 1 0 auto;
@@ -252,21 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contentWrapper) {
         contentWrapper.style.transition = 'opacity 0.8s ease-in-out';
         
-        // Brief timeout ensures the browser paints the initial state before fading in
         setTimeout(() => {
             contentWrapper.style.opacity = '1';
         }, 50);
     }
 
-    // 2. Safely handle the painters link if you ever uncomment it
-    const paintersLink = document.getElementById('painters-link');
-    if (paintersLink) {
-        paintersLink.addEventListener('click', (e) => {
-            // Safe space for future click events
-        });
-    }
-
-    // 3. Simple email obfuscation to hide from basic scrapers
+    // 2. Simple email obfuscation to hide from basic scrapers
     const user = 'amithzafal';
     const domain = 'brandeis.edu';
     const emailEl = document.getElementById('email-placeholder');
