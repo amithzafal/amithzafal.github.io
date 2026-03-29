@@ -84,24 +84,14 @@
         
         .main-content { flex: 1 0 auto; }
 
-        /* Clearfix for float */
-        .intro-block::after {
-            content: '';
-            display: table;
-            clear: both;
-        }
+        .intro-block::after { content: ''; display: table; clear: both; }
         
-        /* 3D Viewer — floated right with text wrap */
         .viewer-wrap {
             float: right;
-            width: 360px;
-            height: 360px;
-            margin: 5px 0 15px 25px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 380px;
+            height: 380px;
+            margin: 0 -15px 10px 20px;
             cursor: grab;
-            background: transparent;
         }
         .viewer-wrap:active { cursor: grabbing; }
         .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
@@ -219,13 +209,12 @@ const container = document.getElementById('polymerViewer');
 if(!container) return;
 
 const scene = new THREE.Scene();
-// Transparent background so site BG shows through
 scene.background = null;
 
 const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
 camera.position.set(0, 0, 34);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, premultipliedAlpha: false });
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
@@ -255,12 +244,11 @@ setLP(fillLight, 210, 0);
 setLP(rimLight, 330, 30);
 scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
 
-// Monochrome palette — 3 distinct gray/charcoal shades
-// Light gray, mid gray, dark charcoal — enough contrast to tell apart
+// Dark monochrome — compressed toward black
 const COLORS = {
-  A: new THREE.Color(0x1a1a1a), // near-black charcoal
-  B: new THREE.Color(0x5a5a5a), // mid gray
-  C: new THREE.Color(0x999999)  // lighter gray
+  A: new THREE.Color(0x1a1a1a), // near-black
+  B: new THREE.Color(0x383838), // dark gray
+  C: new THREE.Color(0x525252)  // mid-dark gray (tinge closer to black than before)
 };
 
 const beadGeo = new THREE.SphereGeometry(BEAD_R, 18, 12);
@@ -285,23 +273,23 @@ Object.keys(COORD_DATA).forEach(chain => {
   pivot.add(mesh);
 });
 
-// Shell — 10% larger, semi-transparent gray to match mono theme
+// Shell — +10%, dark mono tint
 const shellR = maxDist * 1.02 * 1.10;
 const shellGeo = new THREE.SphereGeometry(shellR, 80, 56, 0, Math.PI*2, 0, Math.PI*0.6);
 const shellMat = new THREE.MeshPhongMaterial({
-  color: 0xaaaaaa, transparent: true, opacity: 0.35,
-  shininess: 53, specular: new THREE.Color(0x444444),
+  color: 0x888888, transparent: true, opacity: 0.30,
+  shininess: 53, specular: new THREE.Color(0x333333),
   side: THREE.DoubleSide, depthWrite: false
 });
 const shell = new THREE.Mesh(shellGeo, shellMat);
 shell.rotation.x = Math.PI;
 pivot.add(shell);
 
-// Orbit
+// Controls
 let isDragging = false, prevMouse = {x:0,y:0};
 let rotX = -0.25, rotY = 0.15;
-let autoRotate = false, autoRotateSpeed = 0;
-const TARGET_SPEED = 0.004;
+let hovered = false;
+let autoRotateSpeed = 0.004;
 pivot.rotation.set(rotX, rotY, 0);
 
 renderer.domElement.addEventListener('mousedown', e => {
@@ -335,18 +323,20 @@ renderer.domElement.addEventListener('wheel', e => {
   camera.position.z = Math.max(20, Math.min(60, camera.position.z + e.deltaY*0.02));
 }, {passive:false});
 
-// Auto-rotate on hover with smooth ramp
-container.addEventListener('mouseenter', ()=>{ autoRotate=true; });
-container.addEventListener('mouseleave', ()=>{ autoRotate=false; });
+// Auto-rotate by default, hover pauses
+container.addEventListener('mouseenter', ()=>{ hovered=true; });
+container.addEventListener('mouseleave', ()=>{ hovered=false; isDragging=false; });
+
+const TARGET_SPEED = 0.004;
 
 function animate() {
   requestAnimationFrame(animate);
-  if(autoRotate && !isDragging) {
+  if(!hovered && !isDragging) {
     autoRotateSpeed += (TARGET_SPEED - autoRotateSpeed) * 0.05;
   } else {
-    autoRotateSpeed *= 0.95;
+    autoRotateSpeed *= 0.92;
   }
-  if(autoRotateSpeed > 0.0001) {
+  if(autoRotateSpeed > 0.00005) {
     rotY += autoRotateSpeed;
     pivot.rotation.set(rotX, rotY, 0);
   }
@@ -355,7 +345,6 @@ function animate() {
 
 window.addEventListener('resize', resize);
 
-// Lazy start
 let started = false;
 const obs = new IntersectionObserver(entries => {
   if(entries[0].isIntersecting && !started) { started=true; animate(); obs.disconnect(); }
