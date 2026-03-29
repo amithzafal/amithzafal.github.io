@@ -88,12 +88,28 @@
         
         .viewer-wrap {
             float: right;
+            position: relative;
             width: 380px;
             height: 380px;
             margin: 0 -15px 10px 20px;
             cursor: grab;
         }
         .viewer-wrap:active { cursor: grabbing; }
+        .viewer-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            text-align: center;
+            padding: 12px 15px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            color: #444;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .viewer-wrap:hover .viewer-caption { opacity: 1; }
         .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
 
         @media screen and (max-width: 768px) {
@@ -144,7 +160,9 @@
                 <h2>Welcome to my page</h2>
                 
                 <div class="intro-block">
-                    <div class="viewer-wrap" id="polymerViewer"></div>
+                    <div class="viewer-wrap" id="polymerViewer">
+                        <div class="viewer-caption">Polymer model of spatially confined chromosomes</div>
+                    </div>
                     
                     <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                     <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
