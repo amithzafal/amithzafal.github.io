@@ -366,6 +366,7 @@ let globalMaxDist = 1;
 let meshes = {};        // { A: InstancedMesh, B: ..., C: ... }
 let beadGeo = null;
 let shellMesh = null;
+let coordScale = 1;    // integer encoding divisor (2 for ×2 format)
 
 // ── Animation timeline state ──
 let animTime = 0;       // seconds elapsed in current loop cycle
@@ -378,10 +379,15 @@ function getCycleDuration() {
 
 // ── Build scene from frame data ──
 function buildScene(data) {
+  // Support both legacy (float) and compact (int×scale) formats
+  const S = data.scale || 1;
   frameData = data.frames;
   nBeads = data.nBeads;
-  globalCenter = data.center;
-  globalMaxDist = data.maxDist;
+  globalCenter = data.center2
+    ? [data.center2[0]/S, data.center2[1]/S, data.center2[2]/S]
+    : data.center;
+  globalMaxDist = data.maxDist2 ? data.maxDist2/S : data.maxDist;
+  coordScale = S;  // stored for updateBeads
 
   const SCALE = SHELL_RADIUS_NM / globalMaxDist;
   const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.15;
@@ -405,9 +411,9 @@ function buildScene(data) {
     for(let i = 0; i < nBeads; i++) {
       const idx = i * 3;
       dummy.position.set(
-        coords[idx]   - globalCenter[0],
-        coords[idx+1] - globalCenter[1],
-        coords[idx+2] - globalCenter[2]
+        coords[idx]/S   - globalCenter[0],
+        coords[idx+1]/S - globalCenter[1],
+        coords[idx+2]/S - globalCenter[2]
       );
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
@@ -435,6 +441,7 @@ function updateBeads(frameA, frameB, t) {
   // t in [0,1]: 0 = fully frameA, 1 = fully frameB
   const dummy = new THREE.Object3D();
   const cx = globalCenter[0], cy = globalCenter[1], cz = globalCenter[2];
+  const S = coordScale;
   const chains = ['A','B','C'];
 
   for(let ci = 0; ci < chains.length; ci++) {
@@ -446,9 +453,9 @@ function updateBeads(frameA, frameB, t) {
     for(let i = 0; i < nBeads; i++) {
       const idx = i * 3;
       dummy.position.set(
-        coordsA[idx]   + (coordsB[idx]   - coordsA[idx])   * t - cx,
-        coordsA[idx+1] + (coordsB[idx+1] - coordsA[idx+1]) * t - cy,
-        coordsA[idx+2] + (coordsB[idx+2] - coordsA[idx+2]) * t - cz
+        (coordsA[idx]   + (coordsB[idx]   - coordsA[idx])   * t) / S - cx,
+        (coordsA[idx+1] + (coordsB[idx+1] - coordsA[idx+1]) * t) / S - cy,
+        (coordsA[idx+2] + (coordsB[idx+2] - coordsA[idx+2]) * t) / S - cz
       );
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
