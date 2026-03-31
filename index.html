@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
     <title>Amith Zafal Abdulla - Researcher</title>
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-BW.png?raw=true">
+    <link rel="preload" as="image" href="https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png" fetchpriority="high">
+    <link rel="preload" as="fetch" href="https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/polymer_frames.json" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -25,7 +28,8 @@
             font-weight: 300;
             line-height: 1.6;
             color: var(--primary-color);
-            background-image: url('https://github.com/amithzafal/amithzafal.github.io/blob/main/bg3-BW.png?raw=true');
+            background-color: #d8d5d0;
+            background-image: url('https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -236,12 +240,12 @@ const SHELL_SEGS_W = isMobile ? 48 : 80;
 const SHELL_SEGS_H = isMobile ? 32 : 56;
 
 // ── Animation timing ──
-const INITIAL_HOLD  = 2.5;   // seconds to show frame 0 before playback
-const PLAY_DURATION = 21.0;  // seconds for the full 60-frame arc
-const STEADY_HOLD   = 3.0;   // seconds to hold final segregated state
-const FADE_DURATION = 0.4;   // seconds for opacity fade at loop reset
-const EASE_POWER    = 1.4;   // >1 = early frames dwell longer
-const TOTAL_FRAMES  = 60;    // frame transitions (0-60 = 61 keyframes)
+const INITIAL_HOLD  = 2.5;
+const PLAY_DURATION = 21.0;
+const STEADY_HOLD   = 3.0;
+const FADE_DURATION = 0.4;
+const EASE_POWER    = 1.4;
+const TOTAL_FRAMES  = 60;
 
 const CYCLE_DURATION = INITIAL_HOLD + PLAY_DURATION + STEADY_HOLD + FADE_DURATION * 2;
 
@@ -282,9 +286,9 @@ setLP(fillLight, 210, 0);
 setLP(rimLight, 330, 30);
 scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
 
-// ── Colors (chain A lightened 15% from pure black) ──
+// ── Colors (chain A: 3% lighter than pure black) ──
 const COLORS = {
-  A: new THREE.Color(0x262626),
+  A: new THREE.Color(0x080808),
   B: new THREE.Color(0x383838),
   C: new THREE.Color(0x1a1a1a)
 };
@@ -375,13 +379,10 @@ let shellMesh = null;
 let animTime = 0;
 let beadOpacity = 1;
 
-// ── Easing: t^EASE_POWER maps linear time to frame progress ──
-// With EASE_POWER=1.4, segregation frames get ~60% of play time
 function easeFrame(linearProgress) {
   return Math.pow(linearProgress, EASE_POWER);
 }
 
-// ── Build scene from loaded data ──
 function buildScene(data) {
   const S = data.scale || 1;
   frameData = data.frames;
@@ -437,7 +438,6 @@ function buildScene(data) {
   pivot.add(shellMesh);
 }
 
-// ── Interpolate bead positions between two keyframes ──
 function updateBeads(frameA, frameB, t) {
   const dummy = new THREE.Object3D();
   const cx = globalCenter[0], cy = globalCenter[1], cz = globalCenter[2];
@@ -464,7 +464,6 @@ function updateBeads(frameA, frameB, t) {
   }
 }
 
-// ── Set bead opacity for fade transitions ──
 function setBeadOpacity(opacity) {
   if(Math.abs(beadOpacity - opacity) < 0.001) return;
   beadOpacity = opacity;
@@ -482,7 +481,7 @@ function animate(timestamp) {
   const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
   lastTime = timestamp;
 
-  // ── Auto-rotate: pauses on hover ──
+  // Auto-rotate: pauses on hover
   if(!hovered && !isDragging) {
     autoRotateSpeed += (TARGET_SPEED - autoRotateSpeed) * 0.05;
   } else {
@@ -493,24 +492,22 @@ function animate(timestamp) {
     pivot.rotation.set(rotX, rotY, 0);
   }
 
-  // ── Time evolution: pauses on hover (drag still allowed) ──
+  // Time evolution: pauses on hover
   if(!hovered) {
     animTime += dt;
     if(animTime >= CYCLE_DURATION) animTime -= CYCLE_DURATION;
   }
 
-  // ── Phase boundaries ──
+  // Phase boundaries
   const playStart  = INITIAL_HOLD;
   const playEnd    = playStart + PLAY_DURATION;
   const steadyEnd  = playEnd + STEADY_HOLD;
   const fadeOutEnd = steadyEnd + FADE_DURATION;
 
   if(animTime < playStart) {
-    // ── Phase 0: Initial hold — show frame 0 ──
     setBeadOpacity(1);
 
   } else if(animTime < playEnd) {
-    // ── Phase 1: Eased playback through frames ──
     setBeadOpacity(1);
     const linearProgress = (animTime - playStart) / PLAY_DURATION;
     const easedProgress = easeFrame(linearProgress);
@@ -520,16 +517,13 @@ function animate(timestamp) {
     updateBeads(frameIdx, frameIdx + 1, frac);
 
   } else if(animTime < steadyEnd) {
-    // ── Phase 2: Hold at final segregated state ──
     setBeadOpacity(1);
 
   } else if(animTime < fadeOutEnd) {
-    // ── Phase 3: Fade out ──
     const fadeProgress = (animTime - steadyEnd) / FADE_DURATION;
     setBeadOpacity(1 - fadeProgress);
 
   } else {
-    // ── Phase 4: Snap to frame 0, fade in ──
     const fadeProgress = (animTime - fadeOutEnd) / FADE_DURATION;
     setBeadOpacity(fadeProgress);
     updateBeads(0, 0, 0);
@@ -546,7 +540,7 @@ const obs = new IntersectionObserver(entries => {
 obs.observe(container);
 
 // ── Fetch data and start ──
-const DATA_URL = 'https://github.com/amithzafal/amithzafal.github.io/blob/main/polymer_frames.json?raw=true';
+const DATA_URL = 'https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/polymer_frames.json';
 
 fetch(DATA_URL)
   .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
