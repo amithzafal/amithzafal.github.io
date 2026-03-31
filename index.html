@@ -9,15 +9,15 @@
     <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png" fetchpriority="high">
-    <link rel="preload" as="fetch" href="https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/polymer_frames.json" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap"></noscript>
     <style>
         :root {
             --primary-color: #333;
             --secondary-color: #00008B;
             --secondary-hover: #0000CD;
-            --background-color: rgba(255, 255, 255, 0.65);
-            --card-bg: rgba(255, 255, 255, 0.6); 
+            --background-color: rgba(255, 255, 255, 0.55);
+            --card-bg: rgba(255, 255, 255, 0.5); 
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,11 +29,15 @@
             line-height: 1.6;
             color: var(--primary-color);
             background-color: #d8d5d0;
-            background-image: url('https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        }
+
+        /* Fixed background on its own GPU layer — avoids Safari repaint storm */
+        .bg-fixed {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: #d8d5d0 url('https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png') center / cover no-repeat;
+            will-change: transform;
         }
         
         .content-wrapper {
@@ -43,8 +47,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            opacity: 0; 
+            animation: fadeIn 0.8s ease-in-out;
         }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .container { width: 90%; max-width: 1000px; margin: 0 auto; padding: 20px; }
         header { padding-top: 50px; text-align: left; }
@@ -115,7 +121,7 @@
             pointer-events: none;
         }
         .viewer-wrap:hover .viewer-caption { opacity: 1; }
-        .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
+        .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; will-change: contents; }
         .viewer-fallback {
             width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
@@ -154,10 +160,9 @@
         }
         .social-links a:hover { color: #ccc; transform: translateY(-2px); text-decoration: none; }
     </style>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 </head>
 <body>
+    <div class="bg-fixed"></div>
     <div class="content-wrapper">
         <header>
             <div class="container">
@@ -201,7 +206,7 @@
         <footer>
             <div class="social-links">
                 <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
-                    <i class="fas fa-book-open" aria-hidden="true"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
                 </a>
             </div>
             <p><a href="https://bsky.app/profile/amithzafal.bsky.social" target="_blank" rel="noopener noreferrer">@amithzafal.bsky.social</a></p>
@@ -209,15 +214,14 @@
         </footer>
     </div>
 
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onload="initViewer()"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const cw = document.querySelector('.content-wrapper');
-    if(cw) { cw.style.transition = 'opacity 0.8s ease-in-out'; setTimeout(()=>cw.style.opacity='1', 50); }
     const user='amithzafal', domain='brandeis.edu', el=document.getElementById('email-placeholder');
     if(el) el.innerHTML=`<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
 });
-
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onload="initViewer()"></script>
+<script>
 function initViewer() {
 const container = document.getElementById('polymerViewer');
 if(!container) return;
@@ -295,6 +299,9 @@ const COLORS = {
 
 const pivot = new THREE.Group();
 scene.add(pivot);
+
+// ── Reusable Object3D for matrix updates (avoids per-frame allocation) ──
+const _dummy = new THREE.Object3D();
 
 // ── Interaction state ──
 let isDragging = false, prevMouse = {x:0,y:0};
@@ -398,7 +405,6 @@ function buildScene(data) {
   beadGeo = new THREE.SphereGeometry(BEAD_R, BEAD_SEGS_W, BEAD_SEGS_H);
 
   const chains = data.chains;
-  const dummy = new THREE.Object3D();
 
   chains.forEach(chain => {
     const mat = new THREE.MeshPhongMaterial({
@@ -413,13 +419,13 @@ function buildScene(data) {
     const coords = frameData[0][chain];
     for(let i = 0; i < nBeads; i++) {
       const idx = i * 3;
-      dummy.position.set(
+      _dummy.position.set(
         coords[idx]/S   - globalCenter[0],
         coords[idx+1]/S - globalCenter[1],
         coords[idx+2]/S - globalCenter[2]
       );
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
+      _dummy.updateMatrix();
+      mesh.setMatrixAt(i, _dummy.matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
     pivot.add(mesh);
@@ -439,7 +445,6 @@ function buildScene(data) {
 }
 
 function updateBeads(frameA, frameB, t) {
-  const dummy = new THREE.Object3D();
   const cx = globalCenter[0], cy = globalCenter[1], cz = globalCenter[2];
   const S = coordScale;
   const chains = ['A','B','C'];
@@ -452,13 +457,13 @@ function updateBeads(frameA, frameB, t) {
 
     for(let i = 0; i < nBeads; i++) {
       const idx = i * 3;
-      dummy.position.set(
+      _dummy.position.set(
         (coordsA[idx]   + (coordsB[idx]   - coordsA[idx])   * t) / S - cx,
         (coordsA[idx+1] + (coordsB[idx+1] - coordsA[idx+1]) * t) / S - cy,
         (coordsA[idx+2] + (coordsB[idx+2] - coordsA[idx+2]) * t) / S - cz
       );
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
+      _dummy.updateMatrix();
+      mesh.setMatrixAt(i, _dummy.matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
   }
