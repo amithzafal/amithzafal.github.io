@@ -168,7 +168,7 @@
                 
                 <div class="intro-block">
                     <div class="viewer-wrap" id="polymerViewer">
-                        <div class="viewer-caption">Polymer model of spatially confined chromosomes</div>
+                        <div class="viewer-caption">Loop-extrusion-driven chromosome segregation</div>
                     </div>
                     
                     <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
@@ -218,7 +218,6 @@ function initViewer() {
 const container = document.getElementById('polymerViewer');
 if(!container) return;
 
-// WebGL support check
 try {
   const testCanvas = document.createElement('canvas');
   const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
@@ -237,12 +236,16 @@ const SHELL_SEGS_W = isMobile ? 48 : 80;
 const SHELL_SEGS_H = isMobile ? 32 : 56;
 
 // ── Animation timing ──
-const FRAME_DURATION   = 0.35;  // seconds per frame transition
-const PAUSE_DURATION   = 3.0;   // seconds to hold at steady-state (last frame)
-const FADE_DURATION    = 0.4;   // seconds for opacity dip at loop reset
-const TOTAL_FRAMES_IDX = 60;    // last frame index (0-based, 61 frames total)
+const INITIAL_HOLD  = 2.5;   // seconds to show frame 0 before playback
+const PLAY_DURATION = 21.0;  // seconds for the full 60-frame arc
+const STEADY_HOLD   = 3.0;   // seconds to hold final segregated state
+const FADE_DURATION = 0.4;   // seconds for opacity fade at loop reset
+const EASE_POWER    = 1.4;   // >1 = early frames dwell longer
+const TOTAL_FRAMES  = 60;    // frame transitions (0-60 = 61 keyframes)
 
-// ── Scene setup ──
+const CYCLE_DURATION = INITIAL_HOLD + PLAY_DURATION + STEADY_HOLD + FADE_DURATION * 2;
+
+// ── Scene ──
 const scene = new THREE.Scene();
 scene.background = null;
 
@@ -263,7 +266,7 @@ function resize() {
 }
 resize();
 
-// ── Lighting (identical to original) ──
+// ── Lighting ──
 const keyLight = new THREE.DirectionalLight(0xffffff, 0.59);
 const fillLight = new THREE.DirectionalLight(0xffffff, 0.25);
 const rimLight = new THREE.DirectionalLight(0xffffff, 0.36);
@@ -279,9 +282,9 @@ setLP(fillLight, 210, 0);
 setLP(rimLight, 330, 30);
 scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
 
-// ── Colors ──
+// ── Colors (chain A lightened 15% from pure black) ──
 const COLORS = {
-  A: new THREE.Color(0x000000),
+  A: new THREE.Color(0x262626),
   B: new THREE.Color(0x383838),
   C: new THREE.Color(0x1a1a1a)
 };
@@ -296,7 +299,7 @@ let hovered = false;
 let autoRotateSpeed = 0.004;
 pivot.rotation.set(rotX, rotY, 0);
 
-// ── Controls (identical to original) ──
+// ── Controls ──
 renderer.domElement.addEventListener('mousedown', e => {
   isDragging = true; prevMouse = {x:e.clientX, y:e.clientY};
 });
@@ -358,42 +361,42 @@ container.addEventListener('mouseleave', ()=>{ hovered=false; isDragging=false; 
 const TARGET_SPEED = 0.004;
 let isVisible = false;
 
-// ── Frame data & meshes (populated after fetch) ──
-let frameData = null;   // array of 61 frames, each { A:[flat], B:[flat], C:[flat] }
+// ── Frame data & meshes ──
+let frameData = null;
 let nBeads = 0;
 let globalCenter = [0,0,0];
 let globalMaxDist = 1;
-let meshes = {};        // { A: InstancedMesh, B: ..., C: ... }
+let coordScale = 1;
+let meshes = {};
 let beadGeo = null;
 let shellMesh = null;
-let coordScale = 1;    // integer encoding divisor (2 for ×2 format)
 
-// ── Animation timeline state ──
-let animTime = 0;       // seconds elapsed in current loop cycle
-let beadOpacity = 1;    // for fade at loop reset
+// ── Animation state ──
+let animTime = 0;
+let beadOpacity = 1;
 
-// Compute total cycle length (set after data loads)
-function getCycleDuration() {
-  return TOTAL_FRAMES_IDX * FRAME_DURATION + PAUSE_DURATION + FADE_DURATION * 2;
+// ── Easing: t^EASE_POWER maps linear time to frame progress ──
+// With EASE_POWER=1.4, segregation frames get ~60% of play time
+function easeFrame(linearProgress) {
+  return Math.pow(linearProgress, EASE_POWER);
 }
 
-// ── Build scene from frame data ──
+// ── Build scene from loaded data ──
 function buildScene(data) {
-  // Support both legacy (float) and compact (int×scale) formats
   const S = data.scale || 1;
   frameData = data.frames;
   nBeads = data.nBeads;
+  coordScale = S;
   globalCenter = data.center2
     ? [data.center2[0]/S, data.center2[1]/S, data.center2[2]/S]
     : data.center;
   globalMaxDist = data.maxDist2 ? data.maxDist2/S : data.maxDist;
-  coordScale = S;  // stored for updateBeads
 
   const SCALE = SHELL_RADIUS_NM / globalMaxDist;
   const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.15;
   beadGeo = new THREE.SphereGeometry(BEAD_R, BEAD_SEGS_W, BEAD_SEGS_H);
 
-  const chains = data.chains; // ["A","B","C"]
+  const chains = data.chains;
   const dummy = new THREE.Object3D();
 
   chains.forEach(chain => {
@@ -406,7 +409,6 @@ function buildScene(data) {
     });
     const mesh = new THREE.InstancedMesh(beadGeo, mat, nBeads);
 
-    // Initialize with frame 0
     const coords = frameData[0][chain];
     for(let i = 0; i < nBeads; i++) {
       const idx = i * 3;
@@ -423,7 +425,6 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
-  // Shell
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
   const shellMat = new THREE.MeshPhongMaterial({
@@ -436,9 +437,8 @@ function buildScene(data) {
   pivot.add(shellMesh);
 }
 
-// ── Update bead positions by interpolating between two keyframes ──
+// ── Interpolate bead positions between two keyframes ──
 function updateBeads(frameA, frameB, t) {
-  // t in [0,1]: 0 = fully frameA, 1 = fully frameB
   const dummy = new THREE.Object3D();
   const cx = globalCenter[0], cy = globalCenter[1], cz = globalCenter[2];
   const S = coordScale;
@@ -464,13 +464,11 @@ function updateBeads(frameA, frameB, t) {
   }
 }
 
-// ── Set bead opacity (for the fade at loop boundary) ──
+// ── Set bead opacity for fade transitions ──
 function setBeadOpacity(opacity) {
   if(Math.abs(beadOpacity - opacity) < 0.001) return;
   beadOpacity = opacity;
-  ['A','B','C'].forEach(ch => {
-    meshes[ch].material.opacity = opacity;
-  });
+  ['A','B','C'].forEach(ch => { meshes[ch].material.opacity = opacity; });
 }
 
 // ── Main animation loop ──
@@ -480,12 +478,11 @@ function animate(timestamp) {
   requestAnimationFrame(animate);
   if(!isVisible || !frameData) return;
 
-  // Delta time
   if(lastTime === null) lastTime = timestamp;
-  const dt = Math.min((timestamp - lastTime) / 1000, 0.1); // cap at 100ms
+  const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
   lastTime = timestamp;
 
-  // Auto-rotate
+  // ── Auto-rotate: pauses on hover ──
   if(!hovered && !isDragging) {
     autoRotateSpeed += (TARGET_SPEED - autoRotateSpeed) * 0.05;
   } else {
@@ -496,76 +493,69 @@ function animate(timestamp) {
     pivot.rotation.set(rotX, rotY, 0);
   }
 
-  // ── Time evolution ──
-  animTime += dt;
-  const cycleDuration = getCycleDuration();
-
-  // Wrap around for looping
-  if(animTime >= cycleDuration) {
-    animTime -= cycleDuration;
+  // ── Time evolution: pauses on hover (drag still allowed) ──
+  if(!hovered) {
+    animTime += dt;
+    if(animTime >= CYCLE_DURATION) animTime -= CYCLE_DURATION;
   }
 
-  const playDuration = TOTAL_FRAMES_IDX * FRAME_DURATION; // time to play all transitions
-  const pauseEnd = playDuration + PAUSE_DURATION;
-  const fadeOutEnd = pauseEnd + FADE_DURATION;
-  // fadeInEnd = cycleDuration
+  // ── Phase boundaries ──
+  const playStart  = INITIAL_HOLD;
+  const playEnd    = playStart + PLAY_DURATION;
+  const steadyEnd  = playEnd + STEADY_HOLD;
+  const fadeOutEnd = steadyEnd + FADE_DURATION;
 
-  if(animTime < playDuration) {
-    // ── Phase 1: Playing forward through frames ──
+  if(animTime < playStart) {
+    // ── Phase 0: Initial hold — show frame 0 ──
     setBeadOpacity(1);
-    const progress = animTime / FRAME_DURATION; // continuous frame index
-    const frameIdx = Math.min(Math.floor(progress), TOTAL_FRAMES_IDX - 1);
-    const frac = progress - frameIdx;
+
+  } else if(animTime < playEnd) {
+    // ── Phase 1: Eased playback through frames ──
+    setBeadOpacity(1);
+    const linearProgress = (animTime - playStart) / PLAY_DURATION;
+    const easedProgress = easeFrame(linearProgress);
+    const frameFloat = easedProgress * TOTAL_FRAMES;
+    const frameIdx = Math.min(Math.floor(frameFloat), TOTAL_FRAMES - 1);
+    const frac = frameFloat - frameIdx;
     updateBeads(frameIdx, frameIdx + 1, frac);
 
-  } else if(animTime < pauseEnd) {
-    // ── Phase 2: Holding at the last frame (steady-state) ──
+  } else if(animTime < steadyEnd) {
+    // ── Phase 2: Hold at final segregated state ──
     setBeadOpacity(1);
-    // Beads stay at last frame — no update needed (already there)
 
   } else if(animTime < fadeOutEnd) {
     // ── Phase 3: Fade out ──
-    const fadeProgress = (animTime - pauseEnd) / FADE_DURATION;
+    const fadeProgress = (animTime - steadyEnd) / FADE_DURATION;
     setBeadOpacity(1 - fadeProgress);
 
   } else {
-    // ── Phase 4: Snap to frame 0 + fade in ──
+    // ── Phase 4: Snap to frame 0, fade in ──
     const fadeProgress = (animTime - fadeOutEnd) / FADE_DURATION;
     setBeadOpacity(fadeProgress);
-    updateBeads(0, 0, 0); // show frame 0
+    updateBeads(0, 0, 0);
   }
 
   renderer.render(scene, camera);
 }
 
-// ── Visibility observer ──
+// ── Visibility & resize ──
 window.addEventListener('resize', resize);
 const obs = new IntersectionObserver(entries => {
   isVisible = entries[0].isIntersecting;
 }, {threshold: 0.05});
 obs.observe(container);
 
-// ── Fetch frame data and start ──
+// ── Fetch data and start ──
 const DATA_URL = 'https://github.com/amithzafal/amithzafal.github.io/blob/main/polymer_frames.json?raw=true';
 
 fetch(DATA_URL)
-  .then(r => {
-    if(!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(data => {
-    buildScene(data);
-    requestAnimationFrame(animate);
-  })
+  .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(data => { buildScene(data); requestAnimationFrame(animate); })
   .catch(err => {
-    console.warn('Frame data fetch failed, trying local fallback...', err);
-    // Fallback: try loading from same directory (for local development)
+    console.warn('Remote fetch failed, trying local...', err);
     fetch('polymer_frames.json')
       .then(r => r.json())
-      .then(data => {
-        buildScene(data);
-        requestAnimationFrame(animate);
-      })
+      .then(data => { buildScene(data); requestAnimationFrame(animate); })
       .catch(e2 => {
         container.innerHTML = '<div class="viewer-fallback">Polymer data loading…<br>Please try refreshing.</div>';
         console.error('Failed to load polymer frames:', e2);
