@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
     <title>Amith Zafal Abdulla - Researcher</title>
-    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
-    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="image" href="https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png" fetchpriority="high">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preload" as="image" href="./bg3-BW.png" fetchpriority="high">
+    <script>window._polymerData = fetch('./polymer_frames.json').then(r => r.ok ? r.json() : Promise.reject(r.status));</script>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap"></noscript>
     <style>
@@ -36,14 +36,14 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: #d8d5d0 url('https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/bg3-BW.png') center / cover no-repeat;
+            background: #d8d5d0 url('./bg3-BW.png') center / cover no-repeat;
             will-change: transform;
         }
         
         .content-wrapper {
             background-color: var(--background-color);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -183,7 +183,7 @@
                     <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
                     <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
                     <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
-                    <p>To explore one of my latest projects, check out <a href="https://www.hfsp.org/node/75195#book/72">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
+                    <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
                 </div>
                 
                 <h3>Some of my works:</h3>
@@ -544,21 +544,12 @@ const obs = new IntersectionObserver(entries => {
 }, {threshold: 0.05});
 obs.observe(container);
 
-// ── Fetch data and start ──
-const DATA_URL = 'https://raw.githubusercontent.com/amithzafal/amithzafal.github.io/main/polymer_frames.json';
-
-fetch(DATA_URL)
-  .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+// ── Use pre-fetched data (started in <head>) ──
+window._polymerData
   .then(data => { buildScene(data); requestAnimationFrame(animate); })
   .catch(err => {
-    console.warn('Remote fetch failed, trying local...', err);
-    fetch('polymer_frames.json')
-      .then(r => r.json())
-      .then(data => { buildScene(data); requestAnimationFrame(animate); })
-      .catch(e2 => {
-        container.innerHTML = '<div class="viewer-fallback">Polymer data loading…<br>Please try refreshing.</div>';
-        console.error('Failed to load polymer frames:', e2);
-      });
+    console.warn('Polymer data load failed:', err);
+    container.innerHTML = '<div class="viewer-fallback">Polymer data loading…<br>Please try refreshing.</div>';
   });
 
 }
