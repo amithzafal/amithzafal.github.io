@@ -639,12 +639,13 @@ const isMobileUA = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 const isSmallViewport = window.innerWidth < 768;
 // Geometry decision: low-poly if either mobile UA or small viewport at startup.
 const LOW_POLY = isMobileUA || isSmallViewport;
-// Bumped up on desktop — Phong specular highlights trace the surface normal,
-// so silhouettes need to be smooth or the highlight will crawl along facets.
-const BEAD_SEGS_W  = LOW_POLY ? 14 : 32;
-const BEAD_SEGS_H  = LOW_POLY ? 10 : 24;
-const SHELL_SEGS_W = LOW_POLY ? 48 : 96;
-const SHELL_SEGS_H = LOW_POLY ? 32 : 64;
+// Bead tessellation — modest bump from April's 18×12 to 22×16 on desktop.
+// With dim specular (0x0f0f0f), silhouette quality matters less than it did
+// with the previous white-specular experiment, so we don't need 32×24.
+const BEAD_SEGS_W  = LOW_POLY ? 12 : 22;
+const BEAD_SEGS_H  = LOW_POLY ? 8  : 16;
+const SHELL_SEGS_W = LOW_POLY ? 48 : 80;
+const SHELL_SEGS_H = LOW_POLY ? 32 : 56;
 
 // Post-FX decision: based on hardware concurrency and not touching screen size.
 // Mobile devices with 6+ cores (modern iPhones, flagship Android) handle the
@@ -673,15 +674,12 @@ const CYCLE_DURATION = INITIAL_HOLD + PLAY_DURATION + STEADY_HOLD + FADE_DURATIO
 const scene = new THREE.Scene();
 scene.background = null;
 
-// Camera framing to match the VMD/Tachyon reference image:
-//  - Narrower FOV (28°) gives near-orthographic look — Tachyon renders are
-//    typically orthographic or very long focal length. 42° was too wide and
-//    introduced perspective distortion that's not in the reference.
-//  - Closer z distance compensates for the narrower FOV so the sphere still
-//    fills the frame. At FOV=28 and z=48, the sphere ends up occupying ~90%
-//    of the canvas as in the reference.
-const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 1000);
-camera.position.set(0, 0, 48);
+// Camera framing — restored to the April 2026 values that framed the nucleus
+// comfortably in the viewport. The near-orthographic experiment (FOV 28)
+// pulled the camera too close and lost the slight perspective that gives
+// the polymer mass its sense of depth.
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
+camera.position.set(0, 0, 34);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: !LOW_POLY,
@@ -708,16 +706,17 @@ function initPostFX() {
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(new THREE.RenderPass(scene, camera));
 
-    // SAO — subtle crevice darkening only. With the lighting doing its job now,
-    // AO just needs to deepen the true contact points between packed beads.
-    // Previous values (intensity 0.025, radius 60) were compensating for flat
-    // Lambertian shading; we don't need that anymore.
+    // SAO — moderate crevice darkening. The dim-specular + moderate-ambient
+    // lighting doesn't produce strong self-shadowing on its own, so AO still
+    // does useful work deepening the gaps between packed beads. Not as heavy
+    // as the 0.025 intensity used when lighting was fully flat, not as subtle
+    // as the 0.008 that was calibrated for the bright-specular experiment.
     if(HAS_SAO) {
       saoPass = new THREE.SAOPass(scene, camera, false, true);
       saoPass.params.saoBias = 0.3;
-      saoPass.params.saoIntensity = 0.008;
-      saoPass.params.saoScale = 10;
-      saoPass.params.saoKernelRadius = 24;
+      saoPass.params.saoIntensity = 0.015;
+      saoPass.params.saoScale = 12;
+      saoPass.params.saoKernelRadius = 32;
       saoPass.params.saoMinResolution = 0;
       saoPass.params.saoBlur = true;
       saoPass.params.saoBlurRadius = 8;
@@ -765,38 +764,41 @@ function resize() {
 }
 resize();
 
-// ── Lighting — Tachyon/VMD direct-lit style ──
-// VMD's default `material Opaque` uses ambient ≈ 0, strong diffuse, strong specular.
-// The previous "flat ambient + weak directional" setup was actually the opposite
-// of what Tachyon does — we were confusing Tachyon's AO mode with its base shading.
-// Tachyon's AO adds darkening on top of normal Phong shading; it doesn't replace it.
+// ── Lighting — April 2026 balance, with rim light backed off ──
+// The previous experiment (key 1.0 / ambient 0.12) was calibrated for mid-grey
+// beads with white specular and produced the opposite problem: sharp blown-out
+// hotspots on undifferentiated spheres. With the near-black diffuse + dim
+// specular recipe restored below, the lighting can be softer and more even.
 //
-// One dominant key light upper-right (matches reference), tiny fill just to keep
-// the shadow side from going pure black at our mid-grey diffuse, no hemisphere.
-const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
-const fillLight = new THREE.DirectionalLight(0xffffff, 0.12);
-const ambLight = new THREE.AmbientLight(0xffffff, 0.12);
+// Change from April: rim light dropped from 0.36 → 0.10. The back-rim glow
+// it produced on the unlit side of beads read as "studio product photo"
+// rather than "ray-traced molecular render" — Tachyon references show
+// each bead simply lit-on-one-side / dark-on-the-other without edge glow.
+const keyLight = new THREE.DirectionalLight(0xffffff, 0.59);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.25);
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.10);
+const ambLight = new THREE.AmbientLight(0xffffff, 0.35);
+const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x443322, 0.11);
 
 function setLP(l, hD, vD) {
   const h=hD*Math.PI/180, v=vD*Math.PI/180, d=20;
   l.position.set(Math.cos(v)*Math.sin(h)*d, Math.sin(v)*d, Math.cos(v)*Math.cos(h)*d);
 }
-// Key light from upper-right, ~45° elevation — matches the reference render's
-// shadow terminator running from upper-left to lower-right on each bead.
-setLP(keyLight, 30, 45);
-// Tiny opposing fill so the unlit hemisphere reads as "dark" but not "cutout."
-setLP(fillLight, 210, 10);
-scene.add(keyLight, fillLight, ambLight);
+setLP(keyLight, 30, 50);
+setLP(fillLight, 210, 0);
+setLP(rimLight, 330, 30);
+scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
 
-// ── Chain colors (mid-grey monochrome) ──
-// Previous near-black values (0x080808 / 0x383838 / 0x1a1a1a) were incompatible
-// with Phong specular — the white highlight had nothing to sit against. Mid-grey
-// diffuse lets the specular hotspot register clearly while keeping three
-// distinguishable chains.
+// ── Chain colors — April 2026 near-black palette, restored ──
+// These three values span grayscale 8 → 26 → 56 (a 7× brightness ratio), which
+// actually *does* give three distinguishable chains under Phong shading, as
+// long as the specular stays dim (see bead material below). The previous mid-grey
+// attempt compressed that ratio and made all chains look identical — the
+// darkness was doing real work in separating them.
 const COLORS = {
-  A: new THREE.Color(0x555555),
-  B: new THREE.Color(0x999999),
-  C: new THREE.Color(0x777777)
+  A: new THREE.Color(0x080808),
+  B: new THREE.Color(0x383838),
+  C: new THREE.Color(0x1a1a1a)
 };
 
 const pivot = new THREE.Group();
@@ -805,10 +807,10 @@ scene.add(pivot);
 const _dummy = new THREE.Object3D();
 
 // ── Interaction ──
-// Initial pivot rotation — matches the reference view: near-frontal with a small
-// downward tilt (looking slightly into the top of the nucleus) and a tiny yaw
-// to show depth. Reference has very little rotation; we keep the tilt subtle.
-let rotX = -0.12, rotY = 0.08;
+// Initial pivot rotation — April 2026 framing, restored. The strong X
+// rotation (0.75 rad ≈ 43°) tilts the nucleus so the viewer looks down into
+// it, and the Y rotation reveals the depth of the chromosome territories.
+let rotX = 0.75, rotY = 0.3;
 pivot.rotation.set(rotX, rotY, 0);
 let autoRotateSpeed = 0;
 let isDragging = false;
@@ -857,8 +859,7 @@ container.addEventListener('touchmove', (e) => {
     if(lastPinchDist > 0) {
       const scale = dist / lastPinchDist;
       camera.position.z /= scale;
-      // Clamp range adjusted for the new starting distance of 48.
-      camera.position.z = Math.max(25, Math.min(100, camera.position.z));
+      camera.position.z = Math.max(15, Math.min(80, camera.position.z));
     }
     lastPinchDist = dist;
   }
@@ -898,26 +899,48 @@ function buildScene(data) {
     : data.center;
   globalMaxDist = data.maxDist2 ? data.maxDist2/S : data.maxDist;
 
+  // ── Depth fog ──
+  // Tachyon renders have subtle depth cueing — distant beads sit slightly lighter
+  // and lower-contrast than foreground beads, which is what makes the polymer mass
+  // read as a volumetric object rather than a flat cloud of spheres.
+  //
+  // Linear fog from just-in-front-of-center to behind-the-nucleus. The color
+  // matches the page background (#d8d5d0) so distant beads fade *into* the
+  // page rather than appearing as lighter-colored beads against it — this is
+  // what makes the viewer feel integrated with the page.
+  //
+  // Near/far are scaled to the loaded nucleus size (globalMaxDist) rather than
+  // hardcoded, so the effect stays consistent regardless of how the coordinate
+  // data is normalized.
+  const camZ = camera.position.z;
+  scene.fog = new THREE.Fog(
+    0xd8d5d0,
+    camZ - globalMaxDist * 0.3,   // fog starts just past the front of the nucleus
+    camZ + globalMaxDist * 1.4    // fully faded out past the back
+  );
+
   const SCALE = SHELL_RADIUS_NM / globalMaxDist;
-  // Bead radius inflation reduced from 1.15 to 1.03 — the 15% overlap was
-  // merging neighboring beads into a continuous surface, hiding the "pearl
-  // necklace" chain texture that's a signature of the Tachyon VMD look.
-  // 1.03 leaves just a hint of contact without visible seams.
+  // Bead inflation 1.03 — tighter packing than April's 1.15, which was
+  // merging adjacent beads into continuous blobs and hiding the chain
+  // structure. 1.03 leaves just a hint of contact between neighbors so
+  // the "pearl necklace" texture of the polymer stays visible.
   const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.03;
   beadGeo = new THREE.SphereGeometry(BEAD_R, BEAD_SEGS_W, BEAD_SEGS_H);
 
   const chains = data.chains;
 
   chains.forEach(chain => {
-    // Phong (not Lambert): VMD's default `material Opaque` uses Blinn-Phong
-    // with prominent specular. The white highlight on each sphere is the single
-    // most recognizable feature of Tachyon renders — Lambertian diffuse can't
-    // produce it at all. Shininess 60 gives the tight, small hotspot visible
-    // in the reference (wider lobes feel plasticky; narrower feel metallic).
+    // Phong with DIM specular (0x0f0f0f, shininess 30) — this is the key.
+    // Bright white specular on near-black diffuse produces the blown-out
+    // "pearl-like" hotspots that washed out chain differentiation in the
+    // previous version. Dim specular preserves the subtle sheen that reads
+    // as "ray-traced sphere" without overpowering the diffuse term — the
+    // three chains' darkness levels stay visible. This matches the April
+    // balance that was working.
     const mat = new THREE.MeshPhongMaterial({
       color: COLORS[chain],
-      specular: 0xffffff,
-      shininess: 60,
+      shininess: 30,
+      specular: new THREE.Color(0x0f0f0f),
       transparent: true,
       opacity: 1.0
     });
@@ -939,17 +962,17 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
-  // Nuclear envelope shell — frosted glass dome, matching the translucent cap
-  // visible in the reference (the grey hemisphere framing the beads below).
-  // Switched to Phong from Lambert with very low shininess + faint specular;
-  // this gives a subtle edge glint at grazing angles without the "shiny bubble"
-  // look of high-shininess materials.
+  // Nuclear envelope shell — muted specular (0x111111, shininess 20) so the
+  // dome stays translucent-matte under any view angle. The earlier values
+  // (0x333333 / shininess 53) developed a visible specular sheen as the
+  // pivot rotated, which read as "glass bubble" rather than the thin
+  // translucent cap in the Tachyon reference.
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
   const shellMat = new THREE.MeshPhongMaterial({
     color: 0xb8b8b8,
-    specular: 0x222222,
-    shininess: 10,
+    specular: new THREE.Color(0x111111),
+    shininess: 20,
     transparent: true,
     opacity: 0.22,
     side: THREE.DoubleSide,
