@@ -167,11 +167,11 @@
         header { padding-top: 50px; padding-bottom: 20px; text-align: left; }
 
         /* Scroll anchor offsets for sticky nav.
-           - header#home: lands with the big <h1> comfortably below the nav.
-           - sections: larger offset so section headings have breathing room
-             above them, not cramped against the nav's underside. */
-        header#home { scroll-margin-top: 80px; }
-        section { scroll-margin-top: 120px; }
+           Values chosen to give generous breathing room between the nav and
+           the target element — matches the intended hero framing where a
+           strip of background is visible before the content begins. */
+        header#home { scroll-margin-top: 140px; }
+        section { scroll-margin-top: 160px; }
 
         h1, h2, h3 {
             font-family: 'Oswald', sans-serif;
@@ -304,17 +304,17 @@
         footer p { margin: 0; opacity: 0.75; }
 
         /* ── Contact card ── */
-        /* Deliberately styled differently from publication cards: no blue band,
-           soft all-around border, slightly warmer background tint. Reads as a
-           "profile panel" rather than another entry in a list. */
+        /* Not really a card anymore — more of an open panel. Just a whisper
+           of extra opacity (~10% more than the surrounding content wrapper)
+           and a hairline border to hint at the grouping without containing it.
+           Lets the background pattern come through clearly. */
         .contact-card {
-            background-color: rgba(255, 255, 255, 0.65);
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            padding: 26px 30px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 24px 28px;
             margin-top: 10px;
             margin-bottom: 30px;
-            border: 1px solid rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
         .contact-grid {
             display: grid;
@@ -356,18 +356,20 @@
             align-items: center;
             gap: 8px;
             padding: 8px 14px;
-            background: rgba(0, 0, 139, 0.06);
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(0, 0, 139, 0.1);
             border-radius: 6px;
             color: var(--primary-color);
             font-family: 'Oswald', sans-serif;
             font-weight: 300;
             font-size: 0.9rem;
             letter-spacing: 0.03em;
-            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
         }
         .contact-socials a:hover {
-            background: rgba(0, 0, 139, 0.12);
+            background: rgba(255, 255, 255, 0.7);
             color: var(--secondary-color);
+            border-color: var(--secondary-color);
             text-decoration: none;
             transform: translateY(-2px);
         }
@@ -470,7 +472,7 @@
         </main>
 
         <footer>
-            <p>&copy; Amith Zafal Abdulla</p>
+            <p>&copy; Amith Zafal Abdulla &middot; April 2026</p>
         </footer>
     </div>
 
@@ -563,8 +565,12 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // ── Robust loader for optional post-FX modules ──
 // Strategy: load each script with a per-script timeout. If any fails or times out,
-// we still init the viewer with whatever we have. The renderer falls back through
-// three tiers: (1) full stack → (2) physical materials + tone mapping only → (3) original Phong-style.
+// we still init the viewer with whatever we have. The renderer falls back gracefully
+// from the full SAO+FXAA stack down to direct render.
+//
+// Removed from the previous version: UnrealBloomPass, LuminosityHighPassShader,
+// and RoomEnvironment — none are used with the Phong/Tachyon pipeline, so loading
+// them was pure waste of the timeout budget.
 (function(){
   const POSTFX_TIMEOUT_MS = 4000;    // per-script budget
   const TOTAL_TIMEOUT_MS  = 6000;    // overall budget, then init anyway
@@ -575,18 +581,14 @@ document.addEventListener('DOMContentLoaded', () => {
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/RenderPass.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/ShaderPass.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/CopyShader.js',
-    // SAO (replaces SSAO — softer, better matches the Tachyon aesthetic)
+    // SAO — subtle crevice darkening between beads (not doing all the shading work anymore)
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/SAOShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/DepthLimitedBlurShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/UnpackDepthRGBAShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/SAOPass.js',
-    // Bloom
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/LuminosityHighPassShader.js',
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/UnrealBloomPass.js',
-    // FXAA
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/FXAAShader.js',
-    // Environment (procedural room for HDRI-like reflections)
-    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/environments/RoomEnvironment.js'
+    // FXAA — matters more than SAO for the specular-highlight look, since
+    // unantialiased highlights on small spheres shimmer and crawl.
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/FXAAShader.js'
   ];
 
   function loadScript(src, timeoutMs) {
@@ -631,14 +633,16 @@ const SHELL_RADIUS_NM = 1185, BEAD_RADIUS_NM = 42;
 // Two separate concerns that shouldn't share the same flag:
 //  1. Geometry LOD — whether to use lower-poly beads/shell (one-time decision,
 //     evaluated at startup; rebuilding geometry mid-session is expensive).
-//  2. Post-processing — whether SAO/bloom/FXAA passes are worth enabling
+//  2. Post-processing — whether SAO/FXAA passes are worth enabling
 //     (device-capability question, independent of viewport size).
 const isMobileUA = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 const isSmallViewport = window.innerWidth < 768;
 // Geometry decision: low-poly if either mobile UA or small viewport at startup.
 const LOW_POLY = isMobileUA || isSmallViewport;
-const BEAD_SEGS_W = LOW_POLY ? 12 : 22;
-const BEAD_SEGS_H = LOW_POLY ? 8 : 16;
+// Bumped up on desktop — Phong specular highlights trace the surface normal,
+// so silhouettes need to be smooth or the highlight will crawl along facets.
+const BEAD_SEGS_W  = LOW_POLY ? 14 : 32;
+const BEAD_SEGS_H  = LOW_POLY ? 10 : 24;
 const SHELL_SEGS_W = LOW_POLY ? 48 : 96;
 const SHELL_SEGS_H = LOW_POLY ? 32 : 64;
 
@@ -653,11 +657,7 @@ const HAS_COMPOSER = ENABLE_POSTFX && typeof THREE.EffectComposer !== 'undefined
                                && typeof THREE.RenderPass !== 'undefined'
                                && typeof THREE.ShaderPass !== 'undefined';
 const HAS_SAO      = HAS_COMPOSER && typeof THREE.SAOPass !== 'undefined';
-const HAS_BLOOM    = HAS_COMPOSER && typeof THREE.UnrealBloomPass !== 'undefined';
 const HAS_FXAA     = HAS_COMPOSER && typeof THREE.FXAAShader !== 'undefined';
-const HAS_ENV      = typeof THREE.RoomEnvironment !== 'undefined'
-                  && typeof THREE.PMREMGenerator !== 'undefined';
-const USE_POSTFX   = HAS_COMPOSER && (HAS_SAO || HAS_BLOOM);
 
 // ── Animation timing ──
 const INITIAL_HOLD  = 2.5;
@@ -673,8 +673,15 @@ const CYCLE_DURATION = INITIAL_HOLD + PLAY_DURATION + STEADY_HOLD + FADE_DURATIO
 const scene = new THREE.Scene();
 scene.background = null;
 
-const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
-camera.position.set(0, 0, 34);
+// Camera framing to match the VMD/Tachyon reference image:
+//  - Narrower FOV (28°) gives near-orthographic look — Tachyon renders are
+//    typically orthographic or very long focal length. 42° was too wide and
+//    introduced perspective distortion that's not in the reference.
+//  - Closer z distance compensates for the narrower FOV so the sphere still
+//    fills the frame. At FOV=28 and z=48, the sphere ends up occupying ~90%
+//    of the canvas as in the reference.
+const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 1000);
+camera.position.set(0, 0, 48);
 
 const renderer = new THREE.WebGLRenderer({
   antialias: !LOW_POLY,
@@ -685,60 +692,42 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
-// Neutral tone mapping — Tachyon matte renders don't use filmic curves.
-// ACES would slightly darken mid-tones and warm shadows, muting our flat look.
+// Neutral tone mapping — Tachyon doesn't use filmic tone curves. ACES would
+// warm and darken mid-tones in a way that fights the crisp, clinical ray-trace look.
 renderer.toneMapping = THREE.NoToneMapping;
 renderer.toneMappingExposure = 1.0;
 container.insertBefore(renderer.domElement, container.firstChild);
 
-// ── Environment map: intentionally NOT applied to scene ──
-// For the Tachyon matte look we want pure Lambertian diffuse without any
-// environment reflection or indirect PBR lighting. MeshLambertMaterial doesn't
-// sample scene.environment anyway, so leaving this off is both correct and
-// slightly faster. If you later switch beads back to MeshPhysicalMaterial,
-// re-enable by setting scene.environment = envTexture below.
-let envTexture = null;
-
-// ── Post-processing (SAO + Bloom + FXAA), each pass independently optional ──
-let composer = null, saoPass = null, bloomPass = null, fxaaPass = null;
+// ── Post-processing (SAO + FXAA), each pass independently optional ──
+// Bloom and environment maps are deliberately absent: Tachyon's direct-lit
+// Phong look has no HDR luminance to bloom and no reflections to sample.
+let composer = null, saoPass = null, fxaaPass = null;
 function initPostFX() {
   if(!HAS_COMPOSER) return;
   try {
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(new THREE.RenderPass(scene, camera));
 
-    // SAO — Scalable Ambient Occlusion. Cranked up to match the deep, wide
-    // crease darkening of Tachyon's -aasamples ambient-occlusion renders.
-    // With Lambertian beads and soft lighting, the AO is doing most of the
-    // visual work — so it needs to be pronounced, not subtle.
+    // SAO — subtle crevice darkening only. With the lighting doing its job now,
+    // AO just needs to deepen the true contact points between packed beads.
+    // Previous values (intensity 0.025, radius 60) were compensating for flat
+    // Lambertian shading; we don't need that anymore.
     if(HAS_SAO) {
       saoPass = new THREE.SAOPass(scene, camera, false, true);
       saoPass.params.saoBias = 0.3;
-      saoPass.params.saoIntensity = 0.025;     // ~7x stronger than before
-      saoPass.params.saoScale = 12;
-      saoPass.params.saoKernelRadius = 60;     // wider sampling = softer falloff
+      saoPass.params.saoIntensity = 0.008;
+      saoPass.params.saoScale = 10;
+      saoPass.params.saoKernelRadius = 24;
       saoPass.params.saoMinResolution = 0;
       saoPass.params.saoBlur = true;
-      saoPass.params.saoBlurRadius = 10;
-      saoPass.params.saoBlurStdDev = 5;
+      saoPass.params.saoBlurRadius = 8;
+      saoPass.params.saoBlurStdDev = 4;
       saoPass.params.saoBlurDepthCutoff = 0.01;
       composer.addPass(saoPass);
     }
 
-    // Bloom intentionally disabled: Tachyon matte renders have no specular
-    // highlights, so there's nothing luminous to bloom. Leaving it on against
-    // Lambertian materials just gives a uniform slight haze that washes out
-    // the AO depth we worked for. Keep the code path alive in case you want
-    // to re-enable it later.
-    // if(HAS_BLOOM) {
-    //   bloomPass = new THREE.UnrealBloomPass(
-    //     new THREE.Vector2(container.clientWidth, container.clientHeight),
-    //     0.25, 0.85, 0.92
-    //   );
-    //   composer.addPass(bloomPass);
-    // }
-
-    // FXAA cleans up aliasing introduced by the AO/bloom passes.
+    // FXAA — essential for Phong specular. Without it, the hotspot on each
+    // bead flickers/stair-steps as the view rotates.
     if(HAS_FXAA) {
       fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
       const pr = renderer.getPixelRatio();
@@ -751,7 +740,7 @@ function initPostFX() {
 
     // If no effect passes actually got added, don't use composer at all —
     // a composer with only a RenderPass is just a slower renderer.render().
-    if(!saoPass && !bloomPass) {
+    if(!saoPass && !fxaaPass) {
       composer = null;
     }
   } catch(e) {
@@ -768,7 +757,6 @@ function resize() {
   if(composer) {
     composer.setSize(w, h);
     if(saoPass) saoPass.setSize(w, h);
-    if(bloomPass) bloomPass.setSize(w, h);
     if(fxaaPass) {
       const pr = renderer.getPixelRatio();
       fxaaPass.material.uniforms['resolution'].value.set(1 / (w * pr), 1 / (h * pr));
@@ -777,30 +765,38 @@ function resize() {
 }
 resize();
 
-// ── Lighting — Tachyon-style flat, soft illumination ──
-// Tachyon AO renders use weak directional light + strong ambient so the AO
-// itself does the shading work. Strong key lights create hotspots that fight
-// the "pure AO render" look we want.
-const keyLight = new THREE.DirectionalLight(0xffffff, 0.35);
-const fillLight = new THREE.DirectionalLight(0xffffff, 0.15);
-const rimLight = new THREE.DirectionalLight(0xffffff, 0.20);
-const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x888888, 0.25);
+// ── Lighting — Tachyon/VMD direct-lit style ──
+// VMD's default `material Opaque` uses ambient ≈ 0, strong diffuse, strong specular.
+// The previous "flat ambient + weak directional" setup was actually the opposite
+// of what Tachyon does — we were confusing Tachyon's AO mode with its base shading.
+// Tachyon's AO adds darkening on top of normal Phong shading; it doesn't replace it.
+//
+// One dominant key light upper-right (matches reference), tiny fill just to keep
+// the shadow side from going pure black at our mid-grey diffuse, no hemisphere.
+const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.12);
+const ambLight = new THREE.AmbientLight(0xffffff, 0.12);
 
 function setLP(l, hD, vD) {
   const h=hD*Math.PI/180, v=vD*Math.PI/180, d=20;
   l.position.set(Math.cos(v)*Math.sin(h)*d, Math.sin(v)*d, Math.cos(v)*Math.cos(h)*d);
 }
-setLP(keyLight, 30, 50);
-setLP(fillLight, 210, 0);
-setLP(rimLight, 330, 30);
-scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
+// Key light from upper-right, ~45° elevation — matches the reference render's
+// shadow terminator running from upper-left to lower-right on each bead.
+setLP(keyLight, 30, 45);
+// Tiny opposing fill so the unlit hemisphere reads as "dark" but not "cutout."
+setLP(fillLight, 210, 10);
+scene.add(keyLight, fillLight, ambLight);
 
-// ── Colors (chain A: 3% lighter than pure black) ──
+// ── Chain colors (mid-grey monochrome) ──
+// Previous near-black values (0x080808 / 0x383838 / 0x1a1a1a) were incompatible
+// with Phong specular — the white highlight had nothing to sit against. Mid-grey
+// diffuse lets the specular hotspot register clearly while keeping three
+// distinguishable chains.
 const COLORS = {
-  A: new THREE.Color(0x080808),
-  B: new THREE.Color(0x383838),
-  C: new THREE.Color(0x1a1a1a)
+  A: new THREE.Color(0x555555),
+  B: new THREE.Color(0x999999),
+  C: new THREE.Color(0x777777)
 };
 
 const pivot = new THREE.Group();
@@ -809,10 +805,10 @@ scene.add(pivot);
 const _dummy = new THREE.Object3D();
 
 // ── Interaction ──
-// Initial pivot rotation — slight tilt looking into the nucleus, matches
-// the VMD/Tachyon molecular-viewer convention of "looking from above and slightly in"
-// rather than a flat head-on view.
-let rotX = -0.22, rotY = 0.15;
+// Initial pivot rotation — matches the reference view: near-frontal with a small
+// downward tilt (looking slightly into the top of the nucleus) and a tiny yaw
+// to show depth. Reference has very little rotation; we keep the tilt subtle.
+let rotX = -0.12, rotY = 0.08;
 pivot.rotation.set(rotX, rotY, 0);
 let autoRotateSpeed = 0;
 let isDragging = false;
@@ -861,7 +857,8 @@ container.addEventListener('touchmove', (e) => {
     if(lastPinchDist > 0) {
       const scale = dist / lastPinchDist;
       camera.position.z /= scale;
-      camera.position.z = Math.max(15, Math.min(80, camera.position.z));
+      // Clamp range adjusted for the new starting distance of 48.
+      camera.position.z = Math.max(25, Math.min(100, camera.position.z));
     }
     lastPinchDist = dist;
   }
@@ -902,17 +899,25 @@ function buildScene(data) {
   globalMaxDist = data.maxDist2 ? data.maxDist2/S : data.maxDist;
 
   const SCALE = SHELL_RADIUS_NM / globalMaxDist;
-  const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.15;
+  // Bead radius inflation reduced from 1.15 to 1.03 — the 15% overlap was
+  // merging neighboring beads into a continuous surface, hiding the "pearl
+  // necklace" chain texture that's a signature of the Tachyon VMD look.
+  // 1.03 leaves just a hint of contact without visible seams.
+  const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.03;
   beadGeo = new THREE.SphereGeometry(BEAD_R, BEAD_SEGS_W, BEAD_SEGS_H);
 
   const chains = data.chains;
 
   chains.forEach(chain => {
-    // Tachyon/VMD-style matte surface: pure Lambertian diffuse, no specular,
-    // no clearcoat, no environment reflections. This is what gives molecular
-    // ray-traces their characteristic solid, chalky appearance.
-    const mat = new THREE.MeshLambertMaterial({
+    // Phong (not Lambert): VMD's default `material Opaque` uses Blinn-Phong
+    // with prominent specular. The white highlight on each sphere is the single
+    // most recognizable feature of Tachyon renders — Lambertian diffuse can't
+    // produce it at all. Shininess 60 gives the tight, small hotspot visible
+    // in the reference (wider lobes feel plasticky; narrower feel metallic).
+    const mat = new THREE.MeshPhongMaterial({
       color: COLORS[chain],
+      specular: 0xffffff,
+      shininess: 60,
       transparent: true,
       opacity: 1.0
     });
@@ -934,12 +939,17 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
-  // Nuclear envelope shell — matte glass, as in Tachyon renders: subtle, frosted,
-  // no specular highlights. Using Lambert rather than Physical avoids the shiny "bubble" look.
+  // Nuclear envelope shell — frosted glass dome, matching the translucent cap
+  // visible in the reference (the grey hemisphere framing the beads below).
+  // Switched to Phong from Lambert with very low shininess + faint specular;
+  // this gives a subtle edge glint at grazing angles without the "shiny bubble"
+  // look of high-shininess materials.
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
-  const shellMat = new THREE.MeshLambertMaterial({
-    color: 0xaaaaaa,
+  const shellMat = new THREE.MeshPhongMaterial({
+    color: 0xb8b8b8,
+    specular: 0x222222,
+    shininess: 10,
     transparent: true,
     opacity: 0.22,
     side: THREE.DoubleSide,
