@@ -17,12 +17,15 @@
             --secondary-color: #00008B;
             --secondary-hover: #0000CD;
             --background-color: rgba(255, 255, 255, 0.55);
-            --card-bg: rgba(255, 255, 255, 0.5); 
+            --card-bg: rgba(255, 255, 255, 0.5);
+            --nav-bg: rgba(255, 255, 255, 0.65);
+            --nav-bg-scrolled: rgba(255, 255, 255, 0.8);
+            --nav-border: rgba(0, 0, 0, 0.06);
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        
+        html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+
         body {
             font-family: 'Nunito', sans-serif;
             font-weight: 300;
@@ -39,7 +42,110 @@
             background: #d8d5d0 url('./bg3-BW.png') center / cover no-repeat;
             will-change: transform;
         }
-        
+
+        /* ── Sticky nav ── */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--nav-bg);
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
+            border-bottom: 1px solid transparent;
+            transition: background 0.3s ease, border-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            padding: 14px 0;
+        }
+        .site-nav.scrolled {
+            background: var(--nav-bg-scrolled);
+            border-bottom-color: var(--nav-border);
+            padding: 8px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+        }
+        .nav-inner {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        .nav-brand {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 400;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            letter-spacing: 0.02em;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        }
+        .site-nav.scrolled .nav-brand {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .nav-brand:hover { color: var(--secondary-color); text-decoration: none; }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 4px;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links a {
+            display: inline-block;
+            padding: 8px 16px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.95rem;
+            letter-spacing: 0.04em;
+            color: var(--primary-color);
+            border-radius: 6px;
+            position: relative;
+            transition: color 0.25s ease, background 0.25s ease;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 4px;
+            height: 2px;
+            background: var(--secondary-color);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--secondary-color);
+            text-decoration: none;
+            background: rgba(0, 0, 139, 0.05);
+        }
+        .nav-links a.active { color: var(--secondary-color); }
+        .nav-links a.active::after { transform: scaleX(1); }
+
+        /* Mobile hamburger */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            width: 40px;
+            height: 40px;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--primary-color);
+            margin: 4px auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
         .content-wrapper {
             background-color: var(--background-color);
             backdrop-filter: blur(2px);
@@ -51,10 +157,13 @@
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
+
         .container { width: 90%; max-width: 1000px; margin: 0 auto; padding: 20px; }
         header { padding-top: 50px; text-align: left; }
-        
+
+        /* Section anchor offset for sticky nav */
+        section { scroll-margin-top: 80px; }
+
         h1, h2, h3 {
             font-family: 'Oswald', sans-serif;
             display: inline-block;
@@ -92,11 +201,11 @@
             font-weight: 400; color: #000; text-decoration: none;
             border-radius: 0 8px 8px 0;
         }
-        
+
         .main-content { flex: 1 0 auto; }
 
         .intro-block::after { content: ''; display: table; clear: both; }
-        
+
         .viewer-wrap {
             float: right;
             position: relative;
@@ -119,6 +228,7 @@
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
+            z-index: 2;
         }
         .viewer-wrap:hover .viewer-caption { opacity: 1; }
         .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; will-change: contents; }
@@ -142,8 +252,38 @@
                 height: 300px;
                 margin: 10px 0 20px 0;
             }
+            .nav-toggle { display: block; }
+            .nav-inner { position: relative; }
+            .nav-links {
+                position: absolute;
+                top: calc(100% + 8px);
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: var(--nav-bg-scrolled);
+                backdrop-filter: blur(14px) saturate(140%);
+                -webkit-backdrop-filter: blur(14px) saturate(140%);
+                border-radius: 10px;
+                border: 1px solid var(--nav-border);
+                padding: 0 12px;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease, padding 0.3s ease;
+            }
+            .nav-links.open {
+                max-height: 300px;
+                padding: 8px 12px;
+            }
+            .nav-links a {
+                display: block;
+                padding: 12px 10px;
+                font-size: 1rem;
+            }
+            .nav-links a::after { display: none; }
+            .nav-brand { opacity: 1; transform: none; }
         }
-        
+
         footer {
             background-color: var(--primary-color);
             color: white; padding: 20px 0; text-align: center;
@@ -159,12 +299,35 @@
             display: inline-block;
         }
         .social-links a:hover { color: #ccc; transform: translateY(-2px); text-decoration: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="bg-fixed"></div>
+
+    <nav class="site-nav" id="siteNav" aria-label="Primary">
+        <div class="nav-inner">
+            <a href="#home" class="nav-brand">Amith Zafal Abdulla</a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" data-section="home">Home</a></li>
+                <li><a href="#publications" data-section="publications">Publications</a></li>
+                <li><a href="#contact" data-section="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="content-wrapper">
-        <header>
+        <header id="home">
             <div class="container">
                 <h1>Amith Zafal Abdulla</h1>
                 <p>HFSP Postdoctoral fellow</p>
@@ -173,33 +336,39 @@
 
         <main class="main-content">
             <div class="container">
-                <h2>Welcome to my page</h2>
-                
-                <div class="intro-block">
-                    <div class="viewer-wrap" id="polymerViewer">
-                        <div class="viewer-caption">Simulating chromosome territories</div>
-                    </div>
-                    
-                    <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p> 
-                    <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                    <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
-                    <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
-                </div>
-                
-                <h3>Some of my works:</h3>
-                <ul class="publication-list">
-                    <li style="padding: 15px 20px;"><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization, <i>Macromolecules</i> 2023</a> | <a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2.full.pdf" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">pdf</a></li>
-                    <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling, <i>Curr Opin Genet Dev</i> 2023</a></li>
-                    <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory, <i>Nulceic Acids Research</i> 2022</a></li>
-                    <li><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010450" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells, <i>PLoS CB</i> 2022</a></li>
-                    <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers, <i>Langmuir</i> 2021</a></li>
-                    <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria, <i>Soft Matter</i> 2020</a></li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria, <i>Physical Review E</i> 2020</a></li>
-                    <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed, <i>Physical Review E</i> 2019</a></li>
-                </ul>
+                <section id="about">
+                    <h2>Welcome to my page</h2>
 
-                <h3>Contact</h3>
-                <p>Feel free to reach out to me at: <span id="email-placeholder">Loading email...</span></p>
+                    <div class="intro-block">
+                        <div class="viewer-wrap" id="polymerViewer">
+                            <div class="viewer-caption">Simulating chromosome territories</div>
+                        </div>
+
+                        <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p>
+                        <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
+                        <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
+                        <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
+                    </div>
+                </section>
+
+                <section id="publications">
+                    <h3>Some of my works:</h3>
+                    <ul class="publication-list">
+                        <li style="padding: 15px 20px;"><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization, <i>Macromolecules</i> 2023</a> | <a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2.full.pdf" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">pdf</a></li>
+                        <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling, <i>Curr Opin Genet Dev</i> 2023</a></li>
+                        <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory, <i>Nulceic Acids Research</i> 2022</a></li>
+                        <li><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010450" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells, <i>PLoS CB</i> 2022</a></li>
+                        <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers, <i>Langmuir</i> 2021</a></li>
+                        <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria, <i>Soft Matter</i> 2020</a></li>
+                        <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria, <i>Physical Review E</i> 2020</a></li>
+                        <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed, <i>Physical Review E</i> 2019</a></li>
+                    </ul>
+                </section>
+
+                <section id="contact">
+                    <h3>Contact</h3>
+                    <p>Feel free to reach out to me at: <span id="email-placeholder">Loading email...</span></p>
+                </section>
             </div>
         </main>
 
@@ -216,15 +385,111 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // ── Email obfuscation ──
     const user='amithzafal', domain='brandeis.edu', el=document.getElementById('email-placeholder');
     if(el) el.innerHTML=`<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
+
+    // ── Nav: scroll-shrink ──
+    const nav = document.getElementById('siteNav');
+    const onScroll = () => {
+        if(window.scrollY > 40) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ── Nav: mobile toggle ──
+    const toggle = document.getElementById('navToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close mobile menu when a link is tapped
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+    }));
+
+    // ── Nav: scroll-spy ──
+    const sections = ['home','publications','contact'].map(id => document.getElementById(id)).filter(Boolean);
+    const linkMap = {};
+    links.querySelectorAll('a[data-section]').forEach(a => linkMap[a.dataset.section] = a);
+
+    const setActive = (id) => {
+        Object.values(linkMap).forEach(a => a.classList.remove('active'));
+        if(linkMap[id]) linkMap[id].classList.add('active');
+    };
+
+    const spy = new IntersectionObserver((entries) => {
+        let best = null;
+        entries.forEach(e => {
+            if(e.isIntersecting) {
+                if(!best || e.intersectionRatio > best.intersectionRatio) best = e;
+            }
+        });
+        if(best) setActive(best.target.id);
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+    sections.forEach(s => spy.observe(s));
 });
 </script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onload="initViewer()"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+// ── Robust loader for optional post-FX modules ──
+// Strategy: load each script with a per-script timeout. If any fails or times out,
+// we still init the viewer with whatever we have. The renderer falls back through
+// three tiers: (1) full stack → (2) physical materials + tone mapping only → (3) original Phong-style.
+(function(){
+  const POSTFX_TIMEOUT_MS = 4000;    // per-script budget
+  const TOTAL_TIMEOUT_MS  = 6000;    // overall budget, then init anyway
+
+  const scripts = [
+    // Core post-processing
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/EffectComposer.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/RenderPass.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/ShaderPass.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/CopyShader.js',
+    // SAO (replaces SSAO — softer, better matches the Tachyon aesthetic)
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/SAOShader.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/DepthLimitedBlurShader.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/UnpackDepthRGBAShader.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/SAOPass.js',
+    // Bloom
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/LuminosityHighPassShader.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/UnrealBloomPass.js',
+    // FXAA
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/FXAAShader.js',
+    // Environment (procedural room for HDRI-like reflections)
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/environments/RoomEnvironment.js'
+  ];
+
+  function loadScript(src, timeoutMs) {
+    return new Promise((resolve) => {
+      const s = document.createElement('script');
+      let done = false;
+      const finish = (ok) => { if(done) return; done = true; resolve(ok); };
+      const timer = setTimeout(() => finish(false), timeoutMs);
+      s.onload = () => { clearTimeout(timer); finish(true); };
+      s.onerror = () => { clearTimeout(timer); finish(false); };
+      s.src = src;
+      document.head.appendChild(s);
+    });
+  }
+
+  // Load all in parallel; resolves when either everything settles or the overall budget expires.
+  const allSettled = Promise.all(scripts.map(s => loadScript(s, POSTFX_TIMEOUT_MS)));
+  const overallTimeout = new Promise(resolve => setTimeout(resolve, TOTAL_TIMEOUT_MS));
+
+  Promise.race([allSettled, overallTimeout]).then(() => {
+    if(typeof initViewer === 'function') initViewer();
+  });
+})();
+
 function initViewer() {
 const container = document.getElementById('polymerViewer');
-if(!container) return;
+if(!container || typeof THREE === 'undefined') return;
 
 try {
   const testCanvas = document.createElement('canvas');
@@ -238,10 +503,21 @@ try {
 // ── Constants ──
 const SHELL_RADIUS_NM = 1185, BEAD_RADIUS_NM = 42;
 const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
-const BEAD_SEGS_W = isMobile ? 12 : 18;
-const BEAD_SEGS_H = isMobile ? 8 : 12;
-const SHELL_SEGS_W = isMobile ? 48 : 80;
-const SHELL_SEGS_H = isMobile ? 32 : 56;
+const BEAD_SEGS_W = isMobile ? 12 : 22;
+const BEAD_SEGS_H = isMobile ? 8 : 16;
+const SHELL_SEGS_W = isMobile ? 48 : 96;
+const SHELL_SEGS_H = isMobile ? 32 : 64;
+
+// Feature detection — each tier independently, so a partial load still gets partial FX.
+const HAS_COMPOSER = !isMobile && typeof THREE.EffectComposer !== 'undefined'
+                               && typeof THREE.RenderPass !== 'undefined'
+                               && typeof THREE.ShaderPass !== 'undefined';
+const HAS_SAO      = HAS_COMPOSER && typeof THREE.SAOPass !== 'undefined';
+const HAS_BLOOM    = HAS_COMPOSER && typeof THREE.UnrealBloomPass !== 'undefined';
+const HAS_FXAA     = HAS_COMPOSER && typeof THREE.FXAAShader !== 'undefined';
+const HAS_ENV      = typeof THREE.RoomEnvironment !== 'undefined'
+                  && typeof THREE.PMREMGenerator !== 'undefined';
+const USE_POSTFX   = HAS_COMPOSER && (HAS_SAO || HAS_BLOOM);
 
 // ── Animation timing ──
 const INITIAL_HOLD  = 2.5;
@@ -260,26 +536,126 @@ scene.background = null;
 const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
 camera.position.set(0, 0, 34);
 
-const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true, premultipliedAlpha: false, powerPreference: 'high-performance' });
+const renderer = new THREE.WebGLRenderer({
+  antialias: !isMobile,
+  alpha: true,
+  premultipliedAlpha: false,
+  powerPreference: 'high-performance'
+});
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
+// Physically-correct lighting + filmic tone mapping → the "rendered" look
+renderer.physicallyCorrectLights = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
 container.insertBefore(renderer.domElement, container.firstChild);
+
+// ── HDRI-like environment (procedural, zero network cost) ──
+// PMREMGenerator takes a scene (RoomEnvironment here) and pre-filters it into an
+// environment map that all PBR materials sample for reflections and indirect light.
+// If either dependency failed to load, we skip it — the scene still looks fine with
+// direct lighting alone.
+let envTexture = null;
+if(HAS_ENV) {
+  try {
+    const pmremGen = new THREE.PMREMGenerator(renderer);
+    pmremGen.compileEquirectangularShader();
+    const envScene = new THREE.RoomEnvironment();
+    envTexture = pmremGen.fromScene(envScene, 0.04).texture;
+    scene.environment = envTexture;
+    pmremGen.dispose();
+  } catch(e) {
+    console.warn('Environment map setup failed, continuing without:', e);
+    envTexture = null;
+  }
+}
+
+// ── Post-processing (SAO + Bloom + FXAA), each pass independently optional ──
+let composer = null, saoPass = null, bloomPass = null, fxaaPass = null;
+function initPostFX() {
+  if(!HAS_COMPOSER) return;
+  try {
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+
+    // SAO — Scalable Ambient Occlusion. Softer and larger-radius than SSAO,
+    // which better matches the Tachyon/VMD ambient-occlusion aesthetic (wide
+    // sample radius, gentle crease darkening rather than tight contact).
+    if(HAS_SAO) {
+      saoPass = new THREE.SAOPass(scene, camera, false, true);
+      saoPass.params.saoBias = 0.5;
+      saoPass.params.saoIntensity = 0.0035;   // subtle — too much and the beads look dirty
+      saoPass.params.saoScale = 8;
+      saoPass.params.saoKernelRadius = 40;
+      saoPass.params.saoMinResolution = 0;
+      saoPass.params.saoBlur = true;
+      saoPass.params.saoBlurRadius = 8;
+      saoPass.params.saoBlurStdDev = 4;
+      saoPass.params.saoBlurDepthCutoff = 0.01;
+      composer.addPass(saoPass);
+    }
+
+    // Subtle bloom — makes specular highlights read as luminous rather than painted.
+    if(HAS_BLOOM) {
+      bloomPass = new THREE.UnrealBloomPass(
+        new THREE.Vector2(container.clientWidth, container.clientHeight),
+        0.25,   // strength
+        0.85,   // radius
+        0.92    // threshold — only the brightest pixels bloom
+      );
+      composer.addPass(bloomPass);
+    }
+
+    // FXAA cleans up aliasing introduced by the AO/bloom passes.
+    if(HAS_FXAA) {
+      fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
+      const pr = renderer.getPixelRatio();
+      fxaaPass.material.uniforms['resolution'].value.set(
+        1 / (container.clientWidth * pr),
+        1 / (container.clientHeight * pr)
+      );
+      composer.addPass(fxaaPass);
+    }
+
+    // If no effect passes actually got added, don't use composer at all —
+    // a composer with only a RenderPass is just a slower renderer.render().
+    if(!saoPass && !bloomPass) {
+      composer = null;
+    }
+  } catch(e) {
+    console.warn('Post-processing setup failed, falling back to direct render:', e);
+    composer = null;
+  }
+}
 
 function resize() {
   const w = container.clientWidth, h = container.clientHeight;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+  if(composer) {
+    composer.setSize(w, h);
+    if(saoPass) saoPass.setSize(w, h);
+    if(bloomPass) bloomPass.setSize(w, h);
+    if(fxaaPass) {
+      const pr = renderer.getPixelRatio();
+      fxaaPass.material.uniforms['resolution'].value.set(1 / (w * pr), 1 / (h * pr));
+    }
+  }
 }
 resize();
 
-// ── Lighting ──
-const keyLight = new THREE.DirectionalLight(0xffffff, 0.59);
-const fillLight = new THREE.DirectionalLight(0xffffff, 0.25);
-const rimLight = new THREE.DirectionalLight(0xffffff, 0.36);
-const ambLight = new THREE.AmbientLight(0xffffff, 0.35);
-const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x443322, 0.11);
+// ── Lighting (three-point + ambient + hemi) ──
+// When the HDRI env map is active, we reduce direct light intensity because
+// the env map is already providing soft ambient fill; otherwise we use the
+// stronger values that match the original Phong-era setup.
+const lightScale = (HAS_ENV) ? 0.55 : 1.0;
+const keyLight = new THREE.DirectionalLight(0xffffff, 2.4 * lightScale);
+const fillLight = new THREE.DirectionalLight(0xffffff, 1.0 * lightScale);
+const rimLight = new THREE.DirectionalLight(0xffffff, 1.5 * lightScale);
+const ambLight = new THREE.AmbientLight(0xffffff, (HAS_ENV) ? 0.05 : 0.25);
+const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x443322, (HAS_ENV) ? 0.15 : 0.45);
 
 function setLP(l, hD, vD) {
   const h=hD*Math.PI/180, v=vD*Math.PI/180, d=20;
@@ -300,68 +676,59 @@ const COLORS = {
 const pivot = new THREE.Group();
 scene.add(pivot);
 
-// ── Reusable Object3D for matrix updates (avoids per-frame allocation) ──
 const _dummy = new THREE.Object3D();
 
-// ── Interaction state ──
-let isDragging = false, prevMouse = {x:0,y:0};
-let rotX = 0.75, rotY = 0.3;
+// ── Interaction ──
+let rotX = 0, rotY = 0;
+let autoRotateSpeed = 0;
+let isDragging = false;
 let hovered = false;
-let autoRotateSpeed = 0.004;
-pivot.rotation.set(rotX, rotY, 0);
+let lastX = 0, lastY = 0;
+let lastPinchDist = 0;
 
-// ── Controls ──
-renderer.domElement.addEventListener('mousedown', e => {
-  isDragging = true; prevMouse = {x:e.clientX, y:e.clientY};
+container.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  lastX = e.clientX; lastY = e.clientY;
 });
-window.addEventListener('mousemove', e => {
+window.addEventListener('mousemove', (e) => {
   if(!isDragging) return;
-  rotY += (e.clientX-prevMouse.x)*0.005;
-  rotX += (e.clientY-prevMouse.y)*0.005;
+  const dx = e.clientX - lastX, dy = e.clientY - lastY;
+  rotY += dx * 0.01;
+  rotX += dy * 0.01;
   rotX = Math.max(-Math.PI/2, Math.min(Math.PI/2, rotX));
   pivot.rotation.set(rotX, rotY, 0);
-  prevMouse = {x:e.clientX, y:e.clientY};
+  lastX = e.clientX; lastY = e.clientY;
 });
-window.addEventListener('mouseup', ()=>isDragging=false);
+window.addEventListener('mouseup', () => { isDragging = false; });
 
-renderer.domElement.addEventListener('touchstart', e => {
+container.addEventListener('touchstart', (e) => {
   if(e.touches.length === 1) {
-    isDragging=true; prevMouse={x:e.touches[0].clientX, y:e.touches[0].clientY};
-  }
-}, {passive:true});
-window.addEventListener('touchmove', e => {
-  if(!isDragging||!e.touches.length) return;
-  rotY+=(e.touches[0].clientX-prevMouse.x)*0.005;
-  rotX+=(e.touches[0].clientY-prevMouse.y)*0.005;
-  rotX=Math.max(-Math.PI/2,Math.min(Math.PI/2,rotX));
-  pivot.rotation.set(rotX,rotY,0);
-  prevMouse={x:e.touches[0].clientX,y:e.touches[0].clientY};
-}, {passive:true});
-window.addEventListener('touchend', ()=>isDragging=false, {passive:true});
-
-renderer.domElement.addEventListener('wheel', e => {
-  if(e.ctrlKey || e.metaKey) {
-    e.preventDefault();
-    camera.position.z = Math.max(20, Math.min(60, camera.position.z + e.deltaY*0.02));
-  }
-}, {passive:false});
-
-let lastPinchDist = 0;
-renderer.domElement.addEventListener('touchstart', e => {
-  if(e.touches.length === 2) {
-    isDragging = false;
+    isDragging = true;
+    lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+  } else if(e.touches.length === 2) {
     const dx = e.touches[0].clientX - e.touches[1].clientX;
     const dy = e.touches[0].clientY - e.touches[1].clientY;
-    lastPinchDist = Math.sqrt(dx*dx + dy*dy);
+    lastPinchDist = Math.hypot(dx, dy);
   }
 }, {passive:true});
-renderer.domElement.addEventListener('touchmove', e => {
-  if(e.touches.length === 2) {
+
+container.addEventListener('touchmove', (e) => {
+  if(e.touches.length === 1 && isDragging) {
+    const dx = e.touches[0].clientX - lastX, dy = e.touches[0].clientY - lastY;
+    rotY += dx * 0.01;
+    rotX += dy * 0.01;
+    rotX = Math.max(-Math.PI/2, Math.min(Math.PI/2, rotX));
+    pivot.rotation.set(rotX, rotY, 0);
+    lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
+  } else if(e.touches.length === 2) {
     const dx = e.touches[0].clientX - e.touches[1].clientX;
     const dy = e.touches[0].clientY - e.touches[1].clientY;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    const delta = lastPinchDist - dist;
-    camera.position.z = Math.max(20, Math.min(60, camera.position.z + delta*0.05));
+    const dist = Math.hypot(dx, dy);
+    if(lastPinchDist > 0) {
+      const scale = dist / lastPinchDist;
+      camera.position.z /= scale;
+      camera.position.z = Math.max(15, Math.min(80, camera.position.z));
+    }
     lastPinchDist = dist;
   }
 }, {passive:true});
@@ -407,10 +774,14 @@ function buildScene(data) {
   const chains = data.chains;
 
   chains.forEach(chain => {
-    const mat = new THREE.MeshPhongMaterial({
+    // Upgraded to MeshPhysicalMaterial with subtle clearcoat — the "wet render" sheen
+    const mat = new THREE.MeshPhysicalMaterial({
       color: COLORS[chain],
-      shininess: 30,
-      specular: new THREE.Color(0x0f0f0f),
+      roughness: 0.42,
+      metalness: 0.05,
+      clearcoat: 0.35,
+      clearcoatRoughness: 0.25,
+      reflectivity: 0.35,
       transparent: true,
       opacity: 1.0
     });
@@ -432,16 +803,26 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
+  // Nuclear-envelope shell — glassy physical material
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
-  const shellMat = new THREE.MeshPhongMaterial({
-    color: 0x888888, transparent: true, opacity: 0.30,
-    shininess: 53, specular: new THREE.Color(0x333333),
-    side: THREE.DoubleSide, depthWrite: false
+  const shellMat = new THREE.MeshPhysicalMaterial({
+    color: 0x888888,
+    transparent: true,
+    opacity: 0.28,
+    roughness: 0.22,
+    metalness: 0.0,
+    clearcoat: 0.6,
+    clearcoatRoughness: 0.15,
+    side: THREE.DoubleSide,
+    depthWrite: false
   });
   shellMesh = new THREE.Mesh(shellGeo, shellMat);
   shellMesh.rotation.x = Math.PI;
   pivot.add(shellMesh);
+
+  // Initialize post-processing after scene is built
+  initPostFX();
 }
 
 function updateBeads(frameA, frameB, t) {
@@ -534,7 +915,9 @@ function animate(timestamp) {
     updateBeads(0, 0, 0);
   }
 
-  renderer.render(scene, camera);
+  // Render via composer if post-processing is active, else direct render
+  if(composer) composer.render();
+  else renderer.render(scene, camera);
 }
 
 // ── Visibility & resize ──
@@ -554,5 +937,9 @@ window._polymerData
 
 }
 </script>
+
+<!-- GoatCounter analytics — privacy-first, cookieless, no consent banner needed -->
+<script data-goatcounter="https://amithzafal.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
