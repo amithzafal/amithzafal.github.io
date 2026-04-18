@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" as="image" href="./bg3-BW.png" fetchpriority="high">
     <script>window._polymerData = fetch('./polymer_frames.json').then(r => r.ok ? r.json() : Promise.reject(r.status));</script>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;700&family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap"></noscript>
     <style>
         :root {
             --primary-color: #333;
@@ -18,13 +18,13 @@
             --secondary-hover: #0000CD;
             --background-color: rgba(255, 255, 255, 0.55);
             --card-bg: rgba(255, 255, 255, 0.5);
-            --nav-bg: rgba(255, 255, 255, 0.65);
-            --nav-bg-scrolled: rgba(255, 255, 255, 0.8);
+            --nav-bg: rgba(255, 255, 255, 0.45);
+            --nav-bg-scrolled: rgba(255, 255, 255, 0.55);
             --nav-border: rgba(0, 0, 0, 0.06);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Nunito', sans-serif;
@@ -34,13 +34,18 @@
             background-color: #d8d5d0;
         }
 
-        /* Fixed background on its own GPU layer — avoids Safari repaint storm */
+        /* Fixed background — using position:fixed on a dedicated layer rather
+           than background-attachment:fixed (which has known iOS Safari bugs).
+           No will-change: transform — on iOS that promotes the element to its
+           own compositor layer, which can sub-pixel-drift during momentum scroll.
+           The browser composits this correctly without the hint. */
         .bg-fixed {
             position: fixed;
             inset: 0;
             z-index: -1;
             background: #d8d5d0 url('./bg3-BW.png') center / cover no-repeat;
-            will-change: transform;
+            /* transform: translateZ(0) forces a GPU layer without the drift issues */
+            transform: translateZ(0);
         }
 
         /* ── Sticky nav ── */
@@ -49,8 +54,8 @@
             top: 0;
             z-index: 100;
             background: var(--nav-bg);
-            backdrop-filter: blur(14px) saturate(140%);
-            -webkit-backdrop-filter: blur(14px) saturate(140%);
+            backdrop-filter: blur(18px) saturate(150%);
+            -webkit-backdrop-filter: blur(18px) saturate(150%);
             border-bottom: 1px solid transparent;
             transition: background 0.3s ease, border-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
             padding: 14px 0;
@@ -159,10 +164,14 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .container { width: 90%; max-width: 1000px; margin: 0 auto; padding: 20px; }
-        header { padding-top: 50px; text-align: left; }
+        header { padding-top: 50px; padding-bottom: 20px; text-align: left; }
 
-        /* Section anchor offset for sticky nav */
-        section { scroll-margin-top: 80px; }
+        /* Scroll anchor offsets for sticky nav.
+           - header#home: lands with the big <h1> comfortably below the nav.
+           - sections: larger offset so section headings have breathing room
+             above them, not cramped against the nav's underside. */
+        header#home { scroll-margin-top: 80px; }
+        section { scroll-margin-top: 120px; }
 
         h1, h2, h3 {
             font-family: 'Oswald', sans-serif;
@@ -262,8 +271,8 @@
                 flex-direction: column;
                 gap: 0;
                 background: var(--nav-bg-scrolled);
-                backdrop-filter: blur(14px) saturate(140%);
-                -webkit-backdrop-filter: blur(14px) saturate(140%);
+                backdrop-filter: blur(18px) saturate(150%);
+                -webkit-backdrop-filter: blur(18px) saturate(150%);
                 border-radius: 10px;
                 border: 1px solid var(--nav-border);
                 padding: 0 12px;
@@ -281,7 +290,9 @@
                 font-size: 1rem;
             }
             .nav-links a::after { display: none; }
-            .nav-brand { opacity: 1; transform: none; }
+            /* On mobile the brand name follows the same IntersectionObserver
+               rule as desktop — hidden while the hero header is visible,
+               appears once the user has scrolled past it. */
         }
 
         footer {
@@ -293,14 +304,17 @@
         footer p { margin: 0; opacity: 0.75; }
 
         /* ── Contact card ── */
+        /* Deliberately styled differently from publication cards: no blue band,
+           soft all-around border, slightly warmer background tint. Reads as a
+           "profile panel" rather than another entry in a list. */
         .contact-card {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            padding: 24px 28px;
+            background-color: rgba(255, 255, 255, 0.65);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            padding: 26px 30px;
             margin-top: 10px;
             margin-bottom: 30px;
-            border-left: 4px solid var(--secondary-color);
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
         .contact-grid {
             display: grid;
@@ -395,26 +409,24 @@
             <div class="container">
                 <h1>Amith Zafal Abdulla</h1>
                 <p>HFSP Postdoctoral fellow</p>
+
+                <h2>Welcome to my page</h2>
+
+                <div class="intro-block">
+                    <div class="viewer-wrap" id="polymerViewer">
+                        <div class="viewer-caption">Simulating chromosome territories</div>
+                    </div>
+
+                    <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p>
+                    <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
+                    <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
+                    <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
+                </div>
             </div>
         </header>
 
         <main class="main-content">
             <div class="container">
-                <section id="about">
-                    <h2>Welcome to my page</h2>
-
-                    <div class="intro-block">
-                        <div class="viewer-wrap" id="polymerViewer">
-                            <div class="viewer-caption">Simulating chromosome territories</div>
-                        </div>
-
-                        <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p>
-                        <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                        <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
-                        <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
-                    </div>
-                </section>
-
                 <section id="publications">
                     <h3>Some of my works:</h3>
                     <ul class="publication-list">
@@ -458,7 +470,7 @@
         </main>
 
         <footer>
-            <p>&copy; Amith Zafal Abdulla &middot; Last updated April 2026</p>
+            <p>&copy; Amith Zafal Abdulla</p>
         </footer>
     </div>
 
@@ -505,35 +517,46 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.setAttribute('aria-expanded', 'false');
     }));
 
-    // Brand link (name in nav when scrolled) → scroll all the way back up.
-    // This is a UX affordance: if you've scrolled far down and the name is visible
-    // in the nav, clicking it takes you back to the hero area.
-    const brandLink = document.querySelector('.nav-brand');
-    if(brandLink) brandLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    // Brand link uses native href="#home" behavior — consistent with the Home
+    // nav link, respects scroll-margin-top on the header.
 
     // ── Nav: scroll-spy ──
+    // Uses scroll position directly rather than intersection ratios — this keeps
+    // the active-link threshold aligned with what the user actually sees. The
+    // active section is whichever one's top has crossed above the nav's bottom
+    // edge. No rootMargin tuning, no percentage thresholds.
     const sections = ['home','publications','contact'].map(id => document.getElementById(id)).filter(Boolean);
     const linkMap = {};
     links.querySelectorAll('a[data-section]').forEach(a => linkMap[a.dataset.section] = a);
 
+    let currentActive = null;
     const setActive = (id) => {
+        if(id === currentActive) return;
+        currentActive = id;
         Object.values(linkMap).forEach(a => a.classList.remove('active'));
         if(linkMap[id]) linkMap[id].classList.add('active');
     };
 
-    const spy = new IntersectionObserver((entries) => {
-        let best = null;
-        entries.forEach(e => {
-            if(e.isIntersecting) {
-                if(!best || e.intersectionRatio > best.intersectionRatio) best = e;
-            }
+    const updateActive = () => {
+        const navBottom = nav.getBoundingClientRect().bottom;
+        // Find the last section whose top is above the nav's bottom edge
+        let active = sections[0]?.id;
+        for(const s of sections) {
+            if(s.getBoundingClientRect().top <= navBottom + 10) active = s.id;
+        }
+        setActive(active);
+    };
+
+    // Throttle with rAF for smooth updates without thrashing layout
+    let scrollRaf = null;
+    window.addEventListener('scroll', () => {
+        if(scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+            updateActive();
+            scrollRaf = null;
         });
-        if(best) setActive(best.target.id);
-    }, { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
-    sections.forEach(s => spy.observe(s));
+    }, { passive: true });
+    updateActive();
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -603,14 +626,30 @@ try {
 
 // ── Constants ──
 const SHELL_RADIUS_NM = 1185, BEAD_RADIUS_NM = 42;
-const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
-const BEAD_SEGS_W = isMobile ? 12 : 22;
-const BEAD_SEGS_H = isMobile ? 8 : 16;
-const SHELL_SEGS_W = isMobile ? 48 : 96;
-const SHELL_SEGS_H = isMobile ? 32 : 64;
+
+// ── Capability detection ──
+// Two separate concerns that shouldn't share the same flag:
+//  1. Geometry LOD — whether to use lower-poly beads/shell (one-time decision,
+//     evaluated at startup; rebuilding geometry mid-session is expensive).
+//  2. Post-processing — whether SAO/bloom/FXAA passes are worth enabling
+//     (device-capability question, independent of viewport size).
+const isMobileUA = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const isSmallViewport = window.innerWidth < 768;
+// Geometry decision: low-poly if either mobile UA or small viewport at startup.
+const LOW_POLY = isMobileUA || isSmallViewport;
+const BEAD_SEGS_W = LOW_POLY ? 12 : 22;
+const BEAD_SEGS_H = LOW_POLY ? 8 : 16;
+const SHELL_SEGS_W = LOW_POLY ? 48 : 96;
+const SHELL_SEGS_H = LOW_POLY ? 32 : 64;
+
+// Post-FX decision: based on hardware concurrency and not touching screen size.
+// Mobile devices with 6+ cores (modern iPhones, flagship Android) handle the
+// post stack fine; the real culprit for performance was always GPU fillrate on
+// older integrated graphics, which correlates better with core count than UA.
+const ENABLE_POSTFX = (navigator.hardwareConcurrency || 4) >= 6;
 
 // Feature detection — each tier independently, so a partial load still gets partial FX.
-const HAS_COMPOSER = !isMobile && typeof THREE.EffectComposer !== 'undefined'
+const HAS_COMPOSER = ENABLE_POSTFX && typeof THREE.EffectComposer !== 'undefined'
                                && typeof THREE.RenderPass !== 'undefined'
                                && typeof THREE.ShaderPass !== 'undefined';
 const HAS_SAO      = HAS_COMPOSER && typeof THREE.SAOPass !== 'undefined';
@@ -638,7 +677,7 @@ const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
 camera.position.set(0, 0, 34);
 
 const renderer = new THREE.WebGLRenderer({
-  antialias: !isMobile,
+  antialias: !LOW_POLY,
   alpha: true,
   premultipliedAlpha: false,
   powerPreference: 'high-performance'
