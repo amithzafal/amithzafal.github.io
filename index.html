@@ -287,18 +287,82 @@
         footer {
             background-color: var(--primary-color);
             color: white; padding: 20px 0; text-align: center;
-            font-size: 0.9em; display: flex; flex-direction: column;
-            justify-content: center; margin-top: 40px;
+            font-size: 0.85em;
+            margin-top: 40px;
         }
-        footer p { margin-bottom: 5px; font-size: 0.9em; }
-        footer a { color: inherit; }
-        .social-links { margin-bottom: 15px; }
-        .social-links a {
-            color: white; font-size: 24px; margin: 0 10px;
-            transition: color 0.3s ease, transform 0.3s ease;
-            display: inline-block;
+        footer p { margin: 0; opacity: 0.75; }
+
+        /* ── Contact card ── */
+        .contact-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 24px 28px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--secondary-color);
         }
-        .social-links a:hover { color: #ccc; transform: translateY(-2px); text-decoration: none; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 32px;
+            margin-bottom: 20px;
+        }
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .contact-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            font-weight: 400;
+        }
+        .contact-value {
+            font-size: 1rem;
+            color: var(--primary-color);
+            line-height: 1.5;
+        }
+        .contact-value a {
+            color: var(--secondary-color);
+            font-weight: 400;
+        }
+        .contact-socials {
+            display: flex;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            flex-wrap: wrap;
+        }
+        .contact-socials a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(0, 0, 139, 0.06);
+            border-radius: 6px;
+            color: var(--primary-color);
+            font-family: 'Oswald', sans-serif;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+        .contact-socials a:hover {
+            background: rgba(0, 0, 139, 0.12);
+            color: var(--secondary-color);
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+        .contact-socials a svg { flex-shrink: 0; }
+
+        @media screen and (max-width: 600px) {
+            .contact-grid { grid-template-columns: 1fr; gap: 16px; }
+            .contact-card { padding: 20px 22px; }
+        }
 
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
@@ -356,7 +420,7 @@
                     <ul class="publication-list">
                         <li style="padding: 15px 20px;"><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization, <i>Macromolecules</i> 2023</a> | <a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2.full.pdf" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">pdf</a></li>
                         <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling, <i>Curr Opin Genet Dev</i> 2023</a></li>
-                        <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory, <i>Nulceic Acids Research</i> 2022</a></li>
+                        <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory, <i>Nucleic Acids Research</i> 2022</a></li>
                         <li><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010450" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells, <i>PLoS CB</i> 2022</a></li>
                         <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers, <i>Langmuir</i> 2021</a></li>
                         <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria, <i>Soft Matter</i> 2020</a></li>
@@ -367,19 +431,34 @@
 
                 <section id="contact">
                     <h3>Contact</h3>
-                    <p>Feel free to reach out to me at: <span id="email-placeholder">Loading email...</span></p>
+                    <div class="contact-card">
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <span class="contact-label">Email</span>
+                                <span class="contact-value" id="email-placeholder">Loading…</span>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-label">Affiliation</span>
+                                <span class="contact-value">Brandeis University<br>415 South Street, Waltham MA 02453</span>
+                            </div>
+                        </div>
+                        <div class="contact-socials">
+                            <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
+                                <span>Scholar</span>
+                            </a>
+                            <a href="https://bsky.app/profile/amithzafal.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 600 530" fill="currentColor" aria-hidden="true"><path d="M135.72 44.03C202.22 93.99 273.74 195.28 300 249.64c26.26-54.36 97.78-155.65 164.28-205.61C512.26 8.02 590-19.55 590 68.94c0 17.67-10.13 148.48-16.07 169.72-20.67 73.86-96.01 92.7-163.05 81.26 117.18 19.95 147.03 86.02 82.67 152.08-122.27 125.48-175.72-31.48-189.42-71.61-2.51-7.35-3.69-10.78-3.71-7.87-.03-2.91-1.2.52-3.72 7.87-13.7 40.13-67.14 197.09-189.42 71.61-64.36-66.06-34.51-132.13 82.67-152.08-67.04 11.44-142.38-7.4-163.05-81.26C20.96 217.42 10.83 86.61 10.83 68.94c0-88.49 77.74-60.92 125.72-30.88l-.83 6z"/></svg>
+                                <span>Bluesky</span>
+                            </a>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>
 
         <footer>
-            <div class="social-links">
-                <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
-                </a>
-            </div>
-            <p><a href="https://bsky.app/profile/amithzafal.bsky.social" target="_blank" rel="noopener noreferrer">@amithzafal.bsky.social</a></p>
-            <p>415 South Street, Waltham MA USA 02453</p>
+            <p>&copy; Amith Zafal Abdulla &middot; Last updated April 2026</p>
         </footer>
     </div>
 
@@ -389,14 +468,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const user='amithzafal', domain='brandeis.edu', el=document.getElementById('email-placeholder');
     if(el) el.innerHTML=`<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
 
-    // ── Nav: scroll-shrink ──
+    // ── Nav: shrink when the hero header has scrolled out of view ──
+    // Using IntersectionObserver instead of a scroll-position threshold means
+    // this works correctly on every screen size and aspect ratio — mobile,
+    // tablet, desktop, ultra-wide, short laptops — without hard-coded pixel
+    // values. The nav simply shrinks when the <h1>-containing <header> is no
+    // longer visible in the viewport, so we never get duplicate-name states.
     const nav = document.getElementById('siteNav');
-    const onScroll = () => {
-        if(window.scrollY > 40) nav.classList.add('scrolled');
-        else nav.classList.remove('scrolled');
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    const heroHeader = document.getElementById('home');
+    if(heroHeader) {
+        const headerObs = new IntersectionObserver((entries) => {
+            // Shrink nav when the header is NOT intersecting (scrolled out).
+            nav.classList.toggle('scrolled', !entries[0].isIntersecting);
+        }, {
+            // Trigger when header is fully past the top of viewport.
+            // Small negative top margin (-60px) accounts for the nav's own height
+            // so shrink happens just as the last bit of header disappears behind it.
+            rootMargin: '-60px 0px 0px 0px',
+            threshold: 0
+        });
+        headerObs.observe(heroHeader);
+    }
 
     // ── Nav: mobile toggle ──
     const toggle = document.getElementById('navToggle');
@@ -412,6 +504,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
     }));
+
+    // Brand link (name in nav when scrolled) → scroll all the way back up.
+    // This is a UX affordance: if you've scrolled far down and the name is visible
+    // in the nav, clicking it takes you back to the hero area.
+    const brandLink = document.querySelector('.nav-brand');
+    if(brandLink) brandLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     // ── Nav: scroll-spy ──
     const sections = ['home','publications','contact'].map(id => document.getElementById(id)).filter(Boolean);
@@ -545,31 +646,19 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
-// Physically-correct lighting + filmic tone mapping → the "rendered" look
-renderer.physicallyCorrectLights = true;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
+// Neutral tone mapping — Tachyon matte renders don't use filmic curves.
+// ACES would slightly darken mid-tones and warm shadows, muting our flat look.
+renderer.toneMapping = THREE.NoToneMapping;
+renderer.toneMappingExposure = 1.0;
 container.insertBefore(renderer.domElement, container.firstChild);
 
-// ── HDRI-like environment (procedural, zero network cost) ──
-// PMREMGenerator takes a scene (RoomEnvironment here) and pre-filters it into an
-// environment map that all PBR materials sample for reflections and indirect light.
-// If either dependency failed to load, we skip it — the scene still looks fine with
-// direct lighting alone.
+// ── Environment map: intentionally NOT applied to scene ──
+// For the Tachyon matte look we want pure Lambertian diffuse without any
+// environment reflection or indirect PBR lighting. MeshLambertMaterial doesn't
+// sample scene.environment anyway, so leaving this off is both correct and
+// slightly faster. If you later switch beads back to MeshPhysicalMaterial,
+// re-enable by setting scene.environment = envTexture below.
 let envTexture = null;
-if(HAS_ENV) {
-  try {
-    const pmremGen = new THREE.PMREMGenerator(renderer);
-    pmremGen.compileEquirectangularShader();
-    const envScene = new THREE.RoomEnvironment();
-    envTexture = pmremGen.fromScene(envScene, 0.04).texture;
-    scene.environment = envTexture;
-    pmremGen.dispose();
-  } catch(e) {
-    console.warn('Environment map setup failed, continuing without:', e);
-    envTexture = null;
-  }
-}
 
 // ── Post-processing (SAO + Bloom + FXAA), each pass independently optional ──
 let composer = null, saoPass = null, bloomPass = null, fxaaPass = null;
@@ -579,33 +668,36 @@ function initPostFX() {
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(new THREE.RenderPass(scene, camera));
 
-    // SAO — Scalable Ambient Occlusion. Softer and larger-radius than SSAO,
-    // which better matches the Tachyon/VMD ambient-occlusion aesthetic (wide
-    // sample radius, gentle crease darkening rather than tight contact).
+    // SAO — Scalable Ambient Occlusion. Cranked up to match the deep, wide
+    // crease darkening of Tachyon's -aasamples ambient-occlusion renders.
+    // With Lambertian beads and soft lighting, the AO is doing most of the
+    // visual work — so it needs to be pronounced, not subtle.
     if(HAS_SAO) {
       saoPass = new THREE.SAOPass(scene, camera, false, true);
-      saoPass.params.saoBias = 0.5;
-      saoPass.params.saoIntensity = 0.0035;   // subtle — too much and the beads look dirty
-      saoPass.params.saoScale = 8;
-      saoPass.params.saoKernelRadius = 40;
+      saoPass.params.saoBias = 0.3;
+      saoPass.params.saoIntensity = 0.025;     // ~7x stronger than before
+      saoPass.params.saoScale = 12;
+      saoPass.params.saoKernelRadius = 60;     // wider sampling = softer falloff
       saoPass.params.saoMinResolution = 0;
       saoPass.params.saoBlur = true;
-      saoPass.params.saoBlurRadius = 8;
-      saoPass.params.saoBlurStdDev = 4;
+      saoPass.params.saoBlurRadius = 10;
+      saoPass.params.saoBlurStdDev = 5;
       saoPass.params.saoBlurDepthCutoff = 0.01;
       composer.addPass(saoPass);
     }
 
-    // Subtle bloom — makes specular highlights read as luminous rather than painted.
-    if(HAS_BLOOM) {
-      bloomPass = new THREE.UnrealBloomPass(
-        new THREE.Vector2(container.clientWidth, container.clientHeight),
-        0.25,   // strength
-        0.85,   // radius
-        0.92    // threshold — only the brightest pixels bloom
-      );
-      composer.addPass(bloomPass);
-    }
+    // Bloom intentionally disabled: Tachyon matte renders have no specular
+    // highlights, so there's nothing luminous to bloom. Leaving it on against
+    // Lambertian materials just gives a uniform slight haze that washes out
+    // the AO depth we worked for. Keep the code path alive in case you want
+    // to re-enable it later.
+    // if(HAS_BLOOM) {
+    //   bloomPass = new THREE.UnrealBloomPass(
+    //     new THREE.Vector2(container.clientWidth, container.clientHeight),
+    //     0.25, 0.85, 0.92
+    //   );
+    //   composer.addPass(bloomPass);
+    // }
 
     // FXAA cleans up aliasing introduced by the AO/bloom passes.
     if(HAS_FXAA) {
@@ -646,16 +738,15 @@ function resize() {
 }
 resize();
 
-// ── Lighting (three-point + ambient + hemi) ──
-// When the HDRI env map is active, we reduce direct light intensity because
-// the env map is already providing soft ambient fill; otherwise we use the
-// stronger values that match the original Phong-era setup.
-const lightScale = (HAS_ENV) ? 0.55 : 1.0;
-const keyLight = new THREE.DirectionalLight(0xffffff, 2.4 * lightScale);
-const fillLight = new THREE.DirectionalLight(0xffffff, 1.0 * lightScale);
-const rimLight = new THREE.DirectionalLight(0xffffff, 1.5 * lightScale);
-const ambLight = new THREE.AmbientLight(0xffffff, (HAS_ENV) ? 0.05 : 0.25);
-const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x443322, (HAS_ENV) ? 0.15 : 0.45);
+// ── Lighting — Tachyon-style flat, soft illumination ──
+// Tachyon AO renders use weak directional light + strong ambient so the AO
+// itself does the shading work. Strong key lights create hotspots that fight
+// the "pure AO render" look we want.
+const keyLight = new THREE.DirectionalLight(0xffffff, 0.35);
+const fillLight = new THREE.DirectionalLight(0xffffff, 0.15);
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.20);
+const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0x888888, 0.25);
 
 function setLP(l, hD, vD) {
   const h=hD*Math.PI/180, v=vD*Math.PI/180, d=20;
@@ -679,7 +770,11 @@ scene.add(pivot);
 const _dummy = new THREE.Object3D();
 
 // ── Interaction ──
-let rotX = 0, rotY = 0;
+// Initial pivot rotation — slight tilt looking into the nucleus, matches
+// the VMD/Tachyon molecular-viewer convention of "looking from above and slightly in"
+// rather than a flat head-on view.
+let rotX = -0.22, rotY = 0.15;
+pivot.rotation.set(rotX, rotY, 0);
 let autoRotateSpeed = 0;
 let isDragging = false;
 let hovered = false;
@@ -774,14 +869,11 @@ function buildScene(data) {
   const chains = data.chains;
 
   chains.forEach(chain => {
-    // Upgraded to MeshPhysicalMaterial with subtle clearcoat — the "wet render" sheen
-    const mat = new THREE.MeshPhysicalMaterial({
+    // Tachyon/VMD-style matte surface: pure Lambertian diffuse, no specular,
+    // no clearcoat, no environment reflections. This is what gives molecular
+    // ray-traces their characteristic solid, chalky appearance.
+    const mat = new THREE.MeshLambertMaterial({
       color: COLORS[chain],
-      roughness: 0.42,
-      metalness: 0.05,
-      clearcoat: 0.35,
-      clearcoatRoughness: 0.25,
-      reflectivity: 0.35,
       transparent: true,
       opacity: 1.0
     });
@@ -803,17 +895,14 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
-  // Nuclear-envelope shell — glassy physical material
+  // Nuclear envelope shell — matte glass, as in Tachyon renders: subtle, frosted,
+  // no specular highlights. Using Lambert rather than Physical avoids the shiny "bubble" look.
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
-  const shellMat = new THREE.MeshPhysicalMaterial({
-    color: 0x888888,
+  const shellMat = new THREE.MeshLambertMaterial({
+    color: 0xaaaaaa,
     transparent: true,
-    opacity: 0.28,
-    roughness: 0.22,
-    metalness: 0.0,
-    clearcoat: 0.6,
-    clearcoatRoughness: 0.15,
+    opacity: 0.22,
     side: THREE.DoubleSide,
     depthWrite: false
   });
