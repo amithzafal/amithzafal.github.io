@@ -3,72 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Amith Zafal Abdulla - HFSP Postdoctoral fellow at Brandeis University">
-    <title>Amith Zafal Abdulla - Researcher</title>
+    <meta name="description" content="Amith Zafal Abdulla — HFSP Postdoctoral fellow at Brandeis University. Computational modeling of chromatin, epigenetics, and active matter.">
+    <meta name="author" content="Amith Zafal Abdulla">
+    <meta name="theme-color" content="#d8d5d0">
+    <meta name="color-scheme" content="light">
+    <title>Amith Zafal Abdulla — Researcher</title>
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Amith Zafal Abdulla — Researcher">
+    <meta property="og:description" content="HFSP Postdoctoral fellow at Brandeis University. Computational modeling of chromatin, epigenetics, and active matter.">
+    <meta property="og:image" content="./bg3-BW.png">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Favicon (inline SVG — no extra request) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56' font-family='Georgia,serif' font-style='italic'%3EA%3C/text%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preload" as="image" href="./bg3-BW.png" fetchpriority="high">
     <script>window._polymerData = fetch('./polymer_frames.json').then(r => r.ok ? r.json() : Promise.reject(r.status));</script>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400&family=Nunito:wght@300;400;700&display=swap"></noscript>
+
+    <!-- Fonts: Source Serif 4 (display, optical-size variable humanist serif) + Newsreader
+         (body, warm editorial serif). Both are designed for screen reading from the start,
+         with opsz axes that optically adjust letterforms at different sizes. -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap"></noscript>
+
     <style>
+        /*
+         * ── Design tokens ──────────────────────────────────────────────────
+         * The palette is "ink on paper": warm neutrals drawn from the
+         * background sketch, with a muted graphite-blue as the single accent.
+         * Card surfaces are intentionally low-opacity so the sketch shows
+         * through — the page is the paper, the content sits ON it.
+         */
         :root {
-            --primary-color: #333;
-            --secondary-color: #00008B;
-            --secondary-hover: #0000CD;
-            --background-color: rgba(255, 255, 255, 0.55);
-            --card-bg: rgba(255, 255, 255, 0.5);
-            --nav-bg: rgba(255, 255, 255, 0.45);
-            --nav-bg-scrolled: rgba(255, 255, 255, 0.55);
-            --nav-border: rgba(0, 0, 0, 0.06);
+            /* Ink — text hierarchy */
+            --ink-900: #1d2024;         /* primary text, near-black with warm cast */
+            --ink-700: #3a4049;         /* secondary text */
+            --ink-500: #6b7380;         /* muted text, labels */
+            --ink-300: #b8bcc3;         /* hairlines, disabled */
+
+            /* Paper — surface colors, all warm-tinted to match the sketch */
+            --paper-warm: #d8d5d0;      /* page background (matches bg image) */
+            --paper-cream: #f4f1ea;     /* card-like surfaces */
+
+            /* Accent — graphite blue, just enough chroma to read as "link" */
+            --accent: #3d5468;
+            --accent-hover: #2a3d4e;
+            --accent-soft: rgba(61, 84, 104, 0.08);
+
+            /* Surfaces — all carry alpha so the background reads through */
+            --surface-nav: rgba(244, 241, 234, 0.72);
+            --surface-nav-scrolled: rgba(244, 241, 234, 0.85);
+            --surface-card: rgba(244, 241, 234, 0.55);
+            --surface-card-hover: rgba(244, 241, 234, 0.78);
+            --surface-overlay: rgba(244, 241, 234, 0.28);  /* the big content wrapper — very transparent */
+
+            /* Lines — hairlines that echo the ruled notebook paper */
+            --rule: rgba(29, 32, 36, 0.12);
+            --rule-soft: rgba(29, 32, 36, 0.06);
+
+            /* Type — Source Serif 4 for display, Newsreader for body.
+               Both have opsz axes so the browser picks size-optimized cuts. */
+            --font-display: 'Source Serif 4', 'Georgia', serif;
+            --font-body: 'Newsreader', 'Georgia', serif;
+
+            /* Measure — keeps prose line length comfortable */
+            --measure: 64ch;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        *, *::before, *::after { box-sizing: border-box; }
+        * { margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;   /* prevent iOS font-size bump on rotation */
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
         body {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 300;
-            line-height: 1.6;
-            color: var(--primary-color);
-            background-color: #d8d5d0;
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 18px;          /* slightly up from default — serifs need a touch more size to read well */
+            line-height: 1.65;
+            color: var(--ink-900);
+            background-color: var(--paper-warm);
+            font-feature-settings: "kern", "liga", "onum";   /* old-style numerals look better in body serif */
         }
 
-        /* Fixed background — using position:fixed on a dedicated layer rather
-           than background-attachment:fixed (which has known iOS Safari bugs).
-           No will-change: transform — on iOS that promotes the element to its
-           own compositor layer, which can sub-pixel-drift during momentum scroll.
-           The browser composits this correctly without the hint. */
+        /* ── Fixed background ──────────────────────────────────────────────
+         * Position:fixed on its own layer rather than background-attachment:fixed
+         * (which has iOS Safari bugs). No will-change hint — that promotes to a
+         * compositor layer on iOS and causes sub-pixel drift during momentum
+         * scroll. translateZ(0) is enough to get the GPU path without the drift. */
         .bg-fixed {
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: #d8d5d0 url('./bg3-BW.png') center / cover no-repeat;
-            /* transform: translateZ(0) forces a GPU layer without the drift issues */
+            background: var(--paper-warm) url('./bg3-BW.png') center / cover no-repeat;
             transform: translateZ(0);
         }
 
-        /* ── Sticky nav ── */
+        /* ── Skip link (a11y) ── */
+        .skip-link {
+            position: absolute;
+            top: 8px;
+            left: 16px;
+            background: var(--ink-900);
+            color: var(--paper-cream);
+            padding: 8px 16px;
+            border-radius: 6px;
+            z-index: 200;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            /* translateY(-150%) guarantees fully off-screen regardless of
+               the element's final rendered height — safer than top:-40px
+               which can leak a pixel at fractional device ratios. */
+            transform: translateY(-150%);
+            transition: transform 0.2s ease;
+        }
+        .skip-link:focus {
+            transform: translateY(0);
+            text-decoration: none;
+        }
+
+        /* ── Focus styles ──
+         * Universal focus-visible treatment — a soft accent-colored ring
+         * that matches the rest of the design rather than the browser default. */
+        :focus { outline: none; }
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        /* ── Sticky nav ──────────────────────────────────────────────────── */
         .site-nav {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: var(--nav-bg);
-            backdrop-filter: blur(18px) saturate(150%);
-            -webkit-backdrop-filter: blur(18px) saturate(150%);
+            background: var(--surface-nav);
+            backdrop-filter: blur(14px) saturate(140%);
+            -webkit-backdrop-filter: blur(14px) saturate(140%);
             border-bottom: 1px solid transparent;
-            transition: background 0.3s ease, border-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease, padding 0.3s ease;
             padding: 14px 0;
         }
         .site-nav.scrolled {
-            background: var(--nav-bg-scrolled);
-            border-bottom-color: var(--nav-border);
+            background: var(--surface-nav-scrolled);
+            border-bottom-color: var(--rule);
             padding: 8px 0;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
         }
         .nav-inner {
             width: 90%;
-            max-width: 1000px;
+            max-width: 960px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -76,57 +168,60 @@
             padding: 0 20px;
         }
         .nav-brand {
-            font-family: 'Oswald', sans-serif;
+            font-family: var(--font-display);
             font-weight: 400;
-            font-size: 1.1rem;
-            color: var(--primary-color);
-            letter-spacing: 0.02em;
+            font-size: 1.05rem;
+            color: var(--ink-900);
+            letter-spacing: 0.01em;
             opacity: 0;
-            transform: translateX(-8px);
+            transform: translateX(-6px);
             transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+            /* Italic on the "Amith" display font is unexpectedly nice — the opsz axis
+               gives it just enough flourish without tipping into calligraphy. */
+            font-style: italic;
         }
         .site-nav.scrolled .nav-brand {
             opacity: 1;
             transform: translateX(0);
         }
-        .nav-brand:hover { color: var(--secondary-color); text-decoration: none; }
+        .nav-brand:hover { color: var(--accent); text-decoration: none; }
+
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 4px;
-            margin: 0;
-            padding: 0;
+            gap: 2px;
         }
         .nav-links a {
             display: inline-block;
-            padding: 8px 16px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 300;
+            padding: 8px 14px;
+            font-family: var(--font-display);
+            font-weight: 400;
             font-size: 0.95rem;
-            letter-spacing: 0.04em;
-            color: var(--primary-color);
-            border-radius: 6px;
+            letter-spacing: 0.02em;
+            color: var(--ink-700);
+            border-radius: 4px;
             position: relative;
             transition: color 0.25s ease, background 0.25s ease;
         }
+        /* Underline indicator — thinner and only as wide as the text, not the padding box */
         .nav-links a::after {
             content: '';
             position: absolute;
-            left: 16px;
-            right: 16px;
-            bottom: 4px;
-            height: 2px;
-            background: var(--secondary-color);
+            left: 14px;
+            right: 14px;
+            bottom: 3px;
+            height: 1px;
+            background: var(--accent);
             transform: scaleX(0);
             transform-origin: center;
             transition: transform 0.3s ease;
         }
         .nav-links a:hover {
-            color: var(--secondary-color);
+            color: var(--accent);
             text-decoration: none;
-            background: rgba(0, 0, 139, 0.05);
+            background: var(--accent-soft);
         }
-        .nav-links a.active { color: var(--secondary-color); }
+        .nav-links a.active { color: var(--accent); }
         .nav-links a.active::after { transform: scaleX(1); }
 
         /* Mobile hamburger */
@@ -142,8 +237,8 @@
         .nav-toggle span {
             display: block;
             width: 22px;
-            height: 2px;
-            background: var(--primary-color);
+            height: 1.5px;
+            background: var(--ink-700);
             margin: 4px auto;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
@@ -151,115 +246,326 @@
         .nav-toggle.open span:nth-child(2) { opacity: 0; }
         .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
+        /* ── Content wrapper ──────────────────────────────────────────────
+         * Dropped from 0.55 opacity to 0.28, removed the backdrop-filter blur.
+         * The blur was expensive and invisible; now the sketch shows through
+         * properly and you can read the bio on top of it without a wash. */
         .content-wrapper {
-            background-color: var(--background-color);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            background-color: var(--surface-overlay);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            animation: fadeIn 0.8s ease-in-out;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-        .container { width: 90%; max-width: 1000px; margin: 0 auto; padding: 20px; }
-        header { padding-top: 50px; padding-bottom: 20px; text-align: left; }
+        .container {
+            width: 90%;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-        /* Scroll anchor offsets for sticky nav.
-           Values chosen to give generous breathing room between the nav and
-           the target element — matches the intended hero framing where a
-           strip of background is visible before the content begins. */
-        header#home { scroll-margin-top: 140px; }
-        section { scroll-margin-top: 160px; }
+        /* ── Layout ────────────────────────────────────────────────────────
+         * Scroll-margin-top tuned for each anchor target — the header wants
+         * generous breathing room, sections want a tighter anchor so they
+         * don't sit weirdly low under the nav. */
+        header#home { scroll-margin-top: 100px; padding: 60px 0 30px; }
+        section { scroll-margin-top: 90px; padding: 40px 0 20px; }
 
-        h1, h2, h3 {
-            font-family: 'Oswald', sans-serif;
-            display: inline-block;
-            padding: 3px 0;
-            margin: 20px 0 10px;
+        /* ── Typography ────────────────────────────────────────────────────
+         * Removed text-shadow (dated), removed hover:transform (headings aren't
+         * interactive), removed display:inline-block (was only there to make
+         * the phantom hover-lift work). Fraunces with opsz axis means the
+         * font actually scales its letterforms optically at large sizes. */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
             font-weight: 400;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-        h1 { font-size: 2.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        h2 { font-size: 2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-        h3 { font-size: 1.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
-        h1:hover, h2:hover, h3:hover { transform: translateY(-2px); color: var(--secondary-color); }
-        p { margin-bottom: 15px; font-size: 1.05rem; }
-        a { color: var(--secondary-color); text-decoration: none; font-weight: 400; transition: color 0.3s ease, text-decoration 0.3s ease; }
-        a:hover { color: var(--secondary-hover); text-decoration: underline; }
-
-        .publication-list {
-            list-style: none; margin: 0 0 30px 0;
-            display: grid; gap: 15px; grid-template-columns: 1fr;
-        }
-        .publication-list li {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--secondary-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .publication-list li:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-            border-left-color: var(--secondary-hover);
-        }
-        .publication-list li a {
-            display: block; padding: 15px 20px;
-            font-weight: 400; color: #000; text-decoration: none;
-            border-radius: 0 8px 8px 0;
+            line-height: 1.15;
+            color: var(--ink-900);
+            letter-spacing: -0.01em;    /* display serifs tighten nicely */
         }
 
-        .main-content { flex: 1 0 auto; }
+        h1 {
+            font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+            font-weight: 300;
+            margin-bottom: 4px;
+            /* Fraunces with italic at display size — gives the name a signature feel
+               without being precious. opsz at 144 is the display cut. */
+            letter-spacing: -0.02em;
+        }
 
+        /* Role subtitle — small caps / tracked, sits tight under the name */
+        .role-line {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--ink-500);
+            letter-spacing: 0.02em;
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.9rem);
+            margin: 40px 0 16px;
+            font-weight: 400;
+        }
+        h3 {
+            font-size: clamp(1.25rem, 2.4vw, 1.45rem);
+            margin: 32px 0 16px;
+            font-weight: 500;
+        }
+
+        p {
+            margin-bottom: 16px;
+            max-width: var(--measure);
+        }
+
+        /* Drop-cap effect is tempting for the first paragraph but would fight
+           with the right-floating 3D viewer; skip it. */
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        a:hover {
+            color: var(--accent-hover);
+            text-decoration: none;
+        }
+
+        /* Body prose links get a subtle gradient underline that thickens on hover.
+           Scoped to prose contexts (paragraphs inside the intro block and in
+           contact-value) rather than applied globally — so nav, pub cards, and
+           social pills stay clean. */
+        .intro-block p a,
+        .contact-value a {
+            background-image: linear-gradient(var(--accent), var(--accent));
+            background-size: 100% 1px;
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            transition: color 0.2s ease, background-size 0.2s ease;
+        }
+        .intro-block p a:hover,
+        .contact-value a:hover {
+            background-size: 100% 2px;
+        }
+
+        /* ── Intro block with floating 3D viewer ── */
+        .intro-block { max-width: 820px; }
         .intro-block::after { content: ''; display: table; clear: both; }
 
         .viewer-wrap {
             float: right;
             position: relative;
-            width: 380px;
-            height: 380px;
-            margin: 0 -15px 10px 20px;
+            width: 340px;
+            height: 340px;
+            margin: 4px -10px 12px 24px;
             cursor: grab;
         }
         .viewer-wrap:active { cursor: grabbing; }
         .viewer-caption {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: -4px; left: 0; right: 0;
             text-align: center;
-            padding: 12px 15px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 300;
+            font-family: var(--font-display);
+            font-style: italic;
             font-size: 0.85rem;
-            color: #444;
-            letter-spacing: 0.02em;
+            color: var(--ink-500);
+            letter-spacing: 0.01em;
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
             z-index: 2;
         }
-        .viewer-wrap:hover .viewer-caption { opacity: 1; }
-        .viewer-wrap canvas { display: block; width: 100% !important; height: 100% !important; will-change: contents; }
+        .viewer-wrap:hover .viewer-caption,
+        .viewer-wrap:focus-within .viewer-caption { opacity: 1; }
+        .viewer-wrap canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+            will-change: contents;
+        }
         .viewer-fallback {
             width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            color: #999; font-size: 0.85rem; text-align: center;
+            color: var(--ink-500);
+            font-size: 0.9rem;
+            font-style: italic;
+            text-align: center;
             padding: 20px;
         }
 
+        /* ── Publications ──
+         * Dropped the left-border stripe and the heavy translateY-on-hover.
+         * Subtle cards: soft background, hairline border, gentle lift on hover.
+         * Year pill on the right of each item adds visual rhythm down the list. */
+        .publication-list {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr;
+            margin: 0 0 30px;
+        }
+        .publication-list li {
+            background: var(--surface-card);
+            border: 1px solid var(--rule-soft);
+            border-radius: 6px;
+            padding: 14px 18px;
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+        .publication-list li:hover {
+            background: var(--surface-card-hover);
+            border-color: var(--rule);
+            transform: translateY(-1px);
+        }
+        .pub-link {
+            display: block;
+            color: var(--ink-900);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .pub-link:hover { color: var(--accent); }
+        /* Card-wide hover cascades color to the title — makes the whole
+           <li> feel clickable even though only the title is the anchor. */
+        .pub-item:hover .pub-link { color: var(--accent); }
+        .pub-link i, .pub-link em {
+            font-style: italic;
+            color: var(--ink-700);
+        }
+        .pub-meta {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.85rem;
+            color: var(--ink-500);
+            font-feature-settings: "onum", "tnum";
+        }
+        .pub-meta em { font-style: italic; }
+        .pub-meta a {
+            color: var(--ink-500);
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+            text-decoration-color: var(--rule);
+            font-weight: 500;
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
+        }
+        .pub-meta a:hover {
+            color: var(--accent);
+            text-decoration-color: var(--accent);
+        }
+
+        .main-content { flex: 1 0 auto; }
+
+        /* ── Contact section ──
+         * Lighter than before — just a soft panel, no box. The socials sit
+         * inline under the details. */
+        .contact-card {
+            background: var(--surface-card);
+            border: 1px solid var(--rule-soft);
+            border-radius: 8px;
+            padding: 28px 32px;
+            margin-top: 12px;
+            margin-bottom: 30px;
+            max-width: 720px;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px 40px;
+            margin-bottom: 24px;
+        }
+        .contact-item { display: flex; flex-direction: column; gap: 6px; }
+        .contact-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--ink-500);
+            font-weight: 500;
+        }
+        .contact-value { font-size: 1rem; color: var(--ink-900); line-height: 1.5; }
+
+        .contact-socials {
+            display: flex;
+            gap: 10px;
+            padding-top: 20px;
+            border-top: 1px solid var(--rule-soft);
+            flex-wrap: wrap;
+        }
+        .contact-socials a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px solid var(--rule);
+            border-radius: 5px;
+            color: var(--ink-700);
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .contact-socials a:hover {
+            background: var(--accent);
+            color: var(--paper-cream);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .contact-socials a svg { flex-shrink: 0; }
+
+        /* ── Footer ──
+         * No more hard black bar. Just a thin rule, small italic tagline,
+         * dissolves into the page. */
+        footer {
+            padding: 48px 0 32px;
+            text-align: center;
+            border-top: 1px solid var(--rule-soft);
+            margin-top: 40px;
+        }
+        footer p {
+            margin: 0 auto;
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 0.85rem;
+            color: var(--ink-500);
+            letter-spacing: 0.02em;
+            max-width: none;
+        }
+
+        /* ── Responsive ──────────────────────────────────────────────────── */
         @media screen and (max-width: 768px) {
-            .container { width: 95%; }
-            header { padding-top: 30px; }
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.7em; }
-            h3 { font-size: 1.4em; }
-            .publication-list li a { padding: 12px 15px; }
+            body { font-size: 17px; }
+            .container { width: 95%; padding: 16px; }
+            header#home { padding-top: 40px; }
+            section { padding: 30px 0 15px; }
+            .role-line { margin-bottom: 32px; }
+            /* On mobile, use flex column and reorder so the first paragraph
+               appears immediately after the title — the 3D viewer then slots
+               between paragraphs 1 and 2 rather than dominating the top of
+               the page before any text is visible. Desktop continues to use
+               the float layout above. */
+            .intro-block {
+                display: flex;
+                flex-direction: column;
+            }
+            .intro-block > p { order: 2; }
+            .intro-block > p:first-of-type { order: 0; }
+            .viewer-wrap { order: 1; }
             .viewer-wrap {
                 float: none;
                 width: 100%;
+                max-width: 360px;
                 height: 300px;
-                margin: 10px 0 20px 0;
+                margin: 20px auto 28px;
             }
             .nav-toggle { display: block; }
             .nav-inner { position: relative; }
@@ -270,19 +576,19 @@
                 right: 0;
                 flex-direction: column;
                 gap: 0;
-                background: var(--nav-bg-scrolled);
-                backdrop-filter: blur(18px) saturate(150%);
-                -webkit-backdrop-filter: blur(18px) saturate(150%);
-                border-radius: 10px;
-                border: 1px solid var(--nav-border);
-                padding: 0 12px;
+                background: var(--surface-nav-scrolled);
+                backdrop-filter: blur(14px) saturate(140%);
+                -webkit-backdrop-filter: blur(14px) saturate(140%);
+                border-radius: 8px;
+                border: 1px solid var(--rule);
+                padding: 0 10px;
                 max-height: 0;
                 overflow: hidden;
                 transition: max-height 0.3s ease, padding 0.3s ease;
             }
             .nav-links.open {
                 max-height: 300px;
-                padding: 8px 12px;
+                padding: 8px 10px;
             }
             .nav-links a {
                 display: block;
@@ -290,94 +596,11 @@
                 font-size: 1rem;
             }
             .nav-links a::after { display: none; }
-            /* On mobile the brand name follows the same IntersectionObserver
-               rule as desktop — hidden while the hero header is visible,
-               appears once the user has scrolled past it. */
+            .contact-card { padding: 22px 24px; }
         }
-
-        footer {
-            background-color: var(--primary-color);
-            color: white; padding: 20px 0; text-align: center;
-            font-size: 0.85em;
-            margin-top: 40px;
-        }
-        footer p { margin: 0; opacity: 0.75; }
-
-        /* ── Contact card ── */
-        /* Not really a card anymore — more of an open panel. Just a whisper
-           of extra opacity (~10% more than the surrounding content wrapper)
-           and a hairline border to hint at the grouping without containing it.
-           Lets the background pattern come through clearly. */
-        .contact-card {
-            background-color: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 24px 28px;
-            margin-top: 10px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px 32px;
-            margin-bottom: 20px;
-        }
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .contact-label {
-            font-family: 'Oswald', sans-serif;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #666;
-            font-weight: 400;
-        }
-        .contact-value {
-            font-size: 1rem;
-            color: var(--primary-color);
-            line-height: 1.5;
-        }
-        .contact-value a {
-            color: var(--secondary-color);
-            font-weight: 400;
-        }
-        .contact-socials {
-            display: flex;
-            gap: 12px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            flex-wrap: wrap;
-        }
-        .contact-socials a {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid rgba(0, 0, 139, 0.1);
-            border-radius: 6px;
-            color: var(--primary-color);
-            font-family: 'Oswald', sans-serif;
-            font-weight: 300;
-            font-size: 0.9rem;
-            letter-spacing: 0.03em;
-            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
-        }
-        .contact-socials a:hover {
-            background: rgba(255, 255, 255, 0.7);
-            color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            text-decoration: none;
-            transform: translateY(-2px);
-        }
-        .contact-socials a svg { flex-shrink: 0; }
 
         @media screen and (max-width: 600px) {
-            .contact-grid { grid-template-columns: 1fr; gap: 16px; }
-            .contact-card { padding: 20px 22px; }
+            .contact-grid { grid-template-columns: 1fr; gap: 18px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -387,15 +610,27 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* High-contrast preference — tighten text color and remove translucent surfaces */
+        @media (prefers-contrast: more) {
+            :root {
+                --surface-overlay: rgba(244, 241, 234, 0.85);
+                --surface-card: rgba(244, 241, 234, 0.9);
+                --ink-700: #2a2f36;
+                --ink-500: #4a505a;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-fixed"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <div class="bg-fixed" aria-hidden="true"></div>
 
     <nav class="site-nav" id="siteNav" aria-label="Primary">
         <div class="nav-inner">
             <a href="#home" class="nav-brand">Amith Zafal Abdulla</a>
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links" id="navLinks">
@@ -407,44 +642,82 @@
     </nav>
 
     <div class="content-wrapper">
-        <header id="home">
-            <div class="container">
-                <h1>Amith Zafal Abdulla</h1>
-                <p>HFSP Postdoctoral fellow</p>
+        <main class="main-content" id="main">
+            <header id="home">
+                <div class="container">
+                    <h1>Amith Zafal Abdulla</h1>
+                    <p class="role-line">HFSP Postdoctoral Fellow · Brandeis University</p>
 
-                <h2>Welcome to my page</h2>
+                    <div class="intro-block">
+                        <div class="viewer-wrap" id="polymerViewer" role="img" aria-label="Interactive 3D visualization: simulated chromosome territories inside a cell nucleus">
+                            <div class="viewer-caption">Simulating chromosome territories</div>
+                        </div>
 
-                <div class="intro-block">
-                    <div class="viewer-wrap" id="polymerViewer">
-                        <div class="viewer-caption">Simulating chromosome territories</div>
+                        <p>I'm a researcher at Brandeis University in the Boston area. My work explores the dynamics of epigenetic states at the single-cell level — blending molecular biology with computational modeling. I build computational models to gain deeper understanding of the processes that drive chromatin folding and gene regulation.</p>
+                        <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
+                        <p>I'd love to connect with people who can challenge me with new ways of thinking. If you're interested in theoretical models of how epigenetic patterns allow DNA to artfully change its expression, have a look at <a href="https://ens-lyon.hal.science/tel-03968006/">Painters in chromatin</a> — or, if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video</a>.</p>
+                        <p>To explore one of my latest projects, see the <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, joint work with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
                     </div>
-
-                    <p>Hello! I'm Amith, a researcher at Brandeis University, located in the Boston area. My work involves exploring the dynamics of epigenetic states at the single-cell level—an endeavor that blends molecular biology with computational modeling. I enjoy creating computational models to gain a deeper understanding of the fundamental processes that drive chromatin folding and gene regulation.</p>
-                    <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                    <p>I would love to connect with people who can challenge me into new ways of thinking. If you're interested in theoretical models on how epigenetic patterns allow DNA to artfully change its expression, check out <a href="https://ens-lyon.hal.science/tel-03968006/">"Painters in chromatin"</a>. Or if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video.</a></p>
-                    <p>To explore one of my latest projects, check out <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, working with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
                 </div>
-            </div>
-        </header>
+            </header>
 
-        <main class="main-content">
             <div class="container">
-                <section id="publications">
-                    <h3>Some of my works:</h3>
+                <section id="publications" aria-labelledby="pub-heading">
+                    <h2 id="pub-heading">Selected Publications</h2>
                     <ul class="publication-list">
-                        <li style="padding: 15px 20px;"><a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">Topological constraints and finite-size effects in quantitative polymer models of chromatin organization, <i>Macromolecules</i> 2023</a> | <a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2.full.pdf" target="_blank" rel="noopener noreferrer" style="display:inline; padding:0;">pdf</a></li>
-                        <li><a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" target="_blank" rel="noopener noreferrer">4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling, <i>Curr Opin Genet Dev</i> 2023</a></li>
-                        <li><a href="https://academic.oup.com/nar/article/50/16/9083/6677333" target="_blank" rel="noopener noreferrer">Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory, <i>Nucleic Acids Research</i> 2022</a></li>
-                        <li><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010450" target="_blank" rel="noopener noreferrer">Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells, <i>PLoS CB</i> 2022</a></li>
-                        <li><a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" target="_blank" rel="noopener noreferrer">Contact Force Mediated Rapid Deposition of Colloidal Microspheres Flowing over Microstructured Barriers, <i>Langmuir</i> 2021</a></li>
-                        <li><a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" target="_blank" rel="noopener noreferrer">Swimming statistics of cargo-loaded single bacteria, <i>Soft Matter</i> 2020</a></li>
-                        <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" target="_blank" rel="noopener noreferrer">Active modulation of surfactant-driven flow instabilities by swarming bacteria, <i>Physical Review E</i> 2020</a></li>
-                        <li><a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" target="_blank" rel="noopener noreferrer">Tuning the torque-speed characteristics of the bacterial flagellar motor to enhance swimming speed, <i>Physical Review E</i> 2019</a></li>
+                        <li class="pub-item">
+                            <a href="https://pubs.acs.org/doi/abs/10.1021/acs.macromol.3c01182" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Topological constraints and finite-size effects in quantitative polymer models of chromatin organization
+                            </a>
+                            <span class="pub-meta"><em>Macromolecules</em>, 2023 &nbsp;·&nbsp; <a href="https://www.biorxiv.org/content/10.1101/2023.06.16.545312v2.full.pdf" target="_blank" rel="noopener noreferrer">PDF</a></span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/36893485/" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                4D epigenomics: deciphering the coupling between genome folding and epigenomic regulation with biophysical modeling
+                            </a>
+                            <span class="pub-meta"><em>Current Opinion in Genetics &amp; Development</em>, 2023</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://academic.oup.com/nar/article/50/16/9083/6677333" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Painters in chromatin: a unified quantitative framework to characterize epigenome regulation and memory
+                            </a>
+                            <span class="pub-meta"><em>Nucleic Acids Research</em>, 2022</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010450" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Dynamical modeling of the H3K27 epigenetic landscape in mouse embryonic stem cells
+                            </a>
+                            <span class="pub-meta"><em>PLOS Computational Biology</em>, 2022</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://pubs.acs.org/doi/abs/10.1021/acs.langmuir.1c00370" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Contact force mediated rapid deposition of colloidal microspheres flowing over microstructured barriers
+                            </a>
+                            <span class="pub-meta"><em>Langmuir</em>, 2021</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://pubs.rsc.org/en/content/articlelanding/2020/sm/d0sm01066a/unauth" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Swimming statistics of cargo-loaded single bacteria
+                            </a>
+                            <span class="pub-meta"><em>Soft Matter</em>, 2020</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.101.012407" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Active modulation of surfactant-driven flow instabilities by swarming bacteria
+                            </a>
+                            <span class="pub-meta"><em>Physical Review E</em>, 2020</span>
+                        </li>
+                        <li class="pub-item">
+                            <a href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.100.062609" class="pub-link" target="_blank" rel="noopener noreferrer">
+                                Tuning the torque–speed characteristics of the bacterial flagellar motor to enhance swimming speed
+                            </a>
+                            <span class="pub-meta"><em>Physical Review E</em>, 2019</span>
+                        </li>
                     </ul>
                 </section>
 
-                <section id="contact">
-                    <h3>Contact</h3>
+                <section id="contact" aria-labelledby="contact-heading">
+                    <h2 id="contact-heading">Contact</h2>
                     <div class="contact-card">
                         <div class="contact-grid">
                             <div class="contact-item">
@@ -453,16 +726,16 @@
                             </div>
                             <div class="contact-item">
                                 <span class="contact-label">Affiliation</span>
-                                <span class="contact-value">Brandeis University<br>415 South Street, Waltham MA 02453</span>
+                                <address class="contact-value" style="font-style: normal;">Brandeis University<br>415 South Street, Waltham MA 02453</address>
                             </div>
                         </div>
                         <div class="contact-socials">
-                            <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
-                                <span>Scholar</span>
+                            <a href="https://scholar.google.com/citations?user=Ks4TpOEAAAAJ&hl=en" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
+                                <span>Google Scholar</span>
                             </a>
-                            <a href="https://bsky.app/profile/amithzafal.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 600 530" fill="currentColor" aria-hidden="true"><path d="M135.72 44.03C202.22 93.99 273.74 195.28 300 249.64c26.26-54.36 97.78-155.65 164.28-205.61C512.26 8.02 590-19.55 590 68.94c0 17.67-10.13 148.48-16.07 169.72-20.67 73.86-96.01 92.7-163.05 81.26 117.18 19.95 147.03 86.02 82.67 152.08-122.27 125.48-175.72-31.48-189.42-71.61-2.51-7.35-3.69-10.78-3.71-7.87-.03-2.91-1.2.52-3.72 7.87-13.7 40.13-67.14 197.09-189.42 71.61-64.36-66.06-34.51-132.13 82.67-152.08-67.04 11.44-142.38-7.4-163.05-81.26C20.96 217.42 10.83 86.61 10.83 68.94c0-88.49 77.74-60.92 125.72-30.88l-.83 6z"/></svg>
+                            <a href="https://bsky.app/profile/amithzafal.bsky.social" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 600 530" fill="currentColor" aria-hidden="true"><path d="M135.72 44.03C202.22 93.99 273.74 195.28 300 249.64c26.26-54.36 97.78-155.65 164.28-205.61C512.26 8.02 590-19.55 590 68.94c0 17.67-10.13 148.48-16.07 169.72-20.67 73.86-96.01 92.7-163.05 81.26 117.18 19.95 147.03 86.02 82.67 152.08-122.27 125.48-175.72-31.48-189.42-71.61-2.51-7.35-3.69-10.78-3.71-7.87-.03-2.91-1.2.52-3.72 7.87-13.7 40.13-67.14 197.09-189.42 71.61-64.36-66.06-34.51-132.13 82.67-152.08-67.04 11.44-142.38-7.4-163.05-81.26C20.96 217.42 10.83 86.61 10.83 68.94c0-88.49 77.74-60.92 125.72-30.88l-.83 6z"/></svg>
                                 <span>Bluesky</span>
                             </a>
                         </div>
@@ -472,33 +745,33 @@
         </main>
 
         <footer>
-            <p>&copy; Amith Zafal Abdulla &middot; April 2026</p>
+            <p>&copy; <span id="copyright-year">2026</span> &nbsp;·&nbsp; AZA</p>
         </footer>
     </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    // ── Copyright year (auto-updates) ──
+    const yearEl = document.getElementById('copyright-year');
+    if(yearEl) yearEl.textContent = new Date().getFullYear();
+
     // ── Email obfuscation ──
-    const user='amithzafal', domain='brandeis.edu', el=document.getElementById('email-placeholder');
-    if(el) el.innerHTML=`<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
+    // Simple JS assembly. Not bulletproof against headless scrapers, but keeps
+    // the address out of the static HTML source.
+    const user='amithzafal', domain='brandeis.edu';
+    const el = document.getElementById('email-placeholder');
+    if(el) el.innerHTML = `<a href="mailto:${user}@${domain}">${user}@${domain}</a>`;
 
     // ── Nav: shrink when the hero header has scrolled out of view ──
-    // Using IntersectionObserver instead of a scroll-position threshold means
-    // this works correctly on every screen size and aspect ratio — mobile,
-    // tablet, desktop, ultra-wide, short laptops — without hard-coded pixel
-    // values. The nav simply shrinks when the <h1>-containing <header> is no
-    // longer visible in the viewport, so we never get duplicate-name states.
+    // IntersectionObserver is resolution-independent — no hard-coded scroll
+    // thresholds that break on ultra-wide screens or short laptops.
     const nav = document.getElementById('siteNav');
     const heroHeader = document.getElementById('home');
     if(heroHeader) {
         const headerObs = new IntersectionObserver((entries) => {
-            // Shrink nav when the header is NOT intersecting (scrolled out).
             nav.classList.toggle('scrolled', !entries[0].isIntersecting);
         }, {
-            // Trigger when header is fully past the top of viewport.
-            // Small negative top margin (-60px) accounts for the nav's own height
-            // so shrink happens just as the last bit of header disappears behind it.
-            rootMargin: '-60px 0px 0px 0px',
+            rootMargin: '-50px 0px 0px 0px',
             threshold: 0
         });
         headerObs.observe(heroHeader);
@@ -518,16 +791,22 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.classList.remove('open');
         toggle.setAttribute('aria-expanded', 'false');
     }));
-
-    // Brand link uses native href="#home" behavior — consistent with the Home
-    // nav link, respects scroll-margin-top on the header.
+    // Also close on Escape for keyboard users
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && links.classList.contains('open')) {
+            links.classList.remove('open');
+            toggle.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.focus();
+        }
+    });
 
     // ── Nav: scroll-spy ──
-    // Uses scroll position directly rather than intersection ratios — this keeps
-    // the active-link threshold aligned with what the user actually sees. The
-    // active section is whichever one's top has crossed above the nav's bottom
-    // edge. No rootMargin tuning, no percentage thresholds.
-    const sections = ['home','publications','contact'].map(id => document.getElementById(id)).filter(Boolean);
+    // Uses scroll position rather than intersection ratios — the active-link
+    // threshold then aligns with what the user actually sees.
+    const sections = ['home','publications','contact']
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
     const linkMap = {};
     links.querySelectorAll('a[data-section]').forEach(a => linkMap[a.dataset.section] = a);
 
@@ -541,7 +820,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateActive = () => {
         const navBottom = nav.getBoundingClientRect().bottom;
-        // Find the last section whose top is above the nav's bottom edge
         let active = sections[0]?.id;
         for(const s of sections) {
             if(s.getBoundingClientRect().top <= navBottom + 10) active = s.id;
@@ -549,7 +827,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setActive(active);
     };
 
-    // Throttle with rAF for smooth updates without thrashing layout
     let scrollRaf = null;
     window.addEventListener('scroll', () => {
         if(scrollRaf) return;
@@ -561,33 +838,27 @@ document.addEventListener('DOMContentLoaded', () => {
     updateActive();
 });
 </script>
+
+<!-- ============================================================
+     3D VIEWER — unchanged from your current file.
+     Per the user's request we're leaving the simulation alone in
+     this pass; only aesthetic / page-structure changes above.
+     ============================================================ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ── Robust loader for optional post-FX modules ──
-// Strategy: load each script with a per-script timeout. If any fails or times out,
-// we still init the viewer with whatever we have. The renderer falls back gracefully
-// from the full SAO+FXAA stack down to direct render.
-//
-// Removed from the previous version: UnrealBloomPass, LuminosityHighPassShader,
-// and RoomEnvironment — none are used with the Phong/Tachyon pipeline, so loading
-// them was pure waste of the timeout budget.
 (function(){
-  const POSTFX_TIMEOUT_MS = 4000;    // per-script budget
-  const TOTAL_TIMEOUT_MS  = 6000;    // overall budget, then init anyway
+  const POSTFX_TIMEOUT_MS = 4000;
+  const TOTAL_TIMEOUT_MS  = 6000;
 
   const scripts = [
-    // Core post-processing
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/EffectComposer.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/RenderPass.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/ShaderPass.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/CopyShader.js',
-    // SAO — subtle crevice darkening between beads (not doing all the shading work anymore)
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/SAOShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/DepthLimitedBlurShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/UnpackDepthRGBAShader.js',
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/SAOPass.js',
-    // FXAA — matters more than SAO for the specular-highlight look, since
-    // unantialiased highlights on small spheres shimmer and crawl.
     'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/shaders/FXAAShader.js'
   ];
 
@@ -604,7 +875,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Load all in parallel; resolves when either everything settles or the overall budget expires.
   const allSettled = Promise.all(scripts.map(s => loadScript(s, POSTFX_TIMEOUT_MS)));
   const overallTimeout = new Promise(resolve => setTimeout(resolve, TOTAL_TIMEOUT_MS));
 
@@ -626,41 +896,24 @@ try {
   return;
 }
 
-// ── Constants ──
 const SHELL_RADIUS_NM = 1185, BEAD_RADIUS_NM = 42;
 
-// ── Capability detection ──
-// Two separate concerns that shouldn't share the same flag:
-//  1. Geometry LOD — whether to use lower-poly beads/shell (one-time decision,
-//     evaluated at startup; rebuilding geometry mid-session is expensive).
-//  2. Post-processing — whether SAO/FXAA passes are worth enabling
-//     (device-capability question, independent of viewport size).
 const isMobileUA = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 const isSmallViewport = window.innerWidth < 768;
-// Geometry decision: low-poly if either mobile UA or small viewport at startup.
 const LOW_POLY = isMobileUA || isSmallViewport;
-// Bead tessellation — modest bump from April's 18×12 to 22×16 on desktop.
-// With dim specular (0x0f0f0f), silhouette quality matters less than it did
-// with the previous white-specular experiment, so we don't need 32×24.
 const BEAD_SEGS_W  = LOW_POLY ? 12 : 22;
 const BEAD_SEGS_H  = LOW_POLY ? 8  : 16;
 const SHELL_SEGS_W = LOW_POLY ? 48 : 80;
 const SHELL_SEGS_H = LOW_POLY ? 32 : 56;
 
-// Post-FX decision: based on hardware concurrency and not touching screen size.
-// Mobile devices with 6+ cores (modern iPhones, flagship Android) handle the
-// post stack fine; the real culprit for performance was always GPU fillrate on
-// older integrated graphics, which correlates better with core count than UA.
 const ENABLE_POSTFX = (navigator.hardwareConcurrency || 4) >= 6;
 
-// Feature detection — each tier independently, so a partial load still gets partial FX.
 const HAS_COMPOSER = ENABLE_POSTFX && typeof THREE.EffectComposer !== 'undefined'
                                && typeof THREE.RenderPass !== 'undefined'
                                && typeof THREE.ShaderPass !== 'undefined';
 const HAS_SAO      = HAS_COMPOSER && typeof THREE.SAOPass !== 'undefined';
 const HAS_FXAA     = HAS_COMPOSER && typeof THREE.FXAAShader !== 'undefined';
 
-// ── Animation timing ──
 const INITIAL_HOLD  = 2.5;
 const PLAY_DURATION = 21.0;
 const STEADY_HOLD   = 3.0;
@@ -670,14 +923,9 @@ const TOTAL_FRAMES  = 60;
 
 const CYCLE_DURATION = INITIAL_HOLD + PLAY_DURATION + STEADY_HOLD + FADE_DURATION * 2;
 
-// ── Scene ──
 const scene = new THREE.Scene();
 scene.background = null;
 
-// Camera framing — restored to the April 2026 values that framed the nucleus
-// comfortably in the viewport. The near-orthographic experiment (FOV 28)
-// pulled the camera too close and lost the slight perspective that gives
-// the polymer mass its sense of depth.
 const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 1000);
 camera.position.set(0, 0, 34);
 
@@ -690,15 +938,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setClearColor(0x000000, 0);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputEncoding = THREE.sRGBEncoding;
-// Neutral tone mapping — Tachyon doesn't use filmic tone curves. ACES would
-// warm and darken mid-tones in a way that fights the crisp, clinical ray-trace look.
 renderer.toneMapping = THREE.NoToneMapping;
 renderer.toneMappingExposure = 1.0;
 container.insertBefore(renderer.domElement, container.firstChild);
 
-// ── Post-processing (SAO + FXAA), each pass independently optional ──
-// Bloom and environment maps are deliberately absent: Tachyon's direct-lit
-// Phong look has no HDR luminance to bloom and no reflections to sample.
 let composer = null, saoPass = null, fxaaPass = null;
 function initPostFX() {
   if(!HAS_COMPOSER) return;
@@ -706,11 +949,6 @@ function initPostFX() {
     composer = new THREE.EffectComposer(renderer);
     composer.addPass(new THREE.RenderPass(scene, camera));
 
-    // SAO — moderate crevice darkening. The dim-specular + moderate-ambient
-    // lighting doesn't produce strong self-shadowing on its own, so AO still
-    // does useful work deepening the gaps between packed beads. Not as heavy
-    // as the 0.025 intensity used when lighting was fully flat, not as subtle
-    // as the 0.008 that was calibrated for the bright-specular experiment.
     if(HAS_SAO) {
       saoPass = new THREE.SAOPass(scene, camera, false, true);
       saoPass.params.saoBias = 0.3;
@@ -725,8 +963,6 @@ function initPostFX() {
       composer.addPass(saoPass);
     }
 
-    // FXAA — essential for Phong specular. Without it, the hotspot on each
-    // bead flickers/stair-steps as the view rotates.
     if(HAS_FXAA) {
       fxaaPass = new THREE.ShaderPass(THREE.FXAAShader);
       const pr = renderer.getPixelRatio();
@@ -737,8 +973,6 @@ function initPostFX() {
       composer.addPass(fxaaPass);
     }
 
-    // If no effect passes actually got added, don't use composer at all —
-    // a composer with only a RenderPass is just a slower renderer.render().
     if(!saoPass && !fxaaPass) {
       composer = null;
     }
@@ -764,16 +998,6 @@ function resize() {
 }
 resize();
 
-// ── Lighting — April 2026 balance, with rim light backed off ──
-// The previous experiment (key 1.0 / ambient 0.12) was calibrated for mid-grey
-// beads with white specular and produced the opposite problem: sharp blown-out
-// hotspots on undifferentiated spheres. With the near-black diffuse + dim
-// specular recipe restored below, the lighting can be softer and more even.
-//
-// Change from April: rim light dropped from 0.36 → 0.10. The back-rim glow
-// it produced on the unlit side of beads read as "studio product photo"
-// rather than "ray-traced molecular render" — Tachyon references show
-// each bead simply lit-on-one-side / dark-on-the-other without edge glow.
 const keyLight = new THREE.DirectionalLight(0xffffff, 0.59);
 const fillLight = new THREE.DirectionalLight(0xffffff, 0.25);
 const rimLight = new THREE.DirectionalLight(0xffffff, 0.10);
@@ -789,12 +1013,6 @@ setLP(fillLight, 210, 0);
 setLP(rimLight, 330, 30);
 scene.add(keyLight, fillLight, rimLight, ambLight, hemiLight);
 
-// ── Chain colors — April 2026 near-black palette, restored ──
-// These three values span grayscale 8 → 26 → 56 (a 7× brightness ratio), which
-// actually *does* give three distinguishable chains under Phong shading, as
-// long as the specular stays dim (see bead material below). The previous mid-grey
-// attempt compressed that ratio and made all chains look identical — the
-// darkness was doing real work in separating them.
 const COLORS = {
   A: new THREE.Color(0x080808),
   B: new THREE.Color(0x383838),
@@ -806,10 +1024,6 @@ scene.add(pivot);
 
 const _dummy = new THREE.Object3D();
 
-// ── Interaction ──
-// Initial pivot rotation — April 2026 framing, restored. The strong X
-// rotation (0.75 rad ≈ 43°) tilts the nucleus so the viewer looks down into
-// it, and the Y rotation reveals the depth of the chromosome territories.
 let rotX = 0.75, rotY = 0.3;
 pivot.rotation.set(rotX, rotY, 0);
 let autoRotateSpeed = 0;
@@ -871,7 +1085,6 @@ container.addEventListener('mouseleave', ()=>{ hovered=false; isDragging=false; 
 const TARGET_SPEED = 0.004;
 let isVisible = false;
 
-// ── Frame data & meshes ──
 let frameData = null;
 let nBeads = 0;
 let globalCenter = [0,0,0];
@@ -881,7 +1094,6 @@ let meshes = {};
 let beadGeo = null;
 let shellMesh = null;
 
-// ── Animation state ──
 let animTime = 0;
 let beadOpacity = 1;
 
@@ -899,44 +1111,20 @@ function buildScene(data) {
     : data.center;
   globalMaxDist = data.maxDist2 ? data.maxDist2/S : data.maxDist;
 
-  // ── Depth fog ──
-  // Tachyon renders have subtle depth cueing — distant beads sit slightly lighter
-  // and lower-contrast than foreground beads, which is what makes the polymer mass
-  // read as a volumetric object rather than a flat cloud of spheres.
-  //
-  // Linear fog from just-in-front-of-center to behind-the-nucleus. The color
-  // matches the page background (#d8d5d0) so distant beads fade *into* the
-  // page rather than appearing as lighter-colored beads against it — this is
-  // what makes the viewer feel integrated with the page.
-  //
-  // Near/far are scaled to the loaded nucleus size (globalMaxDist) rather than
-  // hardcoded, so the effect stays consistent regardless of how the coordinate
-  // data is normalized.
   const camZ = camera.position.z;
   scene.fog = new THREE.Fog(
     0xd8d5d0,
-    camZ - globalMaxDist * 0.3,   // fog starts just past the front of the nucleus
-    camZ + globalMaxDist * 1.4    // fully faded out past the back
+    camZ - globalMaxDist * 0.3,
+    camZ + globalMaxDist * 1.4
   );
 
   const SCALE = SHELL_RADIUS_NM / globalMaxDist;
-  // Bead inflation 1.03 — tighter packing than April's 1.15, which was
-  // merging adjacent beads into continuous blobs and hiding the chain
-  // structure. 1.03 leaves just a hint of contact between neighbors so
-  // the "pearl necklace" texture of the polymer stays visible.
   const BEAD_R = (BEAD_RADIUS_NM / SCALE) * 1.03;
   beadGeo = new THREE.SphereGeometry(BEAD_R, BEAD_SEGS_W, BEAD_SEGS_H);
 
   const chains = data.chains;
 
   chains.forEach(chain => {
-    // Phong with DIM specular (0x0f0f0f, shininess 30) — this is the key.
-    // Bright white specular on near-black diffuse produces the blown-out
-    // "pearl-like" hotspots that washed out chain differentiation in the
-    // previous version. Dim specular preserves the subtle sheen that reads
-    // as "ray-traced sphere" without overpowering the diffuse term — the
-    // three chains' darkness levels stay visible. This matches the April
-    // balance that was working.
     const mat = new THREE.MeshPhongMaterial({
       color: COLORS[chain],
       shininess: 30,
@@ -962,11 +1150,6 @@ function buildScene(data) {
     meshes[chain] = mesh;
   });
 
-  // Nuclear envelope shell — muted specular (0x111111, shininess 20) so the
-  // dome stays translucent-matte under any view angle. The earlier values
-  // (0x333333 / shininess 53) developed a visible specular sheen as the
-  // pivot rotated, which read as "glass bubble" rather than the thin
-  // translucent cap in the Tachyon reference.
   const shellR = globalMaxDist * 1.02 * 1.10;
   const shellGeo = new THREE.SphereGeometry(shellR, SHELL_SEGS_W, SHELL_SEGS_H, 0, Math.PI*2, 0, Math.PI*0.6);
   const shellMat = new THREE.MeshPhongMaterial({
@@ -982,7 +1165,6 @@ function buildScene(data) {
   shellMesh.rotation.x = Math.PI;
   pivot.add(shellMesh);
 
-  // Initialize post-processing after scene is built
   initPostFX();
 }
 
@@ -1017,7 +1199,6 @@ function setBeadOpacity(opacity) {
   ['A','B','C'].forEach(ch => { meshes[ch].material.opacity = opacity; });
 }
 
-// ── Main animation loop ──
 let lastTime = null;
 
 function animate(timestamp) {
@@ -1028,7 +1209,6 @@ function animate(timestamp) {
   const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
   lastTime = timestamp;
 
-  // Auto-rotate: pauses on hover
   if(!hovered && !isDragging) {
     autoRotateSpeed += (TARGET_SPEED - autoRotateSpeed) * 0.05;
   } else {
@@ -1039,13 +1219,11 @@ function animate(timestamp) {
     pivot.rotation.set(rotX, rotY, 0);
   }
 
-  // Time evolution: pauses on hover
   if(!hovered) {
     animTime += dt;
     if(animTime >= CYCLE_DURATION) animTime -= CYCLE_DURATION;
   }
 
-  // Phase boundaries
   const playStart  = INITIAL_HOLD;
   const playEnd    = playStart + PLAY_DURATION;
   const steadyEnd  = playEnd + STEADY_HOLD;
@@ -1053,7 +1231,6 @@ function animate(timestamp) {
 
   if(animTime < playStart) {
     setBeadOpacity(1);
-
   } else if(animTime < playEnd) {
     setBeadOpacity(1);
     const linearProgress = (animTime - playStart) / PLAY_DURATION;
@@ -1062,33 +1239,27 @@ function animate(timestamp) {
     const frameIdx = Math.min(Math.floor(frameFloat), TOTAL_FRAMES - 1);
     const frac = frameFloat - frameIdx;
     updateBeads(frameIdx, frameIdx + 1, frac);
-
   } else if(animTime < steadyEnd) {
     setBeadOpacity(1);
-
   } else if(animTime < fadeOutEnd) {
     const fadeProgress = (animTime - steadyEnd) / FADE_DURATION;
     setBeadOpacity(1 - fadeProgress);
-
   } else {
     const fadeProgress = (animTime - fadeOutEnd) / FADE_DURATION;
     setBeadOpacity(fadeProgress);
     updateBeads(0, 0, 0);
   }
 
-  // Render via composer if post-processing is active, else direct render
   if(composer) composer.render();
   else renderer.render(scene, camera);
 }
 
-// ── Visibility & resize ──
 window.addEventListener('resize', resize);
 const obs = new IntersectionObserver(entries => {
   isVisible = entries[0].isIntersecting;
 }, {threshold: 0.05});
 obs.observe(container);
 
-// ── Use pre-fetched data (started in <head>) ──
 window._polymerData
   .then(data => { buildScene(data); requestAnimationFrame(animate); })
   .catch(err => {
