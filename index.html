@@ -403,8 +403,8 @@
             background: linear-gradient(
                 to right,
                 var(--plate-strong) 0%,
-                var(--plate-strong) 58%,
-                rgba(244, 241, 234, 0) 95%
+                var(--plate-strong) 65%,
+                rgba(244, 241, 234, 0) 100%
             );
         }
 
@@ -532,13 +532,27 @@
          * Lighter than before — just a soft panel, no box. The socials sit
          * inline under the details. */
         .contact-card {
-            background: var(--surface-card);
-            border: 1px solid var(--rule-soft);
-            border-radius: 8px;
+            border: 0;
+            border-radius: 10px;
             padding: 28px 32px;
             margin-top: 12px;
             margin-bottom: 30px;
             max-width: 720px;
+            /* Left-biased gradient — mirrors the hero-plate treatment.
+               Fully opaque on the left where Email/Affiliation details sit,
+               fading to transparent on the right so the sketch shows through. */
+            background: linear-gradient(
+                to right,
+                var(--plate-strong) 0%,
+                var(--plate-strong) 65%,
+                rgba(244, 241, 234, 0) 100%
+            );
+        }
+        @media screen and (max-width: 768px) {
+            .contact-card {
+                background: var(--plate-solid);
+                padding: 24px 22px;
+            }
         }
         .contact-grid {
             display: grid;
@@ -662,7 +676,6 @@
                 font-size: 1rem;
             }
             .nav-links a::after { display: none; }
-            .contact-card { padding: 22px 24px; }
         }
 
         @media screen and (max-width: 600px) {
