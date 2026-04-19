@@ -39,9 +39,11 @@
          * through — the page is the paper, the content sits ON it.
          */
         :root {
-            /* Ink — text hierarchy */
-            --ink-900: #1d2024;         /* primary text, near-black with warm cast */
-            --ink-700: #3a4049;         /* secondary text */
+            /* Ink — text hierarchy. Darkened ink-900 from #1d2024 to #14181d
+               so headings and body copy pick up more contrast against the
+               variable-luminance pencil background. */
+            --ink-900: #14181d;         /* primary text, near-black with warm cast */
+            --ink-700: #343a43;         /* secondary text */
             --ink-500: #6b7380;         /* muted text, labels */
             --ink-300: #b8bcc3;         /* hairlines, disabled */
 
@@ -57,13 +59,20 @@
             /* Surfaces — all carry alpha so the background reads through */
             --surface-nav: rgba(244, 241, 234, 0.72);
             --surface-nav-scrolled: rgba(244, 241, 234, 0.85);
-            --surface-card: rgba(244, 241, 234, 0.55);
-            --surface-card-hover: rgba(244, 241, 234, 0.78);
+            --surface-card: rgba(244, 241, 234, 0.62);
+            --surface-card-hover: rgba(244, 241, 234, 0.82);
             --surface-overlay: rgba(244, 241, 234, 0.28);  /* the big content wrapper — very transparent */
 
+            /* Text plate — a soft scrim behind body prose in sections where
+               legibility over the busy background matters. The plate is a
+               section-scoped surface; the big overlay above it stays low-
+               opacity so the page still reads as "content on paper". */
+            --plate-strong: rgba(244, 241, 234, 0.78);
+            --plate-solid:  rgba(244, 241, 234, 0.82);
+
             /* Lines — hairlines that echo the ruled notebook paper */
-            --rule: rgba(29, 32, 36, 0.12);
-            --rule-soft: rgba(29, 32, 36, 0.06);
+            --rule: rgba(20, 24, 29, 0.18);
+            --rule-soft: rgba(20, 24, 29, 0.08);
 
             /* Type — Source Serif 4 for display, Newsreader for body.
                Both have opsz axes so the browser picks size-optimized cuts. */
@@ -307,13 +316,34 @@
             font-size: 1.05rem;
             color: var(--ink-500);
             letter-spacing: 0.02em;
-            margin-bottom: 48px;
+            margin-bottom: 28px;
+        }
+        /* Thin rule between hero head and body — editorial convention that
+           separates title-block from prose without needing heavy typography. */
+        .hero-rule {
+            width: 56px;
+            height: 1px;
+            background: var(--rule);
+            margin: 0 0 28px;
+            border: 0;
         }
 
+        /* Section headings (h2) — slightly heavier weight and a short
+           underline rule acting as a section marker. The rule is fixed-width
+           (42px) so it reads as a typographic mark, not a decorative line. */
         h2 {
-            font-size: clamp(1.5rem, 3vw, 1.9rem);
-            margin: 40px 0 16px;
-            font-weight: 400;
+            font-size: clamp(1.6rem, 3vw, 2rem);
+            margin: 0 0 6px;
+            font-weight: 500;
+            letter-spacing: -0.005em;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 42px;
+            height: 1px;
+            background: var(--rule);
+            margin: 10px 0 22px;
         }
         h3 {
             font-size: clamp(1.25rem, 2.4vw, 1.45rem);
@@ -357,28 +387,63 @@
             background-size: 100% 2px;
         }
 
-        /* ── Intro block with floating 3D viewer ── */
-        .intro-block { max-width: 820px; }
+        /* ── Hero plate ──
+         * Single left-biased gradient plate that wraps the H1, role-line,
+         * and intro-block. The plate gives all the prose in the hero the
+         * same legible backing, while fading to transparent on the right so
+         * the 3D viewer floats over the background image directly.
+         *
+         * Values chosen: 78% opaque cream on the left (tested against worst-
+         * case dark pencil sketch — passes AA), transition band from 58% to
+         * 95% width so the fade hides behind the 3D viewer's left edge. */
+        .hero-plate {
+            max-width: 860px;
+            padding: 30px 34px 26px;
+            border-radius: 10px;
+            background: linear-gradient(
+                to right,
+                var(--plate-strong) 0%,
+                var(--plate-strong) 58%,
+                rgba(244, 241, 234, 0) 95%
+            );
+        }
+
+        /* Intro-block is now just a layout container — no plate of its own. */
+        .intro-block {
+            max-width: 820px;
+        }
         .intro-block::after { content: ''; display: table; clear: both; }
+        .intro-block p:last-child { margin-bottom: 0; }
+
+        /* On narrow viewports the right-fade becomes pointless — the viewer
+           sits between paragraphs, not floated. Use a full-opacity plate. */
+        @media screen and (max-width: 768px) {
+            .hero-plate {
+                background: var(--plate-solid);
+                padding: 24px 22px;
+            }
+        }
 
         .viewer-wrap {
             float: right;
             position: relative;
-            width: 340px;
-            height: 340px;
-            margin: 4px -10px 12px 24px;
+            width: 320px;
+            height: 320px;
+            margin: 4px -8px 12px 24px;
             cursor: grab;
         }
         .viewer-wrap:active { cursor: grabbing; }
         .viewer-caption {
             position: absolute;
-            bottom: -4px; left: 0; right: 0;
-            text-align: center;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: var(--font-display);
             font-style: italic;
-            font-size: 0.85rem;
-            color: var(--ink-500);
+            font-size: 0.82rem;
+            color: #000;
             letter-spacing: 0.01em;
+            white-space: nowrap;
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -556,6 +621,7 @@
             .intro-block {
                 display: flex;
                 flex-direction: column;
+                padding: 20px 22px;
             }
             .intro-block > p { order: 2; }
             .intro-block > p:first-of-type { order: 0; }
@@ -645,18 +711,21 @@
         <main class="main-content" id="main">
             <header id="home">
                 <div class="container">
-                    <h1>Amith Zafal Abdulla</h1>
-                    <p class="role-line">HFSP Postdoctoral Fellow · Brandeis University</p>
+                    <div class="hero-plate">
+                        <h1>Amith Zafal Abdulla</h1>
+                        <p class="role-line">HFSP Postdoctoral Fellow · Brandeis University</p>
+                        <hr class="hero-rule">
 
-                    <div class="intro-block">
-                        <div class="viewer-wrap" id="polymerViewer" role="img" aria-label="Interactive 3D visualization: simulated chromosome territories inside a cell nucleus">
-                            <div class="viewer-caption">Simulating chromosome territories</div>
+                        <div class="intro-block">
+                            <div class="viewer-wrap" id="polymerViewer" role="img" aria-label="Interactive 3D visualization: simulated chromosome territories inside a cell nucleus">
+                                <div class="viewer-caption">Simulating chromosome territories</div>
+                            </div>
+
+                            <p>I'm a researcher at Brandeis University in the Boston area. My work explores the dynamics of epigenetic states at the single-cell level — blending molecular biology with computational modeling. I build computational models to gain deeper understanding of the processes that drive chromatin folding and gene regulation.</p>
+                            <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
+                            <p>I'd love to connect with people who can challenge me with new ways of thinking. If you're interested in theoretical models of how epigenetic patterns allow DNA to artfully change its expression, have a look at <a href="https://ens-lyon.hal.science/tel-03968006/">Painters in chromatin</a> — or, if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video</a>.</p>
+                            <p>To explore one of my latest projects, see the <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, joint work with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
                         </div>
-
-                        <p>I'm a researcher at Brandeis University in the Boston area. My work explores the dynamics of epigenetic states at the single-cell level — blending molecular biology with computational modeling. I build computational models to gain deeper understanding of the processes that drive chromatin folding and gene regulation.</p>
-                        <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
-                        <p>I'd love to connect with people who can challenge me with new ways of thinking. If you're interested in theoretical models of how epigenetic patterns allow DNA to artfully change its expression, have a look at <a href="https://ens-lyon.hal.science/tel-03968006/">Painters in chromatin</a> — or, if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video</a>.</p>
-                        <p>To explore one of my latest projects, see the <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, joint work with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
                     </div>
                 </div>
             </header>
@@ -785,12 +854,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.classList.toggle('open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-    // Close mobile menu when a link is tapped
-    links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        links.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-    }));
     // Also close on Escape for keyboard users
     document.addEventListener('keydown', (e) => {
         if(e.key === 'Escape' && links.classList.contains('open')) {
@@ -801,9 +864,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ── Nav: scroll-spy ──
-    // Uses scroll position rather than intersection ratios — the active-link
-    // threshold then aligns with what the user actually sees.
+    // ── Nav: scroll-spy + click-to-activate ──
+    // The active section is the one that contains the "reading anchor" —
+    // a point ~25% down from the nav's bottom edge. That's roughly where a
+    // reader's eye sits when they stop scrolling. Scroll-spy handles the case
+    // where a user scrolls naturally; click-to-activate handles the case
+    // where a user taps a nav link and expects instant visual feedback,
+    // regardless of how smooth-scroll + scroll-spy eventually settle.
     const sections = ['home','publications','contact']
         .map(id => document.getElementById(id))
         .filter(Boolean);
@@ -818,12 +885,41 @@ document.addEventListener('DOMContentLoaded', () => {
         if(linkMap[id]) linkMap[id].classList.add('active');
     };
 
+    // Click-to-activate: when a nav link is tapped, (a) close the mobile menu,
+    // (b) set active state immediately, and (c) briefly suppress the scroll-spy
+    // so it doesn't fight the click state during smooth-scroll. The suppression
+    // window is ~800ms — enough for smooth-scroll to finish on most browsers.
+    let scrollSpySuppressedUntil = 0;
+    links.querySelectorAll('a[data-section]').forEach(a => {
+        a.addEventListener('click', () => {
+            // Close mobile menu
+            links.classList.remove('open');
+            toggle.classList.remove('open');
+            toggle.setAttribute('aria-expanded', 'false');
+            // Immediate active state
+            setActive(a.dataset.section);
+            // Suppress scroll-spy during smooth-scroll
+            scrollSpySuppressedUntil = performance.now() + 800;
+        });
+    });
+
     const updateActive = () => {
+        if(performance.now() < scrollSpySuppressedUntil) return;
         const navBottom = nav.getBoundingClientRect().bottom;
+        const anchor = navBottom + (window.innerHeight - navBottom) * 0.25;
+
         let active = sections[0]?.id;
         for(const s of sections) {
-            if(s.getBoundingClientRect().top <= navBottom + 10) active = s.id;
+            const r = s.getBoundingClientRect();
+            if(r.top <= anchor) active = s.id;
         }
+
+        // Edge case: at the very bottom of the page, force the last section
+        // active — short final sections' tops may never cross the anchor.
+        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 4) {
+            active = sections[sections.length - 1].id;
+        }
+
         setActive(active);
     };
 
@@ -835,6 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollRaf = null;
         });
     }, { passive: true });
+    window.addEventListener('resize', updateActive, { passive: true });
     updateActive();
 });
 </script>
