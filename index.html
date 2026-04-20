@@ -24,12 +24,11 @@
     <link rel="preload" as="image" href="./bg3-BW.png" fetchpriority="high">
     <script>window._polymerData = fetch('./polymer_frames.json').then(r => r.ok ? r.json() : Promise.reject(r.status));</script>
 
-    <!-- Fonts: Source Serif 4 (section headings, role line), Newsreader (body),
-         and Fraunces (H1 display only — has SOFT + opsz axes for extra character
-         at large sizes, pairs naturally with Newsreader). Loading Fraunces only
-         at the weights we actually use for the name. -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Fraunces:opsz,wght,SOFT@9..144,300;9..144,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Fraunces:opsz,wght,SOFT@9..144,300;9..144,400&display=swap"></noscript>
+    <!-- Fonts: Source Serif 4 (display, optical-size variable humanist serif) + Newsreader
+         (body, warm editorial serif). Both are designed for screen reading from the start,
+         with opsz axes that optically adjust letterforms at different sizes. -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap"></noscript>
 
     <style>
         /*
@@ -75,13 +74,10 @@
             --rule: rgba(20, 24, 29, 0.18);
             --rule-soft: rgba(20, 24, 29, 0.08);
 
-            /* Type — Source Serif 4 for section headings, Newsreader for body,
-               Fraunces for the H1 name display. Fraunces has a SOFT axis that
-               adds warmth at display sizes without tipping into calligraphy.
-               Both serifs have opsz axes so the browser picks size-optimized cuts. */
+            /* Type — Source Serif 4 for display, Newsreader for body.
+               Both have opsz axes so the browser picks size-optimized cuts. */
             --font-display: 'Source Serif 4', 'Georgia', serif;
             --font-body: 'Newsreader', 'Georgia', serif;
-            --font-name: 'Fraunces', 'Source Serif 4', 'Georgia', serif;
 
             /* Measure — keeps prose line length comfortable */
             --measure: 64ch;
@@ -304,48 +300,23 @@
         }
 
         h1 {
-            font-family: var(--font-name);
-            font-size: clamp(2.6rem, 6vw, 4rem);
-            /* Fraunces weight 400 looks light at display sizes on a busy
-               background; 400 with the SOFT axis cranked gives character
-               without the thinness that disappears against pencil strokes.
-               font-variation-settings gives us direct access to the SOFT
-               (100 = max softness, warmer/rounder) and opsz (144 = display
-               cut) axes. */
-            font-weight: 400;
-            font-variation-settings: "opsz" 144, "SOFT" 100;
-            letter-spacing: -0.015em;
+            font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+            font-weight: 300;
             margin-bottom: 4px;
-            /* Legibility-over-background treatment, no plate required:
-               • Tight 2–3px cream halo immediately around letterforms neutralizes
-                 competing pencil-line pixels in the sketch behind the name.
-               • A single subtle ink drop-shadow (2px offset down-right) adds
-                 the "letterpress on paper" presence you asked for — gives the
-                 name weight against the background without looking dated or
-                 decorative.
-               Order matters: cream halos first (closer layers), ink drop last. */
-            text-shadow:
-                0 0 2px var(--paper-cream),
-                0 0 6px rgba(244, 241, 234, 0.8),
-                0 0 14px rgba(244, 241, 234, 0.6),
-                2px 2px 0 rgba(20, 24, 29, 0.12);
+            /* Fraunces with italic at display size — gives the name a signature feel
+               without being precious. opsz at 144 is the display cut. */
+            letter-spacing: -0.02em;
         }
 
-        /* Role line and hero rule also live on the raw background now, so they
-           get a lighter legibility halo (no ink-drop — they're not the star).
-           Color bumped from ink-500 to ink-700 — the muted grey disappears
-           into mid-tone pencil regions of the sketch without a plate. */
+        /* Role subtitle — small caps / tracked, sits tight under the name */
         .role-line {
             font-family: var(--font-display);
             font-weight: 400;
             font-style: italic;
             font-size: 1.05rem;
-            color: var(--ink-700);
+            color: var(--ink-500);
             letter-spacing: 0.02em;
             margin-bottom: 28px;
-            text-shadow:
-                0 0 2px var(--paper-cream),
-                0 0 8px rgba(244, 241, 234, 0.75);
         }
         /* Thin rule between hero head and body — editorial convention that
            separates title-block from prose without needing heavy typography. */
@@ -416,69 +387,49 @@
             background-size: 100% 2px;
         }
 
-        /* ── Hero — no plates, legibility halos only ──
-         * The H1, role line, hero rule, AND prose paragraphs all now sit
-         * directly on the background sketch. No plates.
+        /* ── Hero plate ──
+         * Single left-biased gradient plate that wraps the H1, role-line,
+         * and intro-block. The plate gives all the prose in the hero the
+         * same legible backing, while fading to transparent on the right so
+         * the 3D viewer floats over the background image directly.
          *
-         * Legibility technique: every piece of hero text gets a tight
-         * cream-colored text-shadow halo. This works because the halo
-         * occupies only the 2–3px ring immediately around each letter,
-         * where the competing pencil lines cause the actual readability
-         * problem. At normal reading distance the halo is invisible as
-         * "an effect"; it reads only as "the letters are clearly defined."
-         *
-         * Contrast math: ink-900 (#14181d) on the sketch's lightest regions
-         * ~14:1 and on the darker pencil strokes ~5:1 — both above AA for
-         * body text. The halo neutralizes mid-tone pencil hatching that
-         * would otherwise create fuzzy edges around letterforms.
-         */
-
-        .intro-block {
+         * Values chosen: 78% opaque cream on the left (tested against worst-
+         * case dark pencil sketch — passes AA), transition band from 58% to
+         * 95% width so the fade hides behind the 3D viewer's left edge. */
+        .hero-plate {
             max-width: 860px;
+            padding: 30px 34px 26px;
+            border-radius: 10px;
+            background: linear-gradient(
+                to right,
+                var(--plate-strong) 0%,
+                var(--plate-strong) 65%,
+                rgba(244, 241, 234, 0) 100%
+            );
+        }
+
+        /* Intro-block is now just a layout container — no plate of its own. */
+        .intro-block {
+            max-width: 820px;
         }
         .intro-block::after { content: ''; display: table; clear: both; }
+        .intro-block p:last-child { margin-bottom: 0; }
 
-        /* Prose in the hero — no plate, just a halo on each text element.
-           Slightly heavier weight than default body (400 → 420 via variable
-           axis) to help the letterforms hold up against the sketch. */
-        .hero-prose {
-            max-width: 620px;
-            font-variation-settings: "wght" 420, "opsz" 20;
-        }
-        .hero-prose p {
-            text-shadow:
-                0 0 2px var(--paper-warm),
-                0 0 4px rgba(216, 213, 208, 0.9),
-                0 0 8px rgba(216, 213, 208, 0.6);
-        }
-        .hero-prose p:last-child { margin-bottom: 0; }
-
-        /* Links inside the hero prose — the gradient-underline treatment
-           defined earlier already handles them; but on a plate-less layout
-           the accent color needs to survive the sketch too. The halo on the
-           surrounding paragraph extends to links as children, so they get
-           the same legibility treatment for free. */
-
-        /* On narrow viewports, the legibility halos still do their job;
-           no plate needed there either. We just let the prose column fill
-           the container width. */
+        /* On narrow viewports the right-fade becomes pointless — the viewer
+           sits between paragraphs, not floated. Use a full-opacity plate. */
         @media screen and (max-width: 768px) {
-            .hero-prose {
-                max-width: none;
+            .hero-plate {
+                background: var(--plate-solid);
+                padding: 24px 22px;
             }
         }
 
-        /* 3D viewer — larger and anchored to the right edge with a negative
-           right margin that lets it extend slightly past the container. The
-           page is built around it now, rather than it being tucked into a
-           card. 360×360 gives it more presence; the negative right margin
-           (-30px) tucks it toward the gutter so the prose column has room. */
         .viewer-wrap {
             float: right;
             position: relative;
-            width: 360px;
-            height: 360px;
-            margin: -4px -30px 16px 28px;
+            width: 320px;
+            height: 320px;
+            margin: 4px -8px 12px 24px;
             cursor: grab;
         }
         .viewer-wrap:active { cursor: grabbing; }
@@ -587,9 +538,9 @@
             margin-top: 12px;
             margin-bottom: 30px;
             max-width: 720px;
-            /* Left-biased gradient. Fully opaque on the left where
-               Email/Affiliation details sit, fading to transparent on the
-               right so the sketch shows through. */
+            /* Left-biased gradient — mirrors the hero-plate treatment.
+               Fully opaque on the left where Email/Affiliation details sit,
+               fading to transparent on the right so the sketch shows through. */
             background: linear-gradient(
                 to right,
                 var(--plate-strong) 0%,
@@ -677,15 +628,17 @@
             section { padding: 30px 0 15px; }
             .role-line { margin-bottom: 32px; }
             /* On mobile, use flex column and reorder so the first paragraph
-               appears immediately after the title — the 3D viewer slots
+               appears immediately after the title — the 3D viewer then slots
                between paragraphs 1 and 2 rather than dominating the top of
                the page before any text is visible. Desktop continues to use
                the float layout above. */
             .intro-block {
                 display: flex;
                 flex-direction: column;
+                padding: 20px 22px;
             }
-            .hero-prose { order: 0; }
+            .intro-block > p { order: 2; }
+            .intro-block > p:first-of-type { order: 0; }
             .viewer-wrap { order: 1; }
             .viewer-wrap {
                 float: none;
@@ -771,18 +724,17 @@
         <main class="main-content" id="main">
             <header id="home">
                 <div class="container">
-                    <h1>Amith Zafal Abdulla</h1>
-                    <p class="role-line">HFSP Postdoctoral Fellow · Brandeis University</p>
-                    <hr class="hero-rule">
+                    <div class="hero-plate">
+                        <h1>Amith Zafal Abdulla</h1>
+                        <p class="role-line">HFSP Postdoctoral Fellow · Brandeis University</p>
+                        <hr class="hero-rule">
 
-                    <div class="intro-block">
-                        <div class="viewer-wrap" id="polymerViewer" role="img" aria-label="Interactive 3D visualization: simulated chromosome territories inside a cell nucleus">
-                            <div class="viewer-caption">Simulating chromosome territories</div>
-                        </div>
+                        <div class="intro-block">
+                            <div class="viewer-wrap" id="polymerViewer" role="img" aria-label="Interactive 3D visualization: simulated chromosome territories inside a cell nucleus">
+                                <div class="viewer-caption">Simulating chromosome territories</div>
+                            </div>
 
-                        <div class="hero-prose">
                             <p>I'm a researcher at Brandeis University in the Boston area. My work explores the dynamics of epigenetic states at the single-cell level — blending molecular biology with computational modeling. I build computational models to gain deeper understanding of the processes that drive chromatin folding and gene regulation.</p>
-
                             <p>From modeling chromatin to collective behavior in active matter, I'm fascinated by the physics of biological systems.</p>
                             <p>I'd love to connect with people who can challenge me with new ways of thinking. If you're interested in theoretical models of how epigenetic patterns allow DNA to artfully change its expression, have a look at <a href="https://ens-lyon.hal.science/tel-03968006/">Painters in chromatin</a> — or, if you prefer a short talk, here is a <a href="https://www.youtube.com/watch?v=Xp0rjpC5F2g" target="_blank" rel="noopener noreferrer">video</a>.</p>
                             <p>To explore one of my latest projects, see the <a href="https://doi.org/10.52044/HFSP.LT00202024-L.pc.gr.194709">epigenetic oscillator</a>, joint work with <a href="https://www.brandeis.edu/physics/people/profiles/kondev-jane.html">Jane Kondev</a> and <a href="https://www.brandeis.edu/biology/faculty/ragunathan-kaushik.html">Kaushik Ragunathan</a>.</p>
@@ -875,7 +827,7 @@
         </main>
 
         <footer>
-            <p>Written between simulations &nbsp;·&nbsp; &copy; <span id="copyright-year">2026</span> &nbsp;·&nbsp; AZA</p>
+            <p> Written between simulations &copy; <span id="copyright-year">2026</span> &nbsp;·&nbsp; AZA</p>
         </footer>
     </div>
 
