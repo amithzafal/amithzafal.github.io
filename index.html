@@ -427,9 +427,9 @@
         .viewer-wrap {
             float: right;
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 4px -8px 12px 24px;
+            width: 400px;
+            height: 400px;
+            margin: 4px -60px 12px 24px;
             cursor: grab;
         }
         .viewer-wrap:active { cursor: grabbing; }
@@ -465,6 +465,17 @@
             font-style: italic;
             text-align: center;
             padding: 20px;
+        }
+
+        /* Mid-tablet — the in-between range where the 400px desktop viewer
+           would crowd a narrower container. Scales down and reduces the
+           right-overhang proportionally. Mobile (<=768px) overrides this. */
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            .viewer-wrap {
+                width: 340px;
+                height: 340px;
+                margin: 4px -30px 12px 24px;
+            }
         }
 
         /* ── Publications ──
@@ -554,6 +565,23 @@
                 padding: 24px 22px;
             }
         }
+        /* Tagline — sits above the contact grid on the card itself. Body serif
+           (not display) and muted --ink-700 so it reads as a quiet epigraph,
+           not a pull quote. The hairline bottom border echoes the top border
+           on .contact-socials, framing the grid symmetrically. */
+        .contact-tagline {
+            font-family: var(--font-body);
+            font-size: 0.925rem;
+            font-weight: 400;
+            font-style: normal;
+            color: var(--ink-700);
+            letter-spacing: 0.005em;
+            line-height: 1.5;
+            max-width: 48ch;
+            margin: 0 0 22px 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--rule-soft);
+        }
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -615,7 +643,7 @@
             font-family: var(--font-display);
             font-style: italic;
             font-size: 0.85rem;
-            color: var(--ink-500);
+            color: var(--ink-900);
             letter-spacing: 0.02em;
             max-width: none;
         }
@@ -643,8 +671,9 @@
             .viewer-wrap {
                 float: none;
                 width: 100%;
-                max-width: 360px;
-                height: 300px;
+                max-width: min(420px, 85vw);
+                aspect-ratio: 1 / 1;
+                height: auto;
                 margin: 20px auto 28px;
             }
             .nav-toggle { display: block; }
@@ -801,6 +830,7 @@
                 <section id="contact" aria-labelledby="contact-heading">
                     <h2 id="contact-heading">Contact</h2>
                     <div class="contact-card">
+                        <p class="contact-tagline">Chromatin functions through contacts, so does life. Happy to connect :)</p>
                         <div class="contact-grid">
                             <div class="contact-item">
                                 <span class="contact-label">Email</span>
