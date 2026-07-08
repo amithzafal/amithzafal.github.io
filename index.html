@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Error sink persists across replaceWith since it's on window, not the DOM.
   window.addEventListener('error', function(e) {
+    // Ignore non-fatal resource-load failures (e.g. a blocked/failed analytics
+    // beacon such as GoatCounter). Those fire a plain Event with no `message`.
+    // Only surface genuine uncaught JS exceptions (ErrorEvent with a message).
+    if (!e || !e.message) { try { console.warn('[bundle] non-fatal resource error', e && e.target); } catch (_) {} return; }
     var p = document.body || document.documentElement;
     var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
     d.id = '__bundler_err';
